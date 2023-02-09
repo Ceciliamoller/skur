@@ -1,0 +1,37 @@
+
+/tools/{adId} {
+    adName: string
+    price: int
+    description: string
+    creator: string (uid)
+    category: string
+    availible: bool
+    deal: [
+        approved: bool
+        tenant: string (uid)
+        dueDate: date
+    ]
+}
+
+/users/{uid}/ {
+    rating: int
+    email: string
+    name: string
+    userAds: [
+        adId: string
+    ]
+    /lists/{listID} {
+        listName: string
+        content: [
+            adId: string (adId)
+        ]
+    }
+    /history/{adId} {
+        participants: [
+            owner: string (uid)
+            tenant: string (uid)
+        ]
+
+    }
+
+}
