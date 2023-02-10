@@ -3,7 +3,7 @@ import './login.css';
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { auth, signInWithGoogle } from '../../config/firebaseConfig';
 import { signInWithEmailAndPassword } from "firebase/auth";
-import SignUp from "./SignUp";
+import SignUp from "./signUp.js";
 
 
 
@@ -38,7 +38,7 @@ function Login() {
     }
 
     return (
-        
+
 
         <div className="loginPage">
 
@@ -52,10 +52,9 @@ function Login() {
                         <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                         <button type="submit" id="loginWithEmailBtn" >Logg inn</button>
                     </form>
-                    <Link id="signUpHereBtn" to="/signUp">Har ikke bruker? Logg inn her</Link>  
-                    <Routes>
-                        <Route path="/signUp" element={<SignUp />} />
-                    </Routes>
+                    <Link id="signUpHereBtn" to="/signUp">Har ikke bruker? Logg inn her</Link>
+
+
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/login/Login";
 import { auth } from './config/firebaseConfig';
+import SignUp from './components/login/signUp';
 //import createAd from "./components/CreateAd/createAd";
 
 function App() {
@@ -20,17 +21,26 @@ function App() {
     <Router>
       <nav>
         <Link to="/"> Home </Link>
-        <Link to="/login"> Login </Link>
+        {/* Check if user is signed in, if not show login link*/}
 
+        {!user ? (
+          <Link to="/login"> Login </Link>
+
+        ) :
+          (
+            <button className="button signout" onClick={() => auth.signOut()}>Sign out</button>
+          )
+
+
+        }
 
       </nav>
       <Routes>
         <Route path="/" element={<Home user={user} />} />
-        {/* Check if user is signed in, if not show login link*/}
-        if (user) {
-          <Route path="/login" element={<Login />} />
-        }
 
+        <Route path="/login" element={<Login />} />
+
+        <Route path="/signUp" element={<SignUp />} />
 
       </Routes>
     </Router>
