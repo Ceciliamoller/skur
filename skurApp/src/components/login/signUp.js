@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import './login.css';
 import { useNavigate } from 'react-router-dom'
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../../config/firebaseConfig';
 
 
 function SignUp() {
 
     const navigate = useNavigate();
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -15,9 +16,13 @@ function SignUp() {
     const onSignup = (e) => {
         e.preventDefault();
         createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
+            .then(async (userCredential) => {
                 // Signed in
                 const user = userCredential.user;
+                await updateProfile(auth.currentUser, {
+                    displayName: name,
+                    email
+                })
                 navigate("/")
                 console.log(user);
             })
@@ -35,7 +40,7 @@ function SignUp() {
             <form onSubmit={onSignup}>
                 <div className="container">
                     <h2>Eller lag en bruker:</h2>
-                    <input type="text" placeholder="Navn" />
+                    <input type="text" placeholder="Navn" onChange={(e) => setName(e.target.value)} />
                     <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                     <input type="password" placeholder="Passord" onChange={(e) => setPassword(e.target.value)} />
                     <button type="submit" className="sighUpBtn">Lag bruker</button>
