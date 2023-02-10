@@ -1,13 +1,13 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-skurApp/node_modules
+/skurApp/node_modules
 
 # testing
-skurApp/coverage
+/skurApp/coverage
 
 # production
-skurApp/build
+/skurApp/build
 
 # misc
 .DS_Store
@@ -16,6 +16,6 @@ skurApp/build
 .env.test.local
 .env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+/skurApp/npm-debug.log*
+/skurApp/yarn-debug.log*
+/skurApp/yarn-error.log*
