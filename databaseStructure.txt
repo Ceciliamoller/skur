@@ -5,6 +5,7 @@
     description: string
     creator: string (uid)
     category: string
+    tyoe: string ("loan" | "share")
     availible: bool
     deal: [
         approved: bool
