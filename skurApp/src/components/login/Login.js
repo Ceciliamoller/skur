@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import './login.css';
-import { useNavigate } from 'react-router-dom'
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../config/firebaseConfig';
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { auth, signInWithGoogle } from '../../config/firebaseConfig';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import SignUp from "./signUp.js";
+
+
 
 function Login() {
 
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
 
 
     const onLogin = (e) => {
@@ -29,21 +33,30 @@ function Login() {
 
     }
 
-    //Skal legges inn onclick={} is alle buttons (som gir popups kanksje??)
+    function googleSignin() {
+        signInWithGoogle().then(() => navigate("/"))
+    }
+
     return (
+
+
         <div className="loginPage">
-            <form onSubmit={onLogin}>
-                <div className="container" >
-                    <div className="loginContainer">
-                        <h2>Logg inn:</h2>
-                        <button className="loginWithGoogleBtn">Logg inn med Google</button>
+
+            <div className="container" >
+                <div className="loginContainer">
+                    <h2>Logg inn:</h2>
+                    <button onClick={googleSignin} className="loginWithGoogleBtn">Logg inn med Google</button>
+                    <form onSubmit={onLogin}>
                         <h2>Eller logg inn med email</h2>
                         <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                         <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                         <button type="submit" id="loginWithEmailBtn" >Logg inn</button>
-                    </div>
+                    </form>
+                    <Link id="signUpHereBtn" to="/signUp">Har ikke bruker? Logg inn her</Link>
+
+
                 </div>
-            </form>
+            </div>
         </div>
     );
 }
