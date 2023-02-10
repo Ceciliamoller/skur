@@ -3,6 +3,11 @@ import './login.css';
 import { useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../config/firebaseConfig';
+import SignUp from "./SignUp";
+
+
+
+import { Routes, Route, Link } from "react-router-dom";
 
 function Login() {
 
@@ -30,6 +35,7 @@ function Login() {
     }
 
     return (
+        
 
         <div className="loginPage">
             <form onSubmit={onLogin}>
@@ -41,10 +47,13 @@ function Login() {
                         <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                         <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                         <button type="submit" id="loginWithEmailBtn" >Logg inn</button>
-                        {/* <button id="signUpHereBtn" onClick={signUpBtn}>Har ikke bruker? Registrer deg her</button> */}
                     </div>
                 </div>
             </form>
+            <Link id="signUpHereBtn" to="/signUp">Har ikke bruker? Logg inn her</Link>  
+            <Routes>
+                <Route path="/signUp" element={<SignUp />} />
+            </Routes>
         </div>
     );
 }
