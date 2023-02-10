@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/login/Login";
-import firebaseService, { auth } from './config/firebaseConfig';
+import { auth } from './config/firebaseConfig';
 //import createAd from "./components/CreateAd/createAd";
 
 function App() {
