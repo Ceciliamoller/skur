@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import './login.css';
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { auth, signInWithGoogle } from '../../config/firebaseConfig';
+import { signInWithEmailAndPassword } from "firebase/auth";
 import SignUp from "./SignUp";
-
 
 
 
