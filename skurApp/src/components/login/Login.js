@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import './login.css';
-import { useNavigate } from 'react-router-dom'
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import { auth, signInWithGoogle } from '../../config/firebaseConfig';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import SignUp from "./SignUp";
+
+
 
 function Login() {
 
@@ -35,6 +38,7 @@ function Login() {
     }
 
     return (
+        
 
         <div className="loginPage">
 
@@ -47,8 +51,11 @@ function Login() {
                         <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                         <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                         <button type="submit" id="loginWithEmailBtn" >Logg inn</button>
-                        {/* <button id="signUpHereBtn" onClick={signUpBtn}>Har ikke bruker? Registrer deg her</button> */}
                     </form>
+                    <Link id="signUpHereBtn" to="/signUp">Har ikke bruker? Logg inn her</Link>  
+                    <Routes>
+                        <Route path="/signUp" element={<SignUp />} />
+                    </Routes>
                 </div>
             </div>
         </div>
