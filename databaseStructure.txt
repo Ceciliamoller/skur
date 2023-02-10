@@ -1,6 +1,6 @@
 
-/tools/{adId} {
-    adName: string
+/tools/{toolID} {
+    toolName: string
     price: int
     description: string
     creator: string (uid)
@@ -18,15 +18,15 @@
     email: string
     name: string
     userAds: [
-        adId: string
+        toolID: string
     ]
     /lists/{listID} {
         listName: string
         content: [
-            adId: string (adId)
+            toolID: string (toolID)
         ]
     }
-    /history/{adId} {
+    /history/{toolID} {
         participants: [
             owner: string (uid)
             tenant: string (uid)
