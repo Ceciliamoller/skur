@@ -5,7 +5,6 @@ import './login.css';
 function SignUp(){
 
 
-    //Skal legges inn onclick={} is alle buttons (som gir popups kanksje??)
     return (
         <div className="signUpPage">
             <div className="container">
