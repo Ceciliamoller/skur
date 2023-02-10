@@ -1,5 +1,5 @@
 import './App.css';
-import CreateAd from './components/CreateTools/createTool'
+import CreateTools from './components/CreateTools/createTool'
 import { ChakraProvider } from '@chakra-ui/react'
 import { Box } from '@chakra-ui/react'
 import { useState, useEffect } from 'react';
@@ -36,8 +36,8 @@ function App() {
             <button className="button signout" onClick={() => auth.signOut()}>Sign out</button>
           )
 
-
         }
+        <Link to="/tool"> Tools </Link>
 
       </nav>
       <Routes>
@@ -46,6 +46,7 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         <Route path="/signUp" element={<SignUp />} />
+        <Route path="/tool" element={<CreateTools />} />
 
       </Routes>
     </Router>
