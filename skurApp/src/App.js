@@ -1,5 +1,5 @@
 import './App.css';
-import CreateAd from './pages/CreateAds/createAd'
+import CreateAd from './components/CreateAds/createAd'
 
 function App() {
   return (
