@@ -1,26 +1,16 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from "./components/Home";
-import Login from "./components/login/Login";
-//import createAd from "./components/CreateAd/createAd";
+import CreateAd from './components/CreateTools/createTool'
+import { ChakraProvider } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 
 function App() {
   return (
-    <Router>
-      <nav>
-        <Link to="/"> Home </Link>
-        <Link to="/login"> Login </Link>
+    <ChakraProvider>
+      <Box alignItems="center">
+      <CreateAd />
+      </Box>
 
-
-      </nav>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-
-
-      </Routes>
-    </Router>
+    </ChakraProvider>
   );
 }
-
 export default App;
