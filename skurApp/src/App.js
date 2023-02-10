@@ -1,8 +1,8 @@
 import './App.css';
-import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/login/Login";
-//import createAd from "./pages/CreateAd/createAd";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Home from "./components/Home";
+import Login from "./components/login/Login";
+//import createAd from "./components/CreateAd/createAd";
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <nav>
         <Link to="/"> Home </Link>
         <Link to="/login"> Login </Link>
-        
+
 
       </nav>
       <Routes>
