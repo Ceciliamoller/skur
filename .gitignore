@@ -5,7 +5,7 @@ skurApp/node_modules
 
 
 # testing
-/coverage
+skurApp/coverage
 
 # production
 skurApp/build
