@@ -29,7 +29,14 @@ function App() {
         {/* Check if user is signed in, if not show login link*/}
 
         
-        <Link to="/tool"> Opprett annonse </Link>
+        <Link to="/tool"> Ny annonse </Link>
+
+        <Link to="/"> Mine annonser </Link>
+        <Link to="/"> Mine sammlinger </Link>
+        <Link> Chat </Link>
+
+
+
         {!user ? (
           <Link to="/login"> Login </Link>
 

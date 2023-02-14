@@ -1,0 +1,22 @@
+.homePage{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+}
+#searchBar{
+    grid-column-end: span 3;
+    
+
+}
+#categories{
+    margin-right: 10%;
+    margin-left: 20%;
+}
+#tools{
+    grid-column-end: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-right: 10%;
+
+}
+
