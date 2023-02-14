@@ -79,6 +79,7 @@ const Home = ({ user }) => {
         )
     }
     else {
+        <ChakraProvider></ChakraProvider>
         return <h1>Ikke logget inn</h1>
     }
 }

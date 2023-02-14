@@ -11,8 +11,8 @@ input {
 }
 #loginWithEmailBtn {
 	border-radius: 20px;
-	border: 1px solid #567189;
-	background-color: #567189;
+	border: 1px solid rgb(72, 128, 199);
+	background-color: rgb(72, 128, 199);
 	color: #FFFFFF;
 	font-size: 12px;
 	font-weight: bold;
@@ -38,7 +38,7 @@ input {
 #signUpHereBtn{
 	outline: none;
   	text-decoration: none;
-	color: #567189;
+	color: rgb(72, 128, 199);
 	font-size: medium;
 	cursor: pointer;
 	background: none!important;

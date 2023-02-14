@@ -1,7 +1,6 @@
 import './App.css';
 import CreateTools from './components/CreateTools/createTool'
-import { ChakraProvider } from '@chakra-ui/react'
-import { Button } from '@chakra-ui/react'
+import { ChakraProvider, Button } from '@chakra-ui/react'
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./components/home/Home";
