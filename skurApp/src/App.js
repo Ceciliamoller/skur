@@ -28,21 +28,21 @@ function App() {
          <Link id='logo' to="/"><strong>⌂ skur</strong> </Link>
         
         {!user ? (
-          <Link id="navoption" to="/login"> Login </Link>
+          <Link className="navoption" id="buttonSignin" to="/login"><ChakraProvider><Button colorScheme= "blue">Logg inn</Button></ChakraProvider></Link>
 
         ) :
           (
-            <ChakraProvider><Button id='navoption' colorScheme= "blue" className="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button></ChakraProvider>
+            <ChakraProvider><Button className='navoption' colorScheme= "blue" id="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button></ChakraProvider>
           )
 
         }
 
         
-        <Link id='navoption' to="/tool"> Ny annonse </Link>
+        <Link className='navoption' to="/tool"> Ny annonse </Link>
 
-        <Link id='navoption' to="/"> Mine annonser </Link>
-        <Link id='navoption' to="/"> Mine sammlinger </Link>
-        <Link id='navoption'> Chat </Link>
+        <Link className='navoption' to="/"> Mine annonser </Link>
+        <Link className='navoption' to="/"> Mine sammlinger </Link>
+        <Link className='navoption'> Chat </Link>
 
 
 

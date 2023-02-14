@@ -18,15 +18,18 @@ nav {
   text-decoration: none;
 }
 
-.buttonSignout{
+#buttonSignin{
   text-decoration: none;
   margin: 10px;
-  font-size: 25px;
+}
 
+#buttonSignout{
+  text-decoration: none;
+  margin: 10px;
 }
 
 a {
-  color: rgb(255, 255, 255);
+  color: rgb(72, 128, 199);
   text-decoration: none;
   margin: 10px;
   font-size: 23px;
@@ -37,7 +40,7 @@ a {
   align-items: left;
 }
 
-#navoption{
+.navoption{
   float: right;
   justify-content: right;
   align-items: right;
