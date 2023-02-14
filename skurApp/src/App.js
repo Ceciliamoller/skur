@@ -4,7 +4,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { Box } from '@chakra-ui/react'
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from "./components/Home";
+import Home from "./components/home/Home";
 import Login from "./components/login/Login";
 import { auth } from './config/firebaseConfig';
 import SignUp from './components/login/signUp';
