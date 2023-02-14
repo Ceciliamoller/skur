@@ -18,7 +18,7 @@ function buildCard(data, id) {
                         {data.toolDescription}
                     </Text>
                     <Text id="toolPrice" color='blue.600' fontSize='2xl'>
-                        {data.toolPrice}
+                        {data.price} kr
                     </Text>
                 </Stack>
             </CardBody>
