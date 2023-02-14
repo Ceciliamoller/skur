@@ -25,7 +25,7 @@ function App() {
     
     <Router>
       <nav>
-        <Link id='logo' to="/"><strong>⌂skur</strong> </Link>
+         <Link id='logo' to="/"><strong>⌂ skur</strong> </Link>
         
         {!user ? (
           <Link id="navoption" to="/login"> Login </Link>
