@@ -20,6 +20,14 @@ nav {
   text-decoration: none;
 }
 
+.buttonSignout{
+  color: white;
+  text-decoration: none;
+  margin: 10px;
+  font-size: 25px;
+  
+}
+
 a {
   color: white;
   text-decoration: none;

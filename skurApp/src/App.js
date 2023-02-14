@@ -42,7 +42,7 @@ function App() {
 
         ) :
           (
-            <button className="button signout" onClick={() => auth.signOut()}>Sign out</button>
+            <button className="buttonSignout" onClick={() => auth.signOut()}>Logg ut</button>
           )
 
         }
