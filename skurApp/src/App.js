@@ -1,7 +1,7 @@
 import './App.css';
 import CreateTools from './components/CreateTools/createTool'
 import { ChakraProvider } from '@chakra-ui/react'
-import { Box } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./components/home/Home";
@@ -25,27 +25,29 @@ function App() {
     
     <Router>
       <nav>
-        <Link to="/"> Hjem </Link>
-        {/* Check if user is signed in, if not show login link*/}
-
+        <Link id='logo' to="/"><strong>⌂skur</strong> </Link>
         
-        <Link to="/tool"> Ny annonse </Link>
-
-        <Link to="/"> Mine annonser </Link>
-        <Link to="/"> Mine sammlinger </Link>
-        <Link> Chat </Link>
-
-
-
         {!user ? (
-          <Link to="/login"> Login </Link>
+          <Link id="navoption" to="/login"> Login </Link>
 
         ) :
           (
-            <button className="buttonSignout" onClick={() => auth.signOut()}>Logg ut</button>
+            <ChakraProvider><Button id='navoption' colorScheme= "blue" className="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button></ChakraProvider>
           )
 
         }
+
+        
+        <Link id='navoption' to="/tool"> Ny annonse </Link>
+
+        <Link id='navoption' to="/"> Mine annonser </Link>
+        <Link id='navoption' to="/"> Mine sammlinger </Link>
+        <Link id='navoption'> Chat </Link>
+
+
+
+ 
+        
 
       </nav>
       <Routes>
@@ -58,6 +60,7 @@ function App() {
 
       </Routes>
     </Router>
+    
   );
 }
 export default App;
