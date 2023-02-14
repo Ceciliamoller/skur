@@ -3,11 +3,16 @@ import "../../App.js"
 import "./createTool.css"
 import { Box, Text, VStack, Button, Select } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react'
 
 
-export default function createAd() {
+export default function createTools() {
 
     return(
+<ChakraProvider>
+      <Box alignItems="center">
+     
+
 
         <VStack mt="50px" spacing="50px" mb="50px">
             <Text fontSize="40px"  mb="-20px"> Opprett en annonse</Text>
@@ -25,7 +30,7 @@ export default function createAd() {
             </Box>
             <Box>
                 <Text  fontSize="large" textColor="black" > Kategori </Text>
-                <Select w="500px" placeholder="Velg kategori">
+                <Select width="500px" placeholder="Velg kategori">
                     <option value="Hammer">
                         Hammer
                     </option>
@@ -40,22 +45,11 @@ export default function createAd() {
             <Button colorScheme='blue'> Opprett annonse
             </Button>
         </VStack>
+        </Box>
+
+</ChakraProvider>
 
     )
 }
 
 
-/* <form>
-            <fieldset>
-                <legend>Opprett annonse</legend>
-                    <div id="ad">
-                        <label id="tittel">Tittel</label><br/>
-                        <input type="text"></input><br/><br/>
-                        <label id="pris">Pris</label><br/>
-                        <input type="number"></input><label>kr</label><br/><br/>
-                        <label>Beskrivelse</label><br/>
-                        <input type="text" id="inputBeskrivelse"></input><br/><br/>
-                        <button type="submit">Opprett annonse</button> 
-                    </div>
-            </fieldset>
-        </form> */
