@@ -25,9 +25,11 @@ function App() {
     
     <Router>
       <nav>
-        <Link to="/"> Home </Link>
+        <Link to="/"> Hjem </Link>
         {/* Check if user is signed in, if not show login link*/}
 
+        
+        <Link to="/tool"> Opprett annonse </Link>
         {!user ? (
           <Link to="/login"> Login </Link>
 
@@ -37,7 +39,6 @@ function App() {
           )
 
         }
-        <Link to="/tool"> Tools </Link>
 
       </nav>
       <Routes>
