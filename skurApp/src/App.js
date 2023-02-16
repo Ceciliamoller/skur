@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./components/home/Home";
 import Login from "./components/login/Login";
-import myTools from "./components/myTools/myTools";
+import MyTools from "./components/myTools/MyTools";
 import { auth } from './config/firebaseConfig';
 import SignUp from './components/login/signUp';
 //import createAd from "./components/CreateAd/createAd";
@@ -40,8 +40,8 @@ function App() {
         
         <Link className='navoption' to="/tool"> Ny annonse </Link>
 
-        <Link className='navoption' to="/"> Mine annonser </Link>
-        <Link className='navoption' to="/"> Mine sammlinger </Link>
+        <Link className='navoption' to="/mineannonser"> Mine annonser </Link>
+        <Link className='navoption' to="/"> Mine samlinger </Link>
         <Link className='navoption'> Chat </Link>
 
 
@@ -54,6 +54,7 @@ function App() {
         <Route path="/" element={<Home user={user} />} />
 
         <Route path="/login" element={<Login />} />
+        <Route path="/mineannonser" element={<MyTools user={user}/>} />
 
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/tool" element={<CreateTools />} />

@@ -1,4 +1,4 @@
-import './Home.css';
+import './MyTools.css';
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Divider, ButtonGroup, Button, Box, Input } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
@@ -38,7 +38,7 @@ function buildCard(data, id) {
 }
 
 
-const Home = ({ user }) => {
+const MyTools = ({ user }) => {
 
     const [tools, setTools] = useState([]);
 
@@ -60,7 +60,7 @@ const Home = ({ user }) => {
     if (user) {
         return (
             <ChakraProvider>
-                <div className="homePage">
+                <div className="MyTools">
                     <Input id="searchBar" placeholder="Søk"></Input>
 
                     <div id="categories">
@@ -83,4 +83,4 @@ const Home = ({ user }) => {
         return <h1>Ikke logget inn</h1>
     }
 }
-export default Home;
+export default MyTools;
