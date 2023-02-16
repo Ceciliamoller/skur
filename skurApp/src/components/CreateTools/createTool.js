@@ -46,9 +46,9 @@ export default function CreateTools(user) {
             const docRef = await addDoc(collection(firestoreService, "tools"), {
                 toolName: newTitle,
                 price: newPrice,
-                category: newType,
+                type: newType,
                 description: newDescription,
-                type: toolCategory,
+                category: toolCategory,
                 creator: currentUser.uid
             });
             console.log("Document written with ID: ", docRef.id);
