@@ -48,7 +48,6 @@ const Home = ({ user }) => {
         onSnapshot(ref, (snapshot) => {
             const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
             setTools(newData);
-            console.log(tools, newData);
         })
     }, [])
 

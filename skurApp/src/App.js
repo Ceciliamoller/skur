@@ -33,15 +33,15 @@ function App() {
           {!currentUser ? (
             <Link className="navoption" id="buttonSignin" to="/login"><ChakraProvider><Button colorScheme="blue">Logg inn</Button></ChakraProvider></Link>
 
-          ) :
-            <ChakraProvider><Button className='navoption' colorScheme="blue" id="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button></ChakraProvider>
-
+          ) : [
+            <ChakraProvider><Button className='navoption' colorScheme="blue" id="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button></ChakraProvider>,
+            <Link className='navoption' to="/tool"> Ny annonse </Link>,
+            <Link className='navoption' to="/mineannonser"> Mine annonser </Link>,
+            <Link className='navoption' to="/"> Mine samlinger </Link>,
+            <Link className='navoption'> Chat </Link>
+          ]
           }
 
-          <Link className='navoption' to="/tool"> Ny annonse </Link>
-          <Link className='navoption' to="/mineannonser"> Mine annonser </Link>
-          <Link className='navoption' to="/"> Mine samlinger </Link>
-          <Link className='navoption'> Chat </Link>
 
 
         </nav >

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Divider, ButtonGroup, Button, Box, Input } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { collection, getDocs } from "firebase/firestore";
-import { firestoreService } from '../../config/firebaseConfig';
+import { firestoreService } from '../../services/firebaseConfig';
 
 function buildCard(data, id) {
     return (
@@ -39,6 +39,7 @@ function buildCard(data, id) {
 
 
 const MyTools = ({ user }) => {
+
 
     const [tools, setTools] = useState([]);
 
