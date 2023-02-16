@@ -1,21 +1,17 @@
-.homePage{
+#MyTools{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
 
 }
-#searchBar{
-    grid-column-end: span 3;
-    
 
-}
 #categories{
     margin-right: 10%;
     margin-left: 20%;
 }
-#tools{
-    grid-column-end: span 2;
+#tools, #request{
+    grid-column-end: span 1;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     margin-right: 10%;
 
 }
@@ -24,4 +20,9 @@
     margin: 15px;
 }
 
+.title {
+    margin-bottom: 5%;
+    color: black;
+    font-size: 24px;
+}
 

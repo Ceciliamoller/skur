@@ -1,42 +1,75 @@
-import './MyTools.css';
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Divider, ButtonGroup, Button, Box, Input } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { collection, getDocs } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
+import './MyTools.css';
 
 function buildCard(data, id) {
     return (
-        <Card key={id} maxW='xs' padding="5%">
-            <CardBody>
-                <Image
-                    src='http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
-                />
-                <Stack mt='6' spacing='3'>
-                    <Heading id="toolTitle" size='md'>{data.toolName}</Heading>
-                    <Text id="toolDescription">
-                        {data.toolDescription}
-                    </Text>
-                    <Text id="toolPrice" color='blue.600' fontSize='2xl'>
-                        {data.price} kr
-                    </Text>
-                </Stack>
-            </CardBody>
-            <Divider />
-            <CardFooter>
-                <ButtonGroup spacing='2'>
-                    <Button id="rentBtn" variant='solid' colorScheme='blue'>
-                        Se reservasjoner
-                    </Button>
-                    <Button id="contactBtn" variant='ghost' colorScheme='blue'>
-                        slett
-                    </Button>
-                </ButtonGroup>
-            </CardFooter>
-        </Card>
+            <Card key={id} maxW='xs' padding="5%">
+                <CardBody>
+                    <Image
+                        src='http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
+                    />
+                    <Stack mt='6' spacing='3'>
+                        <Heading id="toolTitle" size='md'>{data.toolName}</Heading>
+                        <Text id="toolDescription">
+                            {data.toolDescription}
+                        </Text>
+                        <Text id="toolPrice" color='blue.600' fontSize='2xl'>
+                            {data.price} kr
+                        </Text>
+                    </Stack>
+                </CardBody>
+                <Divider />
+                <CardFooter>
+                    <ButtonGroup spacing='2'>
+                        <Button id="rentBtn" variant='solid' colorScheme='blue'>
+                            Se reservasjoner
+                        </Button>
+                        <Button id="contactBtn" variant='ghost' colorScheme='blue'>
+                            slett
+                        </Button>
+                    </ButtonGroup>
+                </CardFooter>
+            </Card>
+            
     )
 }
 
+function buildCardRequest(data, id) {
+    return (
+            <Card key={id} maxW='xs' padding="5%">
+                <CardBody>
+                    <Image
+                        src='http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
+                    />
+                    <Stack mt='6' spacing='3'>
+                        <Heading id="toolTitle" size='md'>{data.toolName}</Heading>
+                        <Text id="toolDescription">
+                            {data.toolDescription}
+                        </Text>
+                        <Text id="toolPrice" color='blue.600' fontSize='2xl'>
+                            {data.price} kr
+                        </Text>
+                    </Stack>
+                </CardBody>
+                <Divider />
+                <CardFooter>
+                    <ButtonGroup spacing='2'>
+                        <Button id="rentBtn" variant='solid' colorScheme='blue'>
+                            Endre
+                        </Button>
+                        <Button id="contactBtn" variant='ghost' colorScheme='blue'>
+                            slett
+                        </Button>
+                    </ButtonGroup>
+                </CardFooter>
+            </Card>
+            
+    )
+}
 
 const MyTools = ({ user }) => {
 
@@ -61,13 +94,28 @@ const MyTools = ({ user }) => {
     if (user) {
         return (
             <ChakraProvider>
-                <div className="MyTools">
+                <div id="MyTools">
+                    <div>
+                    <h1 className='title'>Mine annonser</h1>
                     <div id="tools">
                         {
                             tools?.map((data, id) => (
                                 buildCard(data, id)
                             ))
                         }
+                    </div>
+                    </div>
+                    <div>
+                    <h1 className='title'>Mine ønsker</h1>
+                   
+                    <div id="request">
+                    {
+                            tools?.map((data, id) => (
+                                buildCardRequest(data, id)
+                            ))
+                        }
+                        
+                    </div>
                     </div>
                 </div>
             </ChakraProvider>
