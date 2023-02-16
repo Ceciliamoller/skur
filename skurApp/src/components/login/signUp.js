@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import './login.css';
 import { useNavigate } from 'react-router-dom'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { auth } from '../../config/firebaseConfig';
 import { Avatar, Box, Button, ChakraProvider, Flex, Heading, Stack } from "@chakra-ui/react";
 import { auth } from '../../services/firebaseConfig';
 import { collection, doc, setDoc } from "firebase/firestore";
