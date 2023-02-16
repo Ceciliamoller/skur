@@ -1,10 +1,9 @@
 import './App.css';
 import CreateTools from './components/CreateTools/createTool'
-import { ChakraProvider } from '@chakra-ui/react'
-import { Box } from '@chakra-ui/react'
+import { ChakraProvider, Button } from '@chakra-ui/react'
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Home from "./components/Home";
+import Home from "./components/home/Home";
 import Login from "./components/login/Login";
 import { auth } from './config/firebaseConfig';
 import SignUp from './components/login/signUp';
@@ -25,19 +24,29 @@ function App() {
     
     <Router>
       <nav>
-        <Link to="/"> Home </Link>
-        {/* Check if user is signed in, if not show login link*/}
-
+         <Link id='logo' to="/"><strong>⌂ skur</strong> </Link>
+        
         {!user ? (
-          <Link to="/login"> Login </Link>
+          <Link className="navoption" id="buttonSignin" to="/login"><ChakraProvider><Button colorScheme= "blue">Logg inn</Button></ChakraProvider></Link>
 
         ) :
           (
-            <button className="button signout" onClick={() => auth.signOut()}>Sign out</button>
+            <ChakraProvider><Button className='navoption' colorScheme= "blue" id="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button></ChakraProvider>
           )
 
         }
-        <Link to="/tool"> Tools </Link>
+
+        
+        <Link className='navoption' to="/tool"> Ny annonse </Link>
+
+        <Link className='navoption' to="/"> Mine annonser </Link>
+        <Link className='navoption' to="/"> Mine sammlinger </Link>
+        <Link className='navoption'> Chat </Link>
+
+
+
+ 
+        
 
       </nav>
       <Routes>
@@ -50,6 +59,7 @@ function App() {
 
       </Routes>
     </Router>
+    
   );
 }
 export default App;
