@@ -8,16 +8,20 @@ import {
     VStack,
     Button,
     Select,
-    FormControl,
     FormLabel,
     FormErrorMessage,
-    FormHelperText,
+    Checkbox,
+    CheckboxGroup,
+    Stack,
+    Radio,
+    RadioGroup,
 } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { collection, addDoc } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
+import { TriangleUpIcon } from '@chakra-ui/icons'
 
 
 export default function CreateTools(user) {
@@ -28,9 +32,11 @@ export default function CreateTools(user) {
 
 
     const [newTitle, setNewTitle] = useState("");
+    const [newInfoText, setNewInfoText] = useState("Ønsker å leie ut");
     const [newDescription, setNewDescription] = useState("");
     const [newPrice, setNewPrice] = useState("");
     const [toolCategory, setNewToolCategory] = useState("");
+    const [value, setValue] = useState("");
 
     /* Method for creating new tool in firebase */
     async function handleCreateTool(e) {
@@ -41,7 +47,7 @@ export default function CreateTools(user) {
         try {
             const docRef = await addDoc(collection(firestoreService, "tools"), {
                 toolName: newTitle,
-                price: parseInt(newPrice),
+                price: newPrice,
                 description: newDescription,
                 category: toolCategory,
                 creator: currentUser.uid
@@ -52,15 +58,22 @@ export default function CreateTools(user) {
         }
     }
 
+
     if (user) {
         return (
             <ChakraProvider>
                 <form onSubmit={(event) => handleCreateTool(event)}>
                     <Box alignItems="center">
                         <VStack mt="50px" spacing="50px" mb="50px">
-                            <Text fontSize="40px" mb="-20px"> Opprett en annonse</Text>
+                            <Text fontSize="40px" mb="-10px"> Opprett en annonse</Text>
                             <Box>
-                                <Text fontSize="large" textColor="black"> Tittel </Text>
+                                <RadioGroup onChange={setValue} value={value}>
+                                    <Stack direction='row'>
+                                        <Radio mr="20px" value='leie'> Ønsker å leie </Radio>
+                                        <Radio value='leieUt'> Ønsker å leie ut</Radio>
+                                    </Stack>
+                                </RadioGroup>
+                                <Text fontSize="large" textColor="black" mt="40px"> Tittel </Text>
                                 <Input required id="titleID" placeholder='Skriv inn tittel...' value={newTitle} w="500px" focusBorderColor='567189' onChange={(event) => setNewTitle(event.target.value)} />
                             </Box>
                             <Box>
@@ -69,7 +82,7 @@ export default function CreateTools(user) {
                             </Box>
                             <Box>
                                 <FormLabel> Pris </FormLabel>
-                                <Input required type="number" id="priceID" placeholder='Skriv inn en pris...' value={newPrice} w="500px" focusBorderColor='#567189' onChange={(event) => setNewPrice(event.target.value)} />
+                                <Input required tygpe="number" id="priceID" placeholder='Skriv inn en pris...' value={newPrice} w="500px" focusBorderColor='#567189' onChange={(event) => setNewPrice(event.target.value)} />
                             </Box>
                             <Box>
                                 <FormLabel> Kategori </FormLabel>
@@ -97,6 +110,7 @@ export default function CreateTools(user) {
         <ChakraProvider></ChakraProvider>
         return <h1>Ikke logget inn</h1>
     }
+
 }
 
 
