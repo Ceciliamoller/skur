@@ -22,7 +22,6 @@ function App() {
 
   return (
 
-    
     <Router>
       <nav>
         <Link to="/"> Home </Link>
@@ -30,15 +29,12 @@ function App() {
 
         {!user ? (
           <Link to="/login"> Login </Link>
-
         ) :
           (
             <button className="button signout" onClick={() => auth.signOut()}>Sign out</button>
           )
-
         }
         <Link to="/tool"> Tools </Link>
-
       </nav>
       <Routes>
         <Route path="/" element={<Home user={user} />} />
