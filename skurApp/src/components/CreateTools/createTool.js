@@ -23,7 +23,7 @@ export default function createTools() {
         try {
             const docRef = await addDoc(collection(firestoreService, "tools"), {
                 toolName: newTitle,
-                price: newPrice,
+                price: parseInt(newPrice),
                 description: newDescription,
                 category: toolCategory
             });

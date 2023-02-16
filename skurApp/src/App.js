@@ -12,7 +12,7 @@ import SignUp from './components/login/signUp';
 
 function App() {
   const [user, setUser] = useState(null);
-
+  //https://css-tricks.com/user-registration-authentication-firebase-react/#managing-user-state-with-react-context-api
   useEffect(() => {
     auth.onAuthStateChanged(user => {
       setUser(user);
@@ -22,13 +22,13 @@ function App() {
 
   return (
 
-    
+
     <Router>
       <nav>
         <Link to="/"> Hjem </Link>
         {/* Check if user is signed in, if not show login link*/}
 
-        
+
         <Link to="/tool"> Ny annonse </Link>
 
         <Link to="/"> Mine annonser </Link>
