@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../../config/firebaseConfig';
 import { Avatar, Box, Button, ChakraProvider, Flex, Heading, Stack } from "@chakra-ui/react";
+import { auth } from '../../services/firebaseConfig';
+import { collection, doc, setDoc } from "firebase/firestore";
+import { firestoreService } from '../../services/firebaseConfig';
 
 
 function SignUp() {
@@ -24,8 +27,16 @@ function SignUp() {
                     displayName: name,
                     email
                 })
-                navigate("/")
-                console.log(user);
+                try {
+                    await setDoc(doc(firestoreService, "users", user.uid), {
+                        name,
+                        email,
+                    });
+                    navigate("/")
+                } catch (e) {
+                    console.error("Error adding document: ", e);
+                }
+
             })
             .catch((error) => {
                 const errorCode = error.code;

@@ -2,8 +2,8 @@ import './Home.css';
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Divider, ButtonGroup, Button, Box, Input } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
-import { collection, getDocs } from "firebase/firestore";
-import { firestoreService } from '../../config/firebaseConfig';
+import { collection, onSnapshot } from "firebase/firestore";
+import { firestoreService } from '../../services/firebaseConfig';
 
 function buildCard(data, id) {
     return (
@@ -40,21 +40,16 @@ function buildCard(data, id) {
 
 const Home = ({ user }) => {
 
-    const [tools, setTools] = useState([]);
-
-    const fetchData = async () => {
-
-        await getDocs(collection(firestoreService, "tools"))
-            .then((querySnapshot) => {
-                const newData = querySnapshot.docs
-                    .map((doc) => ({ ...doc.data(), id: doc.id }));
-                setTools(newData);
-            })
-
-    }
+    var [tools, setTools] = useState([]);
 
     useEffect(() => {
-        fetchData();
+        const ref = collection(firestoreService, "tools")
+        //real time update
+        onSnapshot(ref, (snapshot) => {
+            const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+            setTools(newData);
+            console.log(tools, newData);
+        })
     }, [])
 
     if (user) {
