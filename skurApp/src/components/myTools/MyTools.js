@@ -46,7 +46,7 @@ function buildCard(data, id, type) {
 }
 
 
-const MyTools = ({ user }) => {
+const MyTools = () => {
 
     const { currentUser } = useAuthValue()
 
@@ -72,7 +72,7 @@ const MyTools = ({ user }) => {
         fetchData();
     }, [])
 
-    if (user) {
+    if (currentUser) {
         return (
             <ChakraProvider>
                 <div id="MyTools">
