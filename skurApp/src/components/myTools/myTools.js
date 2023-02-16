@@ -26,10 +26,10 @@ function buildCard(data, id) {
             <CardFooter>
                 <ButtonGroup spacing='2'>
                     <Button id="rentBtn" variant='solid' colorScheme='blue'>
-                        Lei nå
+                        Se reservasjoner
                     </Button>
                     <Button id="contactBtn" variant='ghost' colorScheme='blue'>
-                        Kontakt eier
+                        slett
                     </Button>
                 </ButtonGroup>
             </CardFooter>
@@ -62,11 +62,6 @@ const MyTools = ({ user }) => {
         return (
             <ChakraProvider>
                 <div className="MyTools">
-                    <Input id="searchBar" placeholder="Søk"></Input>
-
-                    <div id="categories">
-                        <p>Her kommer det kategori-velger senere</p>
-                    </div>
                     <div id="tools">
                         {
                             tools?.map((data, id) => (
