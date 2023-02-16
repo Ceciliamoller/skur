@@ -4,8 +4,9 @@ import { Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Di
 import { ChakraProvider } from '@chakra-ui/react'
 import { collection, onSnapshot } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
+import { useAuthValue } from '../../services/AuthService';
 
-function buildCard(data, id) {
+function buildCard(data, id, signedIn) {
     return (
         <Card key={id} maxW='xs' padding="5%">
             <CardBody>
@@ -25,10 +26,10 @@ function buildCard(data, id) {
             <Divider />
             <CardFooter>
                 <ButtonGroup spacing='2'>
-                    <Button id="rentBtn" variant='solid' colorScheme='blue'>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
                         Lei nå
                     </Button>
-                    <Button id="contactBtn" variant='ghost' colorScheme='blue'>
+                    <Button isDisabled={!signedIn} id="contactBtn" variant='ghost' colorScheme='blue'>
                         Kontakt eier
                     </Button>
                 </ButtonGroup>
@@ -38,9 +39,14 @@ function buildCard(data, id) {
 }
 
 
-const Home = ({ user }) => {
+const Home = () => {
+
+    const { currentUser } = useAuthValue()
 
     var [tools, setTools] = useState([]);
+    var [isSignedIn, setIsSignedIn] = useState(currentUser ? true : false);
+
+
 
     useEffect(() => {
         const ref = collection(firestoreService, "tools")
@@ -51,30 +57,26 @@ const Home = ({ user }) => {
         })
     }, [])
 
-    if (user) {
-        return (
-            <ChakraProvider>
-                <div className="homePage">
-                    <Input id="searchBar" placeholder="Søk"></Input>
+    return (
+        <ChakraProvider>
+            <div className="homePage">
+                <Input id="searchBar" placeholder="Søk"></Input>
 
-                    <div id="categories">
-                        <p>Her kommer det kategori-velger senere</p>
-                    </div>
-                    <div id="tools">
-                        {
-                            tools?.map((data, id) => (
-                                buildCard(data, id)
-                            ))
-                        }
-                    </div>
+                <div id="categories">
+                    <p>Her kommer det kategori-velger senere</p>
                 </div>
-            </ChakraProvider>
+                <div id="tools">
+                    {
+                        // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
+                        // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
+                        tools?.map((data, id) => (
+                            buildCard(data, id, isSignedIn)
+                        ))
+                    }
+                </div>
+            </div>
+        </ChakraProvider>
 
-        )
-    }
-    else {
-        <ChakraProvider></ChakraProvider>
-        return <h1>Ikke logget inn</h1>
-    }
+    )
 }
 export default Home;

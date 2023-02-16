@@ -46,7 +46,7 @@ function App() {
 
         </nav >
         <Routes>
-          <Route path="/" element={<Home user={currentUser} />} />
+          <Route path="/" element={<Home />} />
 
           <Route path="/login" element={<Login />} />
 
@@ -54,7 +54,7 @@ function App() {
           <Route path="/tool" element={<CreateTools />} />
 
           <Route path="/login" element={<Login />} />
-          <Route path="/mineannonser" element={<MyTools user={currentUser} />} />
+          <Route path="/mineannonser" element={<MyTools />} />
 
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/tool" element={<CreateTools />} />

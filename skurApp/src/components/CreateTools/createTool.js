@@ -23,7 +23,7 @@ import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
 
-export default function CreateTools(user) {
+export default function CreateTools() {
 
     const { currentUser } = useAuthValue()
 
@@ -54,7 +54,7 @@ export default function CreateTools(user) {
     }
 
 
-    if (user) {
+    if (currentUser) {
         return (
             <ChakraProvider>
                 <form onSubmit={(event) => handleCreateTool(event)}>
