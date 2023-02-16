@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import './login.css';
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth, signInWithGoogle } from '../../config/firebaseConfig';
 import { signInWithEmailAndPassword } from "firebase/auth";
-import SignUp from "./signUp.js";
+import { Avatar, Box, Button, ChakraProvider, Flex, Heading, Stack} from "@chakra-ui/react";
 
 
 
@@ -38,26 +38,30 @@ function Login() {
     }
 
     return (
+        
+        
+        
 
-
-        <div className="loginPage">
-
-            <div className="container" >
-                <div className="loginContainer">
-                    <h2>Logg inn:</h2>
-                    <button onClick={googleSignin} className="loginWithGoogleBtn">Logg inn med Google</button>
+        <ChakraProvider>
+            <Flex flexDirection="column" width="100wh" height="100vh" justifyContent="center" alignItems="center">
+                <Avatar bg="blue.600" />
+                <Heading color="blue.500">Logg inn</Heading>
+                
+                <Box className="container" minW={{ base: "90%", md: "468px" }}>
                     <form onSubmit={onLogin}>
-                        <h2>Eller logg inn med email</h2>
-                        <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-                        <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-                        <button type="submit" id="loginWithEmailBtn" >Logg inn</button>
+                        <Stack spacing={4} p="1rem">
+                            <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+                            <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                            <Button type="submit" id="loginWithEmailBtn" colorScheme="blue">Logg inn</Button>
+                        </Stack>
                     </form>
-                    <Link id="signUpHereBtn" to="/signUp">Har ikke bruker? Logg inn her</Link>
-
-
-                </div>
-            </div>
-        </div>
+                    <Stack spacing={4} p="1rem">
+                        <button onClick={googleSignin} className="loginWithGoogleBtn">Logg inn med Google</button>
+                        <Box>Har ikke bruker?<Link id="signUpHereBtn" to="/signUp">Opprett bruker her</Link></Box>
+                    </Stack>
+                </Box>
+            </Flex>
+        </ChakraProvider>
     );
 }
 

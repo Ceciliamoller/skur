@@ -9,31 +9,6 @@ input {
 	width: 100%;
     margin-left: 6px;;
 }
-#loginWithEmailBtn {
-	border-radius: 20px;
-	border: 1px solid rgb(72, 128, 199);
-	background-color: rgb(72, 128, 199);
-	color: #FFFFFF;
-	font-size: 12px;
-	font-weight: bold;
-	padding: 12px 45px;
-	letter-spacing: 1px;
-	text-transform: uppercase;
-	transition: transform 80ms ease-in;
-}
-
-#loginWithEmailBtn:active {
-	transform: scale(0.95);
-}
-
-#loginWithEmailBtn:focus {
-	outline: none;
-}
-
-#loginWithEmailBtn.ghost {
-	background-color: transparent;
-	border-color: #FFFFFF;
-}
 
 #signUpHereBtn{
 	outline: none;
@@ -45,7 +20,7 @@ input {
 	border: none;
 
 }
-
+ 
 .loginPage {
 	width: 100vw;
   	height: calc(100vh - 80px);
