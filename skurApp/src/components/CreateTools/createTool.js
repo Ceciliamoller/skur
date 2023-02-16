@@ -15,7 +15,7 @@ import { Box,
 import { Input } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { collection, addDoc } from "firebase/firestore";
-import { firestoreService } from '../../config/firebaseConfig';
+import { firestoreService } from '../../services/firebaseConfig';
 
 
 export default function createTools() {
@@ -38,7 +38,7 @@ export default function createTools() {
         try {
             const docRef = await addDoc(collection(firestoreService, "tools"), {
                 toolName: newTitle,
-                price: newPrice,
+                price: parseInt(newPrice),
                 description: newDescription,
                 category: toolCategory
             });
