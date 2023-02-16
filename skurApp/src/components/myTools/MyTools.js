@@ -6,91 +6,68 @@ import { firestoreService } from '../../services/firebaseConfig';
 import './MyTools.css';
 import { useAuthValue } from '../../services/AuthService';
 
-function buildCard(data, id) {
+function buildCard(data, id, type) {
     return (
-            <Card key={id} maxW='xs' padding="5%">
-                <CardBody>
-                    <Image
-                        src='http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
-                    />
-                    <Stack mt='6' spacing='3'>
-                        <Heading id="toolTitle" size='md'>{data.toolName}</Heading>
-                        <Text id="toolDescription">
-                            {data.toolDescription}
-                        </Text>
-                        <Text id="toolPrice" color='blue.600' fontSize='2xl'>
-                            {data.price} kr
-                        </Text>
-                    </Stack>
-                </CardBody>
-                <Divider />
-                <CardFooter>
-                    <ButtonGroup spacing='2'>
-                        <Button id="rentBtn" variant='solid' colorScheme='blue'>
-                            Se reservasjoner
-                        </Button>
+        <Card key={id} maxW='xs' padding="5%">
+            <CardBody>
+                <Image
+                    src='http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
+                />
+                <Stack mt='6' spacing='3'>
+                    <Heading id="toolTitle" size='md'>{data.toolName}</Heading>
+                    <Text id="toolDescription">
+                        {data.toolDescription}
+                    </Text>
+                    <Text id="toolPrice" color='blue.600' fontSize='2xl'>
+                        {data.price} kr
+                    </Text>
+                </Stack>
+            </CardBody>
+            <Divider />
+            <CardFooter>
+                <ButtonGroup spacing='2'>
+                    <Button id="rentBtn" variant='solid' colorScheme='blue'>
+                        Se reservasjoner
+                    </Button>
+
+                    {type === "share" ? (
                         <Button id="contactBtn" variant='ghost' colorScheme='blue'>
-                            slett
+                            Slett
                         </Button>
-                    </ButtonGroup>
-                </CardFooter>
-            </Card>
-            
+                    ) : <Button id="contactBtn" variant='ghost' colorScheme='blue'>
+                        Endre
+                    </Button>}
+
+                </ButtonGroup>
+            </CardFooter>
+        </Card>
+
     )
 }
 
-function buildCardRequest(data, id) {
-    return (
-            <Card key={id} maxW='xs' padding="5%">
-                <CardBody>
-                    <Image
-                        src='http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
-                    />
-                    <Stack mt='6' spacing='3'>
-                        <Heading id="toolTitle" size='md'>{data.toolName}</Heading>
-                        <Text id="toolDescription">
-                            {data.toolDescription}
-                        </Text>
-                        <Text id="toolPrice" color='blue.600' fontSize='2xl'>
-                            {data.price} kr
-                        </Text>
-                    </Stack>
-                </CardBody>
-                <Divider />
-                <CardFooter>
-                    <ButtonGroup spacing='2'>
-                        <Button id="rentBtn" variant='solid' colorScheme='blue'>
-                            Endre
-                        </Button>
-                        <Button id="contactBtn" variant='ghost' colorScheme='blue'>
-                            slett
-                        </Button>
-                    </ButtonGroup>
-                </CardFooter>
-            </Card>
-            
-    )
-}
 
 const MyTools = ({ user }) => {
 
     const { currentUser } = useAuthValue()
 
-    console.log('CURRENTUSER: ', currentUser);
 
-
-    const [tools, setTools] = useState([]);
+    const [requestTool, setRequestTools] = useState([]);
+    const [shareTool, setShareTools] = useState([]);
 
     const fetchData = async () => {
 
         const ref = collection(firestoreService, "tools")
-        await getDocs(query(ref, where("creator", "==", currentUser.uid))).then((querySnapshot) => {
+        await getDocs(query(ref, where("creator", "==", currentUser.uid), where("type", "==", "request"))).then((querySnapshot) => {
             const newData = querySnapshot.docs
                 .map((doc) => ({ ...doc.data(), id: doc.id }));
-            setTools(newData);
+            setRequestTools(newData);
         })
 
-        await getDocs
+        await getDocs(query(ref, where("creator", "==", currentUser.uid), where("type", "==", "share"))).then((querySnapshot) => {
+            const newData = querySnapshot.docs
+                .map((doc) => ({ ...doc.data(), id: doc.id }));
+            setShareTools(newData);
+        })
 
 
 
@@ -105,26 +82,25 @@ const MyTools = ({ user }) => {
             <ChakraProvider>
                 <div id="MyTools">
                     <div>
-                    <h1 className='title'>Mine annonser</h1>
-                    <div id="tools">
-                        {
-                            tools?.map((data, id) => (
-                                buildCard(data, id)
-                            ))
-                        }
-                    </div>
+                        <h1 className='title'>Mine annonser</h1>
+                        <div id="tools">
+                            {
+                                shareTool?.map((data, id) => (
+                                    buildCard(data, id, "share")
+                                ))
+                            }
+                        </div>
                     </div>
                     <div>
-                    <h1 className='title'>Mine ønsker</h1>
-                   
-                    <div id="request">
-                    {
-                            tools?.map((data, id) => (
-                                buildCardRequest(data, id)
-                            ))
-                        }
-                        
-                    </div>
+                        <h1 className='title'>Mine ønsker</h1>
+                        <div id="request">
+                            {
+                                requestTool?.map((data, id) => (
+                                    buildCard(data, id, "request")
+                                ))
+                            }
+
+                        </div>
                     </div>
                 </div>
             </ChakraProvider>
