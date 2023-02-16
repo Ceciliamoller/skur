@@ -45,16 +45,11 @@ function App() {
 
         </nav >
         <Routes>
-          <Route path="/" element={<Home user={currentUser} />} />
-
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/tool" element={<CreateTools />} />
-
-          <Route path="/mineannonser" element={<MyTools user={currentUser} />} />
-
-
+          <Route path="/mineannonser" element={<MyTools />} />
         </Routes>
       </AuthService>
     </Router >

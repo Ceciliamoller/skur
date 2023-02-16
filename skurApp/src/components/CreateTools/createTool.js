@@ -21,12 +21,9 @@ import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
 
-export default function CreateTools(user) {
+export default function CreateTools() {
 
     const { currentUser } = useAuthValue()
-    console.log('CURRENTUSER', currentUser.uid);
-
-
 
     const [newTitle, setNewTitle] = useState("");
     const [newType, setType] = useState("share");
@@ -36,7 +33,6 @@ export default function CreateTools(user) {
 
     /* Method for creating new tool in firebase */
     async function handleCreateTool(e) {
-
 
         e.preventDefault();
 
@@ -56,7 +52,7 @@ export default function CreateTools(user) {
     }
 
 
-    if (user) {
+    if (currentUser) {
         return (
             <ChakraProvider>
                 <form onSubmit={(event) => handleCreateTool(event)}>
