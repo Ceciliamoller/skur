@@ -21,7 +21,6 @@ function App() {
 
   return (
 
-    
     <Router>
       <nav>
          <Link id='logo' to="/"><strong>⌂ skur</strong> </Link>
@@ -33,7 +32,6 @@ function App() {
           (
             <ChakraProvider><Button className='navoption' colorScheme= "blue" id="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button></ChakraProvider>
           )
-
         }
 
         
