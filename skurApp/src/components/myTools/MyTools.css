@@ -1,6 +1,7 @@
 #MyTools{
     display: grid;
     grid-template-columns: 1fr 1fr;
+    margin: 3%;
 
 }
 
@@ -8,7 +9,7 @@
     margin-right: 10%;
     margin-left: 20%;
 }
-#tools, #request{
+#toolsIown, #request{
     grid-column-end: span 1;
     display: grid;
     grid-template-columns: 1fr 1fr;

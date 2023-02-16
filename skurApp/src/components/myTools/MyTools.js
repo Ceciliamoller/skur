@@ -82,8 +82,8 @@ const MyTools = ({ user }) => {
             <ChakraProvider>
                 <div id="MyTools">
                     <div>
-                        <h1 className='title'>Mine annonser</h1>
-                        <div id="tools">
+                        <h1 className='title'>Til utleie</h1>
+                        <div id="toolsIown">
                             {
                                 shareTool?.map((data, id) => (
                                     buildCard(data, id, "share")
@@ -92,7 +92,7 @@ const MyTools = ({ user }) => {
                         </div>
                     </div>
                     <div>
-                        <h1 className='title'>Mine ønsker</h1>
+                        <h1 className='title'>Ønskes leid</h1>
                         <div id="request">
                             {
                                 requestTool?.map((data, id) => (

@@ -38,7 +38,6 @@ function App() {
             <Link className='navoption' to="/tool"> Ny annonse </Link>,
             <Link className='navoption' to="/mineannonser"> Mine annonser </Link>,
             <Link className='navoption' to="/"> Mine samlinger </Link>,
-            <Link className='navoption'> Chat </Link>
           ]
           }
 
@@ -53,11 +52,8 @@ function App() {
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/tool" element={<CreateTools />} />
 
-          <Route path="/login" element={<Login />} />
           <Route path="/mineannonser" element={<MyTools user={currentUser} />} />
 
-          <Route path="/signUp" element={<SignUp />} />
-          <Route path="/tool" element={<CreateTools />} />
 
         </Routes>
       </AuthService>
