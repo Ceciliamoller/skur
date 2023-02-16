@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import './login.css';
 import { Link, useNavigate } from "react-router-dom";
-import { auth, signInWithGoogle } from '../../config/firebaseConfig';
+import { auth, signInWithGoogle } from '../../services/firebaseConfig';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Avatar, Box, Button, ChakraProvider, Flex, Heading, Stack} from "@chakra-ui/react";
 
