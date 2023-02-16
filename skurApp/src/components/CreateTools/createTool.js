@@ -6,7 +6,7 @@ import { Box, Text, VStack, Button, Select } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { collection, addDoc } from "firebase/firestore";
-import { firestoreService } from '../../config/firebaseConfig';
+import { firestoreService } from '../../services/firebaseConfig';
 
 
 export default function createTools() {
