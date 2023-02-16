@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Divider, ButtonGroup, Button, Box, Input } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, query, where } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import './MyTools.css';
 import { useAuthValue } from '../../services/AuthService';
@@ -57,21 +57,17 @@ const MyTools = ({ user }) => {
     const fetchData = async () => {
 
         const ref = collection(firestoreService, "tools")
-        await getDocs(query(ref, where("creator", "==", currentUser.uid), where("type", "==", "request"))).then((querySnapshot) => {
-            const newData = querySnapshot.docs
-                .map((doc) => ({ ...doc.data(), id: doc.id }));
+
+        onSnapshot(query(ref, where("creator", "==", currentUser.uid), where("type", "==", "request")), (snapshot) => {
+            const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
             setRequestTools(newData);
         })
-
-        await getDocs(query(ref, where("creator", "==", currentUser.uid), where("type", "==", "share"))).then((querySnapshot) => {
-            const newData = querySnapshot.docs
-                .map((doc) => ({ ...doc.data(), id: doc.id }));
+        onSnapshot(query(ref, where("creator", "==", currentUser.uid), where("type", "==", "share")), (snapshot) => {
+            const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
             setShareTools(newData);
         })
-
-
-
     }
+
 
     useEffect(() => {
         fetchData();
