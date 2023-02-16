@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Divider, ButtonGroup, Button, Box, Input } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import './MyTools.css';
+import { useAuthValue } from '../../services/AuthService';
 
 function buildCard(data, id) {
     return (
@@ -73,17 +74,25 @@ function buildCardRequest(data, id) {
 
 const MyTools = ({ user }) => {
 
+    const { currentUser } = useAuthValue()
+
+    console.log('CURRENTUSER: ', currentUser);
+
 
     const [tools, setTools] = useState([]);
 
     const fetchData = async () => {
 
-        await getDocs(collection(firestoreService, "tools"))
-            .then((querySnapshot) => {
-                const newData = querySnapshot.docs
-                    .map((doc) => ({ ...doc.data(), id: doc.id }));
-                setTools(newData);
-            })
+        const ref = collection(firestoreService, "tools")
+        await getDocs(query(ref, where("creator", "==", currentUser.uid))).then((querySnapshot) => {
+            const newData = querySnapshot.docs
+                .map((doc) => ({ ...doc.data(), id: doc.id }));
+            setTools(newData);
+        })
+
+        await getDocs
+
+
 
     }
 
