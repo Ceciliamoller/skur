@@ -21,7 +21,6 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { collection, addDoc } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
-import { TriangleUpIcon } from '@chakra-ui/icons'
 
 
 export default function CreateTools(user) {
@@ -32,11 +31,10 @@ export default function CreateTools(user) {
 
 
     const [newTitle, setNewTitle] = useState("");
-    const [newInfoText, setNewInfoText] = useState("Ønsker å leie ut");
+    const [newType, setType] = useState("share");
     const [newDescription, setNewDescription] = useState("");
     const [newPrice, setNewPrice] = useState("");
     const [toolCategory, setNewToolCategory] = useState("");
-    const [value, setValue] = useState("");
 
     /* Method for creating new tool in firebase */
     async function handleCreateTool(e) {
@@ -48,8 +46,9 @@ export default function CreateTools(user) {
             const docRef = await addDoc(collection(firestoreService, "tools"), {
                 toolName: newTitle,
                 price: newPrice,
+                category: newType,
                 description: newDescription,
-                category: toolCategory,
+                type: toolCategory,
                 creator: currentUser.uid
             });
             console.log("Document written with ID: ", docRef.id);
@@ -67,10 +66,10 @@ export default function CreateTools(user) {
                         <VStack mt="50px" spacing="50px" mb="50px">
                             <Text fontSize="40px" mb="-10px"> Opprett en annonse</Text>
                             <Box>
-                                <RadioGroup onChange={setValue} value={value}>
+                                <RadioGroup onChange={setType} value={newType}>
                                     <Stack direction='row'>
-                                        <Radio mr="20px" value='leie'> Ønsker å leie </Radio>
-                                        <Radio value='leieUt'> Ønsker å leie ut</Radio>
+                                        <Radio value='share'> Ønsker å leie ut</Radio>
+                                        <Radio mr="20px" value='request'> Ønsker å leie </Radio>
                                     </Stack>
                                 </RadioGroup>
                                 <Text fontSize="large" textColor="black" mt="40px"> Tittel </Text>
