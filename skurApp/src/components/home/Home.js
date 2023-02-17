@@ -1,6 +1,12 @@
 import './Home.css';
 import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Divider, ButtonGroup, Button, Box, Input } from '@chakra-ui/react'
+import { Card,
+    CardHeader,
+    CardBody,
+    CardFooter,
+    Image,
+    Stack,
+    Heading, Text, Divider, ButtonGroup, Button, Box, Input, Select, VStack} from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { collection, onSnapshot } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
@@ -41,6 +47,8 @@ function buildCard(data, id) {
 const Home = ({ user }) => {
 
     var [tools, setTools] = useState([]);
+    const [toolCategory, setToolCategory] = useState("");
+    const [priceCategory, setPriceCategory] = useState("");
 
     useEffect(() => {
         const ref = collection(firestoreService, "tools")
@@ -56,18 +64,41 @@ const Home = ({ user }) => {
         return (
             <ChakraProvider>
                 <div className="homePage">
-                    <Input id="searchBar" placeholder="Søk"></Input>
-
-                    <div id="categories">
-                        <p>Her kommer det kategori-velger senere</p>
-                    </div>
-                    <div id="tools">
+                    <Box id="categories">
+                        <VStack  mt="50px" spacing="20px"> 
+                            <Text fontSize="xl"> Filtrer søk </Text>
+                             <Select required width="200px" placeholder="Velg kategori" value={toolCategory} onChange={(event) => setToolCategory(event.target.value)}>
+                                <option value="Hammer">
+                                    Hammer
+                                </option>
+                                <option value="Skrutrekker">
+                                    Skrutrekker
+                                </option>
+                                <option value="Sag">
+                                    Sag
+                                </option>
+                            </Select>  
+                            <Select required width="200px" placeholder="Velg pris" value={priceCategory} onChange={(event) => setPriceCategory(event.target.value)}>
+                                <option value="<100">
+                                    Under 100 kr
+                                </option>
+                                <option value="100-300">
+                                    100-300 kr
+                                </option>
+                                <option value=">300">
+                                    Over 300 kr
+                                </option>
+                            </Select>  
+                        </VStack>
+                      
+                    </Box>
+                    <Box id="tools" mt="50px">
                         {
                             tools?.map((data, id) => (
                                 buildCard(data, id)
                             ))
                         }
-                    </div>
+                    </Box>
                 </div>
             </ChakraProvider>
 
