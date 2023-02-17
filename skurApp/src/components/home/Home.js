@@ -1,6 +1,6 @@
 import './Home.css';
 import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Divider, ButtonGroup, Button, Box, Input } from '@chakra-ui/react'
+import { Card, CardBody, CardFooter, Image, Stack, Heading, Text, Divider, ButtonGroup, Button } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { collection, onSnapshot } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
@@ -60,8 +60,7 @@ const Home = () => {
     return (
         <ChakraProvider>
             <div className="homePage">
-                <Input id="searchBar" placeholder="Søk"></Input>
-
+                
                 <div id="categories">
                     <p>Her kommer det kategori-velger senere</p>
                 </div>
