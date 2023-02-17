@@ -43,7 +43,8 @@ export default function CreateTools() {
                 type: newType,
                 description: newDescription,
                 category: toolCategory,
-                creator: currentUser.uid
+                creator: currentUser.uid,
+                creatorEmail: currentUser.email,
             });
             console.log("Document written with ID: ", docRef.id);
         } catch (e) {
