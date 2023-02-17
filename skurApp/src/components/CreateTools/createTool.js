@@ -75,7 +75,7 @@ export default function CreateTools() {
                             </Box>
                             <Box>
                                 <FormLabel> Pris </FormLabel>
-                                <Input required type="number" id="priceID" placeholder='Skriv inn en pris...' value={newPrice} w="500px" focusBorderColor='#567189' onChange={(event) => setNewPrice(event.target.value)} />
+                                <Input required type="number" id="priceID" placeholder='Skriv inn en pris...' value={newPrice} min="0" w="500px" focusBorderColor='#567189' onChange={(event) => setNewPrice(event.target.value)} />
                             </Box>
                             <Box>
                                 <FormLabel> Kategori </FormLabel>
