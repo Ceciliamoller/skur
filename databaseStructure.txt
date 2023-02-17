@@ -4,6 +4,7 @@
     price: int
     description: string
     creator: string (uid)
+    cretaorEmail: string
     category: string
     type: string ("request" | "share")
     availible: bool
