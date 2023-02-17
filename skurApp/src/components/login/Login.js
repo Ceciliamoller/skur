@@ -12,6 +12,7 @@ function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorText, setErrorText] = useState('');
 
 
 
@@ -26,9 +27,10 @@ function Login() {
             })
             .catch((error) => {
                 const errorCode = error.code;
-                const errorMessage = error.message;
+                const errorMessage = String(errorCode).replace('auth/', '');
                 // TODO: add responsetext to user
-                console.log(errorCode, errorMessage)
+                setErrorText(errorMessage)
+                console.log(errorMessage)
             });
 
     }
@@ -52,6 +54,7 @@ function Login() {
                         <Stack spacing={4} p="1rem">
                             <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
                             <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                            <h3 style={{color: 'red'}} >{errorText}</h3>
                             <Button type="submit" id="loginWithEmailBtn" colorScheme="blue">Logg inn</Button>
                         </Stack>
                     </form>
