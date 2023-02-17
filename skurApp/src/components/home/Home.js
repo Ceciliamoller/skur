@@ -58,7 +58,14 @@ const Home = () => {
 
 
 
+
+
     useEffect(() => {
+
+        if (currentUser) {
+            setIsSignedIn(true)
+        }
+
         let ref = collection(firestoreService, "tools")
         //real time update
         console.log('Toolcategory: ' + toolCategory);
@@ -75,7 +82,7 @@ const Home = () => {
         })
 
         return unsub
-    }, [toolCategory])
+    }, [toolCategory, isSignedIn])
 
     if (currentUser) {
         return (
