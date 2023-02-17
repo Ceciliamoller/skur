@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./components/home/Home";
 import Login from "./components/login/Login";
+import MyTools from "./components/myTools/MyTools";
 import { auth } from './services/firebaseConfig';
 import SignUp from './components/login/signUp';
 //import createAd from "./components/CreateAd/createAd";
@@ -32,30 +33,26 @@ function App() {
           {!currentUser ? (
             <Link className="navoption" id="buttonSignin" to="/login"><ChakraProvider><Button colorScheme="blue">Logg inn</Button></ChakraProvider></Link>
 
-          ) :
-            <ChakraProvider><Button className='navoption' colorScheme="blue" id="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button></ChakraProvider>
-
+          ) : [
+            <ChakraProvider><Button className='navoption' colorScheme="blue" id="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button></ChakraProvider>,
+            <Link className='navoption' to="/tool"> Ny annonse </Link>,
+            <Link className='navoption' to="/mineannonser"> Mine annonser </Link>,
+            <Link className='navoption' to="/"> Mine samlinger </Link>,
+          ]
           }
 
-          <Link className='navoption' to="/tool"> Ny annonse </Link>
-
-          <Link className='navoption' to="/"> Mine annonser </Link>
-          <Link className='navoption' to="/"> Mine samlinger </Link>
-          <Link className='navoption'> Chat </Link>
 
 
-        </nav>
+        </nav >
         <Routes>
-          <Route path="/" element={<Home user={currentUser} />} />
-
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/tool" element={<CreateTools />} />
-
+          <Route path="/mineannonser" element={<MyTools />} />
         </Routes>
       </AuthService>
-    </Router>
+    </Router >
 
   );
 }

@@ -1,17 +1,17 @@
 import './Home.css';
 import React, { useState, useEffect } from 'react';
 import { Card,
-    CardHeader,
     CardBody,
     CardFooter,
     Image,
     Stack,
-    Heading, Text, Divider, ButtonGroup, Button, Box, Input, Select, VStack} from '@chakra-ui/react'
+    Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack} from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { collection, onSnapshot } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
+import { useAuthValue } from '../../services/AuthService';
 
-function buildCard(data, id) {
+function buildCard(data, id, signedIn) {
     return (
         <Card key={id} maxW='xs' padding="5%">
             <CardBody>
@@ -31,10 +31,10 @@ function buildCard(data, id) {
             <Divider />
             <CardFooter>
                 <ButtonGroup spacing='2'>
-                    <Button id="rentBtn" variant='solid' colorScheme='blue'>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
                         Lei nå
                     </Button>
-                    <Button id="contactBtn" variant='ghost' colorScheme='blue'>
+                    <Button isDisabled={!signedIn} id="contactBtn" variant='ghost' colorScheme='blue'>
                         Kontakt eier
                     </Button>
                 </ButtonGroup>
@@ -44,11 +44,16 @@ function buildCard(data, id) {
 }
 
 
-const Home = ({ user }) => {
+const Home = () => {
 
-    var [tools, setTools] = useState([]);
+    const { currentUser } = useAuthValue()
+
+    const [tools, setTools] = useState([]);
     const [toolCategory, setToolCategory] = useState("");
     const [priceCategory, setPriceCategory] = useState("");
+    const [isSignedIn, setIsSignedIn] = useState(currentUser ? true : false);
+
+
 
     useEffect(() => {
         const ref = collection(firestoreService, "tools")
@@ -56,11 +61,10 @@ const Home = ({ user }) => {
         onSnapshot(ref, (snapshot) => {
             const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
             setTools(newData);
-            console.log(tools, newData);
         })
     }, [])
 
-    if (user) {
+    if (currentUser) {
         return (
             <ChakraProvider>
                 <div className="homePage">
@@ -94,19 +98,16 @@ const Home = ({ user }) => {
                     </Box>
                     <Box id="tools" mt="50px">
                         {
+                            // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
+                        // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
                             tools?.map((data, id) => (
-                                buildCard(data, id)
+                                buildCard(data, id, isSignedIn)
                             ))
                         }
                     </Box>
-                </div>
+                    </div>
             </ChakraProvider>
-
-        )
-    }
-    else {
-        <ChakraProvider></ChakraProvider>
-        return <h1>Ikke logget inn</h1>
+         )
     }
 }
 export default Home;
