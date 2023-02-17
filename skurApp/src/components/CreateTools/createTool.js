@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState } from 'react'
+import React, { useState} from 'react'
 import "../../App.js"
 import "./createTool.css"
 import {
@@ -19,11 +19,14 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { collection, addDoc } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
+import { useNavigate } from "react-router-dom";
+
 
 
 export default function CreateTools() {
 
-    const { currentUser } = useAuthValue()
+    const { currentUser } = useAuthValue();
+    const navigate = useNavigate();
 
     const [newTitle, setNewTitle] = useState("");
     const [newType, setType] = useState("share");
@@ -45,7 +48,8 @@ export default function CreateTools() {
                 category: toolCategory,
                 creator: currentUser.uid
             });
-            console.log("Document written with ID: ", docRef.id);
+            navigate('/mineannonser');
+            console.log("Document written with ID: ", docRef.id); 
         } catch (e) {
             console.error("Error adding document: ", e);
         }
@@ -92,8 +96,8 @@ export default function CreateTools() {
                                 </Select>
                             </Box>
                             <FormErrorMessage> Alle felter må fylles inn før anonsen kan opprettes. </FormErrorMessage>
-                            <Button colorScheme='blue' type='submit'> Opprett annonse
-                            </Button>
+                                <Button colorScheme='blue' type='submit'> Opprett annonse </Button>
+
                         </VStack>
                     </Box>
                 </form>
