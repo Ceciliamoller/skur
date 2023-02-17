@@ -10,7 +10,7 @@ import {
     Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack
 } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
@@ -52,20 +52,30 @@ const Home = () => {
     const { currentUser } = useAuthValue()
 
     const [tools, setTools] = useState([]);
-    const [toolCategory, setToolCategory] = useState("");
-    const [priceCategory, setPriceCategory] = useState("");
+    const [toolCategory, setToolCategory] = useState(null);
+    const [sortBy, setSortBy] = useState();
     const [isSignedIn, setIsSignedIn] = useState(currentUser ? true : false);
 
 
 
     useEffect(() => {
-        const ref = collection(firestoreService, "tools")
+        let ref = collection(firestoreService, "tools")
         //real time update
-        onSnapshot(ref, (snapshot) => {
+        console.log('Toolcategory: ' + toolCategory);
+        console.log('PriceCategory: ' + sortBy);
+
+        if (toolCategory) {
+            ref = query(ref, where('category', '==', toolCategory))
+        }
+
+
+        const unsub = onSnapshot(ref, (snapshot) => {
             const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
             setTools(newData);
         })
-    }, [])
+
+        return unsub
+    }, [toolCategory])
 
     if (currentUser) {
         return (
@@ -85,17 +95,15 @@ const Home = () => {
                                     Sag
                                 </option>
                             </Select>
-                            <Select required width="200px" placeholder="Velg pris" value={priceCategory} onChange={(event) => setPriceCategory(event.target.value)}>
-                                <option value="<100">
-                                    Under 100 kr
+                            {/* <Select required width="200px" placeholder="Sorter etter" value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
+                                <option value="desc">
+                                    Synkende pris
                                 </option>
-                                <option value="100-300">
-                                    100-300 kr
+                                <option value="asc">
+                                    Stigende pris
                                 </option>
-                                <option value=">300">
-                                    Over 300 kr
-                                </option>
-                            </Select>
+
+                            </Select> */}
                         </VStack>
 
                     </Box>
