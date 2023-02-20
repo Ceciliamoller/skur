@@ -6,7 +6,6 @@
 #searchBar{
     grid-column-end: span 3;
     
-
 }
 #categories{
     margin-right: 10%;
@@ -23,5 +22,6 @@
 .chakra-card {
     margin: 15px;
 }
+
 
 
