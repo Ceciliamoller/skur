@@ -17,6 +17,9 @@ function App() {
 
   //https://css-tricks.com/user-registration-authentication-firebase-react/#managing-user-state-with-react-context-api
   useEffect(() => {
+
+    document.title = 'Skur';
+
     auth.onAuthStateChanged(user => {
       setCurrentUser(user)
     })

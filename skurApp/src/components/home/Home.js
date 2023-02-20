@@ -45,7 +45,7 @@ function buildCard(data, id, signedIn) {
                 <Stack mt='6' spacing='3'>
                     <Heading id="toolTitle" size='md'>{data.toolName}</Heading>
                     <Text id="toolDescription">
-                        Kategori: {data.category}
+                        <b>Kategori:</b> {data.category}
                     </Text>
                     <Text id="toolDescription">
                         {data.description}
@@ -61,10 +61,9 @@ function buildCard(data, id, signedIn) {
                     <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
                         {buttonText}
                     </Button>
-                    <Link as={Button} isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
+                    <Link isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
                         Kontakt eier
                     </Link>
-
                 </ButtonGroup >
             </CardFooter >
         </Card >
