@@ -7,6 +7,7 @@ import {
     Image,
     Stack,
     Link,
+
     Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack
 } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
@@ -15,16 +16,39 @@ import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
 function buildCard(data, id, signedIn) {
+
+    var imageLink = ("");
+    if (data.category === "Hammer") {
+        imageLink = 'http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
+    }
+    else if (data.category === "Skrutrekker") {
+        imageLink = 'https://cdn.pixabay.com/photo/2012/04/13/21/06/screwdriver-33634__480.png'
+    }
+    else {
+        imageLink = 'https://m.media-amazon.com/images/I/71ecpTA4rwL.jpg'
+    }
+
+    var buttonText = ("");
+    if (data.type === "request") {
+        buttonText = "Lei ut nå"
+    }
+    else {
+        buttonText = "Lei nå"
+    }
+
     return (
         <Card key={id} maxW='xs' padding="5%">
             <CardBody>
                 <Image
-                    src='http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
+                    src={imageLink}
                 />
                 <Stack mt='6' spacing='3'>
                     <Heading id="toolTitle" size='md'>{data.toolName}</Heading>
                     <Text id="toolDescription">
-                        {data.toolDescription}
+                        Kategori: {data.category}
+                    </Text>
+                    <Text id="toolDescription">
+                        {data.description}
                     </Text>
                     <Text id="toolPrice" color='blue.600' fontSize='2xl'>
                         {data.price} kr
@@ -35,14 +59,15 @@ function buildCard(data, id, signedIn) {
             <CardFooter>
                 <ButtonGroup spacing='2'>
                     <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
-                        Lei nå
+                        {buttonText}
                     </Button>
                     <Link isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
                         Kontakt eier
                     </Link>
-                </ButtonGroup>
-            </CardFooter>
-        </Card>
+
+                </ButtonGroup >
+            </CardFooter >
+        </Card >
     )
 }
 
@@ -55,6 +80,7 @@ const Home = () => {
     const [toolCategory, setToolCategory] = useState(null);
     const [sortBy, setSortBy] = useState();
     const [isSignedIn, setIsSignedIn] = useState(currentUser ? true : false);
+    const [requestOrShare, setrequestOrShare] = useState("");
 
 
 
@@ -102,18 +128,30 @@ const Home = () => {
                                     Sag
                                 </option>
                             </Select>
-                            {/* <Select required width="200px" placeholder="Sorter etter" value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
-                                <option value="desc">
-                                    Synkende pris
+
+                            {/*       <Select required width="200px" placeholder="Velg pris" value={priceCategory} onChange={(event) => setPriceCategory(event.target.value)}>
+                                <option value="<100">
+                                    Under 100 kr
                                 </option>
                                 <option value="asc">
                                     Stigende pris
                                 </option>
 
-                            </Select> */}
-                        </VStack>
+                                <option value=">300">
+                                    Over 300 kr
+                                </option>
+                            </Select>  
+                            <Select required width="200px" placeholder="Leie/leie ut" value={requestOrShare} onChange={(event) => setrequestOrShare(event.target.value)}>
+                                <option value="request">
+                                    Leie
+                                </option>
+                                <option value="share">
+                                    Leie ut
+                                </option>
+                            </Select>  */}
+                        </VStack >
 
-                    </Box>
+                    </Box >
                     <Box id="tools" mt="50px">
                         {
                             // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
@@ -123,8 +161,8 @@ const Home = () => {
                             ))
                         }
                     </Box>
-                </div>
-            </ChakraProvider>
+                </div >
+            </ChakraProvider >
         )
     }
 }
