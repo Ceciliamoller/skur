@@ -1,11 +1,13 @@
 import './Home.css';
 import React, { useState, useEffect } from 'react';
-import { Card,
+import {
+    Card,
     CardBody,
     CardFooter,
     Image,
     Stack,
-    Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack} from '@chakra-ui/react'
+    Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack
+} from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { collection, onSnapshot } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
@@ -14,22 +16,22 @@ import { useAuthValue } from '../../services/AuthService';
 function buildCard(data, id, signedIn) {
 
     var imageLink = ("");
-    if (data.category==="Hammer"){
-        imageLink='http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
+    if (data.category === "Hammer") {
+        imageLink = 'http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
     }
-    else if (data.category==="Skrutrekker"){
-        imageLink='https://cdn.pixabay.com/photo/2012/04/13/21/06/screwdriver-33634__480.png'
+    else if (data.category === "Skrutrekker") {
+        imageLink = 'https://cdn.pixabay.com/photo/2012/04/13/21/06/screwdriver-33634__480.png'
     }
-    else{
-        imageLink='https://m.media-amazon.com/images/I/71ecpTA4rwL.jpg'
+    else {
+        imageLink = 'https://m.media-amazon.com/images/I/71ecpTA4rwL.jpg'
     }
 
     var buttonText = ("");
-    if(data.type==="request"){
-        buttonText="Lei ut nå"
+    if (data.type === "request") {
+        buttonText = "Lei ut nå"
     }
-    else{
-        buttonText="Lei nå"
+    else {
+        buttonText = "Lei nå"
     }
 
     return (
@@ -37,14 +39,14 @@ function buildCard(data, id, signedIn) {
             <CardBody>
                 <Image
                     src={imageLink}
-                    />
+                />
                 <Stack mt='6' spacing='3'>
                     <Heading id="toolTitle" size='md'>{data.toolName}</Heading>
                     <Text id="toolDescription">
-                       Kategori: {data.category}
+                        Kategori: {data.category}
                     </Text>
                     <Text id="toolDescription">
-                       {data.description}
+                        {data.description}
                     </Text>
                     <Text id="toolPrice" color='blue.600' fontSize='2xl'>
                         {data.price} kr
@@ -93,9 +95,9 @@ const Home = () => {
             <ChakraProvider>
                 <div className="homePage">
                     <Box id="categories">
-                        <VStack  mt="50px" spacing="20px"> 
+                        <VStack mt="50px" spacing="20px">
                             <Text fontSize="xl"> Filtrer søk </Text>
-                             <Select required width="200px" placeholder="Velg kategori" value={toolCategory} onChange={(event) => setToolCategory(event.target.value)}>
+                            <Select required width="200px" placeholder="Velg kategori" value={toolCategory} onChange={(event) => setToolCategory(event.target.value)}>
                                 <option value="Hammer">
                                     Hammer
                                 </option>
@@ -105,8 +107,8 @@ const Home = () => {
                                 <option value="Sag">
                                     Sag
                                 </option>
-                            </Select>  
-                            <Select required width="200px" placeholder="Velg pris" value={priceCategory} onChange={(event) => setPriceCategory(event.target.value)}>
+                            </Select>
+                            {/*       <Select required width="200px" placeholder="Velg pris" value={priceCategory} onChange={(event) => setPriceCategory(event.target.value)}>
                                 <option value="<100">
                                     Under 100 kr
                                 </option>
@@ -124,22 +126,22 @@ const Home = () => {
                                 <option value="share">
                                     Leie ut
                                 </option>
-                            </Select>  
+                            </Select>  */}
                         </VStack>
-                      
+
                     </Box>
                     <Box id="tools" mt="50px">
                         {
                             // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
-                        // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
+                            // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
                             tools?.map((data, id) => (
                                 buildCard(data, id, isSignedIn)
                             ))
                         }
                     </Box>
-                    </div>
+                </div>
             </ChakraProvider>
-         )
+        )
     }
 }
 export default Home;
