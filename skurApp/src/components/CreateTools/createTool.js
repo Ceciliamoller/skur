@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import "../../App.js"
 import "./createTool.css"
 import {
@@ -13,6 +13,7 @@ import {
     Stack,
     Radio,
     RadioGroup,
+    Textarea,
 } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
@@ -50,7 +51,7 @@ export default function CreateTools() {
                 creatorEmail: currentUser.email,
             });
             navigate('/mineannonser');
-            console.log("Document written with ID: ", docRef.id); 
+            console.log("Document written with ID: ", docRef.id);
         } catch (e) {
             console.error("Error adding document: ", e);
         }
@@ -76,7 +77,7 @@ export default function CreateTools() {
                             </Box>
                             <Box>
                                 <FormLabel> Beskrivelse </FormLabel>
-                                <Input required id="descriptionID" placeholder='Skriv inn en beskrivelse...' value={newDescription} w="500px" h="200px" focusBorderColor='567189' onChange={(event) => setNewDescription(event.target.value)} />
+                                <Textarea required id="descriptionID" placeholder='Skriv inn en beskrivelse...' value={newDescription} w="500px" h="200px" focusBorderColor='567189' onChange={(event) => setNewDescription(event.target.value)} />
                             </Box>
                             <Box>
                                 <FormLabel> Pris </FormLabel>
@@ -97,7 +98,7 @@ export default function CreateTools() {
                                 </Select>
                             </Box>
                             <FormErrorMessage> Alle felter må fylles inn før anonsen kan opprettes. </FormErrorMessage>
-                                <Button colorScheme='blue' type='submit'> Opprett annonse </Button>
+                            <Button colorScheme='blue' type='submit'> Opprett annonse </Button>
 
                         </VStack>
                     </Box>
