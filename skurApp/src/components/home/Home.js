@@ -80,7 +80,7 @@ const Home = () => {
     const [sortBy, setSortBy] = useState();
     const [isSignedIn, setIsSignedIn] = useState(currentUser ? true : false);
     const [requestOrShare, setrequestOrShare] = useState("");
-
+    const [typeOfAd, setTypeOfAd] = useState(null);
 
 
 
@@ -93,8 +93,12 @@ const Home = () => {
 
         let ref = collection(firestoreService, "tools")
         //real time update
-        console.log('Toolcategory: ' + toolCategory);
-        console.log('PriceCategory: ' + sortBy);
+        console.log('type: ' + typeOfAd);
+
+
+        if (typeOfAd) {
+            ref = query(ref, where('type', '==', typeOfAd))
+        }
 
         if (toolCategory) {
             ref = query(ref, where('category', '==', toolCategory))
@@ -107,7 +111,7 @@ const Home = () => {
         })
 
         return unsub
-    }, [toolCategory, isSignedIn])
+    }, [toolCategory, isSignedIn, typeOfAd])
 
     if (currentUser) {
         return (
@@ -115,8 +119,18 @@ const Home = () => {
                 <div className="homePage">
                     <Box id="categories">
                         <VStack mt="50px" spacing="20px">
+                            <Text fontSize="xl"> Type annonse </Text>
+                            <Select width="200px" placeholder="Alle" value={typeOfAd} onChange={(event) => setTypeOfAd(event.target.value)}>
+                                <option value="share">
+                                    Til utleie
+                                </option>
+                                <option value="request">
+                                    Ønsker å leie
+                                </option>
+                            </Select>
+
                             <Text fontSize="xl"> Filtrer søk </Text>
-                            <Select required width="200px" placeholder="Velg kategori" value={toolCategory} onChange={(event) => setToolCategory(event.target.value)}>
+                            <Select width="200px" placeholder="Alle" value={toolCategory} onChange={(event) => setToolCategory(event.target.value)}>
                                 <option value="Hammer">
                                     Hammer
                                 </option>
@@ -164,5 +178,6 @@ const Home = () => {
             </ChakraProvider >
         )
     }
+
 }
 export default Home;
