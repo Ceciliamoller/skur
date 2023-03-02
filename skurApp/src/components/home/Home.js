@@ -93,8 +93,7 @@ const Home = () => {
 
         let ref = collection(firestoreService, "tools")
         //real time update
-        console.log('Toolcategory: ' + toolCategory);
-        console.log('PriceCategory: ' + sortBy);
+        
 
         if (toolCategory) {
             ref = query(ref, where('category', '==', toolCategory))
