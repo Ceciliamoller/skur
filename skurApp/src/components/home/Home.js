@@ -4,11 +4,12 @@ import {
     Card,
     CardBody,
     CardFooter,
+    Flex,
     Image,
     Stack,
     Link,
 
-    Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack
+    Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack, Avatar
 } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { collection, onSnapshot, query, where } from "firebase/firestore";
@@ -55,6 +56,12 @@ function buildCard(data, id, signedIn) {
                     </Text>
                 </Stack>
             </CardBody>
+            <Link to="/brukersiden">
+                <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'> 
+                    <Avatar bg="blue.500" size="sm"></Avatar>
+                    <Heading size="sm">Bruker</Heading>
+                </Flex>
+            </Link>
             <Divider />
             <CardFooter>
                 <ButtonGroup spacing='2'>
