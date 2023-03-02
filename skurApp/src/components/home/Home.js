@@ -8,7 +8,7 @@ import {
     Stack,
     Link,
 
-    Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack
+    Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack, HStack
 } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { collection, onSnapshot, query, where } from "firebase/firestore";
@@ -57,14 +57,16 @@ function buildCard(data, id, signedIn) {
             </CardBody>
             <Divider />
             <CardFooter>
-                <ButtonGroup spacing='2'>
+                <HStack spacing='2'>
                     <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
                         {buttonText}
                     </Button>
-                    <Link isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
-                        Kontakt eier
-                    </Link>
-                </ButtonGroup >
+                   
+                        <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
+                        <Button>Kontakt eier</Button>
+                        </Link>
+                    
+                </HStack >
             </CardFooter >
         </Card >
     )
