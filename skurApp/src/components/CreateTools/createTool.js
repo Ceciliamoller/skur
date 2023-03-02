@@ -49,6 +49,9 @@ export default function CreateTools() {
                 category: toolCategory,
                 creator: currentUser.uid,
                 creatorEmail: currentUser.email,
+                ratingCount: 0,
+                totalRating: 0,
+                toolRating: 0
             });
             navigate('/mineannonser');
             console.log("Document written with ID: ", docRef.id);

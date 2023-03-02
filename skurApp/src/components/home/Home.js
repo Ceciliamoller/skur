@@ -11,9 +11,19 @@ import {
     Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack
 } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
-import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { firestoreService } from '../../services/firebaseConfig';
+import { collection, onSnapshot, query, where, doc, updateDoc, increment } from "firebase/firestore";
+import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
+
+async function handleRating(e,id) {
+
+    
+    const ref = doc(firebaseService, "tools", id)
+    await updateDoc(ref, {
+        ratingCount: increment(1),
+        totalRating: increment(e.target.value),
+    }) 
+}
 
 function buildCard(data, id, signedIn) {
 
@@ -64,6 +74,7 @@ function buildCard(data, id, signedIn) {
                     <Link isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
                         Kontakt eier
                     </Link>
+                    <button value={5} onClick = {(e) => handleRating(e,id,"value")}>Rate her</button>
                 </ButtonGroup >
             </CardFooter >
         </Card >
