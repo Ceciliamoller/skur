@@ -17,7 +17,7 @@
     category: string
     type: string ("request" | "share")
     availible: bool
-    rentedby: sting
+    rentedby: string
 }
 
 /users/{uid}/ {
