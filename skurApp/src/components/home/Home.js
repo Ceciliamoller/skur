@@ -19,7 +19,7 @@ import {
     VisuallyHidden,
 
 } from '@chakra-ui/react'
-import { collection, onSnapshot, query, where, doc, updateDoc } from "firebase/firestore";
+import { collection, onSnapshot, query, where, doc, updateDoc, getDoc } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
@@ -32,6 +32,7 @@ async function handleRentTool(id, address) {
     openmaps(address)
 }
 
+
 function openmaps(address) {
     let urlAddress = address.replace(/\s+/g, '+');
     let googleMapsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + urlAddress;
@@ -42,6 +43,9 @@ function openmaps(address) {
 function buildCard(data, id, signedIn) {
 
     var toolRating = 0;
+
+    //const creatorData = await getCreatorData(data.creator)
+
 
 
     var imageLink = ("");
@@ -86,8 +90,8 @@ function buildCard(data, id, signedIn) {
             </CardBody>
             <Link to="/brukersiden">
                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                    <Avatar bg="blue.500" size="sm"></Avatar>
-                    <Heading size="sm">Bruker</Heading>
+                    <Avatar bg="blue.500" size="sm" src={data.creatorPic}></Avatar>
+                    <Heading size="sm">{data.creatorName ? data.creatorName : "Anonym"}</Heading>
                 </Flex>
             </Link>
             <Divider />

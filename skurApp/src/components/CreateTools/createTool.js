@@ -48,6 +48,8 @@ export default function CreateTools() {
                 category: toolCategory,
                 creator: currentUser.uid,
                 creatorEmail: currentUser.email,
+                creatorName: currentUser.displayName,
+                creatorPic: currentUser.photoURL,
                 available: true,
                 address: newAddress
             });
