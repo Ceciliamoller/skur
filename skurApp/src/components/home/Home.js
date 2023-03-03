@@ -22,13 +22,6 @@ async function handleRentTool(id){
     //TODO update snapshot 
 }
 
-async function handleRating(id){
-    id.ratingCount.increment(1);
-    totalRating = totalRating + 
-    id.toolRating = totalRating/ratingCount;
-
-    //TODO ha en ratingCount som inkrementeres 
-}
 
 function buildCard(data, id, signedIn) {
 
