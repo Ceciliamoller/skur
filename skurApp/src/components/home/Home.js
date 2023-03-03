@@ -11,14 +11,16 @@ import {
     Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack
 } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
-import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { firestoreService } from '../../services/firebaseConfig';
+import { collection, onSnapshot, query, where, doc, updateDoc } from "firebase/firestore";
+import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
 async function handleRentTool(id){
-    console.log(id);
-
+    const ref = doc(firebaseService,"tools",id)
     //TODO set available to false
+    await updateDoc(ref, {
+        available: false,
+    })
     //TODO update snapshot 
 }
 
