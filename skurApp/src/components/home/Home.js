@@ -1,5 +1,7 @@
 import './Home.css';
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
+
 import {
     Card,
     CardBody,
@@ -7,8 +9,6 @@ import {
     Flex,
     Image,
     Stack,
-    Link,
-
     Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack, Avatar
 } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
