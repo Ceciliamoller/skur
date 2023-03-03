@@ -15,6 +15,21 @@ import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
+async function handleRentTool(id){
+    console.log(id);
+
+    //TODO set available to false
+    //TODO update snapshot 
+}
+
+async function handleRating(id){
+    id.ratingCount.increment(1);
+    totalRating = totalRating + 
+    id.toolRating = totalRating/ratingCount;
+
+    //TODO ha en ratingCount som inkrementeres 
+}
+
 function buildCard(data, id, signedIn) {
 
     var imageLink = ("");
@@ -35,6 +50,8 @@ function buildCard(data, id, signedIn) {
     else {
         buttonText = "Lei nå"
     }
+
+    
 
     return (
         <Card key={id} maxW='xs' padding="5%">
@@ -58,7 +75,7 @@ function buildCard(data, id, signedIn) {
             <Divider />
             <CardFooter>
                 <ButtonGroup spacing='2'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(id)} >
                         {buttonText}
                     </Button>
                     <Link isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
@@ -98,6 +115,7 @@ const Home = () => {
         if (toolCategory) {
             ref = query(ref, where('category', '==', toolCategory))
         }
+
 
 
         const unsub = onSnapshot(ref, (snapshot) => {
