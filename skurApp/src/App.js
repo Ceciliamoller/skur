@@ -44,8 +44,10 @@ function App() {
             </Link>
 
           ) : [
-            <ChakraProvider><Button className='navoption' colorScheme="blue" id="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button></ChakraProvider>,
-            <Link className='navoption' to="/brukersiden"> Min bruker </Link>,
+
+            <Button className='navoption' colorScheme="blue" id="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button>,
+            <IconButton className='navoption' icon={colorMode === 'dark' ? <SunIcon /> : <MoonIcon />} size='md' onClick={toggleColorMode}>
+            </IconButton>,
             <Link className='navoption' to="/tool"> Ny annonse </Link>,
             <Link className='navoption' to="/mineannonser"> Mine annonser </Link>,
             <Link className='navoption' to="/"> Mine samlinger </Link>

@@ -72,7 +72,7 @@ export default function CreateTools() {
                                     <Radio mr="20px" value='request'> Ønsker å leie </Radio>
                                 </Stack>
                             </RadioGroup>
-                            <Text fontSize="large" textColor="black" mt="40px"> Tittel </Text>
+                            <Text fontSize="large" mt="40px"> Tittel </Text>
                             <Input required id="titleID" placeholder='Skriv inn tittel...' value={newTitle} w="500px" focusBorderColor='567189' onChange={(event) => setNewTitle(event.target.value)} />
                         </Box>
                         <Box>

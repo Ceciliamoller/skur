@@ -15,6 +15,7 @@ import {
     SliderFilledTrack,
     SliderThumb,
     SliderMark,
+    HStack,
     VisuallyHidden,
 
 } from '@chakra-ui/react'
