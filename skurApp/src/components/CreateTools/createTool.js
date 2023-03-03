@@ -28,11 +28,11 @@ export default function CreateTools() {
 
     const { currentUser } = useAuthValue();
     const navigate = useNavigate();
-
     const [newTitle, setNewTitle] = useState("");
     const [newType, setType] = useState("share");
     const [newDescription, setNewDescription] = useState("");
     const [newPrice, setNewPrice] = useState("");
+    const [newAddress, setNewAddress] = useState("");
     const [toolCategory, setNewToolCategory] = useState("");
 
     /* Method for creating new tool in firebase */
@@ -49,7 +49,8 @@ export default function CreateTools() {
                 category: toolCategory,
                 creator: currentUser.uid,
                 creatorEmail: currentUser.email,
-                available: true
+                available: true,
+                address: newAddress 
             });
             navigate('/mineannonser');
             console.log("Document written with ID: ", docRef.id);
@@ -83,6 +84,10 @@ export default function CreateTools() {
                             <Box>
                                 <FormLabel> Pris </FormLabel>
                                 <Input required type="number" id="priceID" placeholder='Skriv inn en pris...' value={newPrice} min="0" w="500px" focusBorderColor='#567189' onChange={(event) => setNewPrice(event.target.value)} />
+                            </Box>
+                            <Box>
+                                <FormLabel> Addresse </FormLabel>
+                                <Input required type="text" id="priceID" placeholder='Skriv inn adressen din...' value={newAddress} min="0" w="500px" focusBorderColor='#567189' onChange={(event) => setNewAddress(event.target.value)} />
                             </Box>
                             <Box>
                                 <FormLabel> Kategori </FormLabel>

@@ -15,11 +15,19 @@ import { collection, onSnapshot, query, where, doc, updateDoc, getDoc} from "fir
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
-async function handleRentTool(id) {
-    const toolRef = doc(firestoreService, "tools", id);    console.log("tools/" + id);
+async function handleRentTool(id, address) {
+    const toolRef = doc(firestoreService, "tools", id);
     await updateDoc(toolRef, {
       available: false
     });
+    
+    openmaps(address)
+  }
+
+  function openmaps(address){
+    let urlAddress = address.replace(/\s+/g, '+');
+    let googleMapsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + urlAddress;
+    window.open(googleMapsUrl, '_blank');
   }
 
 
@@ -68,7 +76,7 @@ function buildCard(data, id, signedIn) {
             <Divider />
             <CardFooter>
                 <ButtonGroup spacing='2'>
-                    <Button isDisabled={false} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id)} >
+                    <Button isDisabled={false} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address)} >
                         {buttonText}
                     </Button>
                     <Link isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>

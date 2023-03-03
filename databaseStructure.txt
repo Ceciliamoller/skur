@@ -1,14 +1,3 @@
-
-/tools/{toolID} {
-    toolName: string
-    price: int
-    description: string
-    creator: string (uid)
-    cretaorEmail: string
-    category: string
-    type: string ("request" | "share")
-    availible: bool
-
 /tools/{toolID} {
     toolName: string
     price: int
@@ -18,30 +7,7 @@
     type: string ("request" | "share")
     availible: bool
     rentedby: string
-}
-
-/users/{uid}/ {
-    rating: int
-    email: string
-    name: string
-    userAds: [
-        toolID: string
-    ]
-    /lists/{listID} {
-        listName: string
-        content: [
-            toolID: string (toolID)
-        ]
-    }
-    /history/{toolID} {
-        participants: [
-            owner: string (uid)
-            tenant: string (uid)
-        ]
-
-    }
-
-}
+    address: string
 }
 
 /users/{uid}/ {
