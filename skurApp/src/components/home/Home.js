@@ -1,14 +1,16 @@
 import './Home.css';
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
+
 import {
     Card,
     CardBody,
     CardFooter,
+    Flex,
     Image,
     Stack,
-    Link,
+    Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack, Avatar,
 
-    Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack, HStack
 } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
 import { collection, onSnapshot, query, where } from "firebase/firestore";
@@ -55,6 +57,12 @@ function buildCard(data, id, signedIn) {
                     </Text>
                 </Stack>
             </CardBody>
+            <Link to="/brukersiden">
+                <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'> 
+                    <Avatar bg="blue.500" size="sm"></Avatar>
+                    <Heading size="sm">Bruker</Heading>
+                </Flex>
+            </Link>
             <Divider />
             <CardFooter>
                 <HStack spacing='2'>
