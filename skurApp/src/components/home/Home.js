@@ -9,39 +9,38 @@ import {
     Flex,
     Image,
     Stack,
-    Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack, Avatar,
+    Heading, Text, Divider, Button, Box, Select, VStack, Avatar,
     Slider,
     SliderTrack,
     SliderFilledTrack,
     SliderThumb,
     SliderMark,
-    VisuallyHidden, 
+    VisuallyHidden,
 
 } from '@chakra-ui/react'
-import { ChakraProvider } from '@chakra-ui/react'
-import { collection, onSnapshot, query, where, doc, updateDoc, getDoc} from "firebase/firestore";
-import firebaseService, { firestoreService } from '../../services/firebaseConfig';
+import { collection, onSnapshot, query, where, doc, updateDoc } from "firebase/firestore";
+import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
 async function handleRentTool(id, address) {
     const toolRef = doc(firestoreService, "tools", id);
     await updateDoc(toolRef, {
-      available: false
+        available: false
     });
-    
-    openmaps(address)
-  }
 
-  function openmaps(address){
+    openmaps(address)
+}
+
+function openmaps(address) {
     let urlAddress = address.replace(/\s+/g, '+');
     let googleMapsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + urlAddress;
     window.open(googleMapsUrl, '_blank');
-  }
+}
 
 
 function buildCard(data, id, signedIn) {
 
-    var toolRating=0;
+    var toolRating = 0;
 
 
     var imageLink = ("");
@@ -63,7 +62,7 @@ function buildCard(data, id, signedIn) {
         buttonText = "Lei nå"
     }
 
-    
+
 
     return (
         <Card key={id} maxW='xs' padding="5%">
@@ -85,7 +84,7 @@ function buildCard(data, id, signedIn) {
                 </Stack>
             </CardBody>
             <Link to="/brukersiden">
-                <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'> 
+                <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                     <Avatar bg="blue.500" size="sm"></Avatar>
                     <Heading size="sm">Bruker</Heading>
                 </Flex>
@@ -93,42 +92,42 @@ function buildCard(data, id, signedIn) {
             <Divider />
             <Box display="none" id="ratingBox" >
                 <Text> Legg igjen rating:</Text>
-           
-                    <Slider mt="20px" mb="20px" min={1} max={5} aria-label='slider-ex-1' defaultValue={3} onChange={
+
+                <Slider mt="20px" mb="20px" min={1} max={5} aria-label='slider-ex-1' defaultValue={3} onChange={
                     (val) => {
                         toolRating = val;
                     }}>
                     <SliderMark value={1} mt='1' ml='-2.5' fontSize='sm'>
-                                1
-                            </SliderMark>
-                            <SliderMark value={2} mt='1' ml='-2.5' fontSize='sm'>
-                                2
-                            </SliderMark>
-                            <SliderMark value={3} mt='1' ml='-2.5' fontSize='sm'>
-                                3
-                            </SliderMark>
-                            <SliderMark value={4} mt='1' ml='-2.5' fontSize='sm'>
-                                4
-                            </SliderMark>
-                            <SliderMark value={5} mt='1'  ml='-2.5' fontSize='sm'>
-                                5
-                            </SliderMark>
-                        <SliderTrack>
-                            <SliderFilledTrack />
-                        </SliderTrack>
-                        <SliderThumb />
-                        </Slider>
-                 </Box>
+                        1
+                    </SliderMark>
+                    <SliderMark value={2} mt='1' ml='-2.5' fontSize='sm'>
+                        2
+                    </SliderMark>
+                    <SliderMark value={3} mt='1' ml='-2.5' fontSize='sm'>
+                        3
+                    </SliderMark>
+                    <SliderMark value={4} mt='1' ml='-2.5' fontSize='sm'>
+                        4
+                    </SliderMark>
+                    <SliderMark value={5} mt='1' ml='-2.5' fontSize='sm'>
+                        5
+                    </SliderMark>
+                    <SliderTrack>
+                        <SliderFilledTrack />
+                    </SliderTrack>
+                    <SliderThumb />
+                </Slider>
+            </Box>
             <CardFooter>
-                <HStack spacing='2'>
+                <HStack spacing='10'>
                     <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
                         {buttonText}
                     </Button>
-                   
-                        <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
+
+                    <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
                         <Button>Kontakt eier</Button>
-                        </Link>
-                    
+                    </Link>
+
                 </HStack >
             </CardFooter >
         </Card >
@@ -177,38 +176,37 @@ const Home = () => {
         })
 
         return unsub
-    }, [toolCategory, isSignedIn, typeOfAd])
+    }, [toolCategory, isSignedIn, typeOfAd, currentUser])
 
     if (currentUser) {
         return (
-            <ChakraProvider>
-                <div className="homePage">
-                    <Box id="categories">
-                        <VStack mt="50px" spacing="20px">
-                            <Text fontSize="xl"> Type annonse </Text>
-                            <Select width="200px" placeholder="Alle" value={typeOfAd} onChange={(event) => setTypeOfAd(event.target.value)}>
-                                <option value="share">
-                                    Til utleie
-                                </option>
-                                <option value="request">
-                                    Ønsker å leie
-                                </option>
-                            </Select>
+            <div className="homePage">
+                <Box id="categories">
+                    <VStack mt="50px" spacing="20px">
+                        <Text fontSize="xl"> Type annonse </Text>
+                        <Select width="200px" placeholder="Alle" value={typeOfAd} onChange={(event) => setTypeOfAd(event.target.value)}>
+                            <option value="share">
+                                Til utleie
+                            </option>
+                            <option value="request">
+                                Ønsker å leie
+                            </option>
+                        </Select>
 
-                            <Text fontSize="xl"> Filtrer søk </Text>
-                            <Select width="200px" placeholder="Alle" value={toolCategory} onChange={(event) => setToolCategory(event.target.value)}>
-                                <option value="Hammer">
-                                    Hammer
-                                </option>
-                                <option value="Skrutrekker">
-                                    Skrutrekker
-                                </option>
-                                <option value="Sag">
-                                    Sag
-                                </option>
-                            </Select>
+                        <Text fontSize="xl"> Filtrer søk </Text>
+                        <Select width="200px" placeholder="Alle" value={toolCategory} onChange={(event) => setToolCategory(event.target.value)}>
+                            <option value="Hammer">
+                                Hammer
+                            </option>
+                            <option value="Skrutrekker">
+                                Skrutrekker
+                            </option>
+                            <option value="Sag">
+                                Sag
+                            </option>
+                        </Select>
 
-                            {/*       <Select required width="200px" placeholder="Velg pris" value={priceCategory} onChange={(event) => setPriceCategory(event.target.value)}>
+                        {/*       <Select required width="200px" placeholder="Velg pris" value={priceCategory} onChange={(event) => setPriceCategory(event.target.value)}>
                                 <option value="<100">
                                     Under 100 kr
                                 </option>
@@ -228,20 +226,19 @@ const Home = () => {
                                     Leie ut
                                 </option>
                             </Select>  */}
-                        </VStack >
+                    </VStack >
 
-                    </Box >
-                    <Box id="tools" mt="50px">
-                        {
-                            // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
-                            // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
-                            tools?.map((data, id) => (
-                                buildCard(data, id, isSignedIn)
-                            ))
-                        }
-                    </Box>
-                </div >
-            </ChakraProvider >
+                </Box >
+                <Box id="tools" mt="50px">
+                    {
+                        // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
+                        // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
+                        tools?.map((data, id) => (
+                            buildCard(data, id, isSignedIn)
+                        ))
+                    }
+                </Box>
+            </div >
         )
     }
 
