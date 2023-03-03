@@ -11,18 +11,16 @@ import {
     Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack
 } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
-import { collection, onSnapshot, query, where, doc, updateDoc } from "firebase/firestore";
+import { collection, onSnapshot, query, where, doc, updateDoc, getDoc} from "firebase/firestore";
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
-async function handleRentTool(id){
-    const ref = doc(firebaseService,"tools",id)
-    //TODO set available to false
-    await updateDoc(ref, {
-        available: false,
-    })
-    //TODO update snapshot 
-}
+async function handleRentTool(id) {
+    const toolRef = doc(firestoreService, "tools", id);    console.log("tools/" + id);
+    await updateDoc(toolRef, {
+      available: false
+    });
+  }
 
 
 function buildCard(data, id, signedIn) {
@@ -70,7 +68,7 @@ function buildCard(data, id, signedIn) {
             <Divider />
             <CardFooter>
                 <ButtonGroup spacing='2'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(id)} >
+                    <Button isDisabled={false} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id)} >
                         {buttonText}
                     </Button>
                     <Link isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
