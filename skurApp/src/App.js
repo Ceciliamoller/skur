@@ -1,6 +1,6 @@
 import './App.css';
 import CreateTools from './components/CreateTools/createTool'
-import { ChakraProvider, Button } from '@chakra-ui/react'
+import { ChakraProvider, Button, useColorMode, toggleColorMode, IconButton } from '@chakra-ui/react'
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./components/home/Home";
@@ -10,9 +10,13 @@ import { auth } from './services/firebaseConfig';
 import SignUp from './components/login/signUp';
 //import createAd from "./components/CreateAd/createAd";
 import { AuthService } from './services/AuthService'
+import { SunIcon, MoonIcon } from '@chakra-ui/icons'
+
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
+  const { colorMode, toggleColorMode } = useColorMode()
+
 
 
   //https://css-tricks.com/user-registration-authentication-firebase-react/#managing-user-state-with-react-context-api
@@ -25,22 +29,28 @@ function App() {
     })
   }, [])
 
+
+
   return (
 
     <Router>
       <AuthService value={{ currentUser }}>
         <nav>
           <Link id='logo' to="/"><strong>⌂ skur</strong> </Link>
-
           {/* Router guard */}
           {!currentUser ? (
-            <Link className="navoption" id="buttonSignin" to="/login"><ChakraProvider><Button colorScheme="blue">Logg inn</Button></ChakraProvider></Link>
+            <Link className="navoption" id="buttonSignin" to="/login">
+              <Button colorScheme="blue">Logg inn</Button>
+            </Link>
 
           ) : [
-            <ChakraProvider><Button className='navoption' colorScheme="blue" id="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button></ChakraProvider>,
+
+            <Button className='navoption' colorScheme="blue" id="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button>,
+            <IconButton className='navoption' icon={colorMode === 'dark' ? <SunIcon /> : <MoonIcon />} size='md' onClick={toggleColorMode}>
+            </IconButton>,
             <Link className='navoption' to="/tool"> Ny annonse </Link>,
             <Link className='navoption' to="/mineannonser"> Mine annonser </Link>,
-            <Link className='navoption' to="/"> Mine samlinger </Link>,
+            <Link className='navoption' to="/"> Mine samlinger </Link>
           ]
           }
 

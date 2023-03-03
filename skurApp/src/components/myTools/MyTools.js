@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Divider, ButtonGroup, Button, Box, Input } from '@chakra-ui/react'
-import { ChakraProvider } from '@chakra-ui/react'
 import { collection, getDocs, onSnapshot, query, where } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import './MyTools.css';
@@ -9,14 +8,14 @@ import { useAuthValue } from '../../services/AuthService';
 function buildCard(data, id, type) {
 
     var imageLink = ("");
-    if (data.category==="Hammer"){
-        imageLink='http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
+    if (data.category === "Hammer") {
+        imageLink = 'http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
     }
-    else if (data.category==="Skrutrekker"){
-        imageLink='https://cdn.pixabay.com/photo/2012/04/13/21/06/screwdriver-33634__480.png'
+    else if (data.category === "Skrutrekker") {
+        imageLink = 'https://cdn.pixabay.com/photo/2012/04/13/21/06/screwdriver-33634__480.png'
     }
-    else{
-        imageLink='https://m.media-amazon.com/images/I/71ecpTA4rwL.jpg'
+    else {
+        imageLink = 'https://m.media-amazon.com/images/I/71ecpTA4rwL.jpg'
     }
     return (
         <Card key={id} maxW='xs' padding="5%">
@@ -27,7 +26,7 @@ function buildCard(data, id, type) {
                 <Stack mt='6' spacing='3'>
                     <Heading id="toolTitle" size='md'>{data.toolName}</Heading>
                     <Text id="toolDescription">
-                       Kategori: {data.category}
+                        Kategori: {data.category}
                     </Text>
                     <Text id="toolDescription">
                         {data.description}
@@ -88,36 +87,33 @@ const MyTools = () => {
 
     if (currentUser) {
         return (
-            <ChakraProvider>
-                <div id="MyTools">
-                    <div>
-                        <h1 className='title'>Til utleie</h1>
-                        <div id="toolsIown">
-                            {
-                                shareTool?.map((data, id) => (
-                                    buildCard(data, id, "share")
-                                ))
-                            }
-                        </div>
-                    </div>
-                    <div>
-                        <h1 className='title'>Ønskes leid</h1>
-                        <div id="request">
-                            {
-                                requestTool?.map((data, id) => (
-                                    buildCard(data, id, "request")
-                                ))
-                            }
-
-                        </div>
+            <div id="MyTools">
+                <div>
+                    <h1 className='title'>Til utleie</h1>
+                    <div id="toolsIown">
+                        {
+                            shareTool?.map((data, id) => (
+                                buildCard(data, id, "share")
+                            ))
+                        }
                     </div>
                 </div>
-            </ChakraProvider>
+                <div>
+                    <h1 className='title'>Ønskes leid</h1>
+                    <div id="request">
+                        {
+                            requestTool?.map((data, id) => (
+                                buildCard(data, id, "request")
+                            ))
+                        }
+
+                    </div>
+                </div>
+            </div>
 
         )
     }
     else {
-        <ChakraProvider></ChakraProvider>
         return <h1>Ikke logget inn</h1>
     }
 }

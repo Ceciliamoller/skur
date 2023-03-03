@@ -10,7 +10,6 @@ import {
 
     Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack, HStack
 } from '@chakra-ui/react'
-import { ChakraProvider } from '@chakra-ui/react'
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
@@ -57,15 +56,15 @@ function buildCard(data, id, signedIn) {
             </CardBody>
             <Divider />
             <CardFooter>
-                <HStack spacing='2'>
+                <HStack spacing='10'>
                     <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
                         {buttonText}
                     </Button>
-                   
-                        <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
+
+                    <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
                         <Button>Kontakt eier</Button>
-                        </Link>
-                    
+                    </Link>
+
                 </HStack >
             </CardFooter >
         </Card >
@@ -113,38 +112,37 @@ const Home = () => {
         })
 
         return unsub
-    }, [toolCategory, isSignedIn, typeOfAd])
+    }, [toolCategory, isSignedIn, typeOfAd, currentUser])
 
     if (currentUser) {
         return (
-            <ChakraProvider>
-                <div className="homePage">
-                    <Box id="categories">
-                        <VStack mt="50px" spacing="20px">
-                            <Text fontSize="xl"> Type annonse </Text>
-                            <Select width="200px" placeholder="Alle" value={typeOfAd} onChange={(event) => setTypeOfAd(event.target.value)}>
-                                <option value="share">
-                                    Til utleie
-                                </option>
-                                <option value="request">
-                                    Ønsker å leie
-                                </option>
-                            </Select>
+            <div className="homePage">
+                <Box id="categories">
+                    <VStack mt="50px" spacing="20px">
+                        <Text fontSize="xl"> Type annonse </Text>
+                        <Select width="200px" placeholder="Alle" value={typeOfAd} onChange={(event) => setTypeOfAd(event.target.value)}>
+                            <option value="share">
+                                Til utleie
+                            </option>
+                            <option value="request">
+                                Ønsker å leie
+                            </option>
+                        </Select>
 
-                            <Text fontSize="xl"> Filtrer søk </Text>
-                            <Select width="200px" placeholder="Alle" value={toolCategory} onChange={(event) => setToolCategory(event.target.value)}>
-                                <option value="Hammer">
-                                    Hammer
-                                </option>
-                                <option value="Skrutrekker">
-                                    Skrutrekker
-                                </option>
-                                <option value="Sag">
-                                    Sag
-                                </option>
-                            </Select>
+                        <Text fontSize="xl"> Filtrer søk </Text>
+                        <Select width="200px" placeholder="Alle" value={toolCategory} onChange={(event) => setToolCategory(event.target.value)}>
+                            <option value="Hammer">
+                                Hammer
+                            </option>
+                            <option value="Skrutrekker">
+                                Skrutrekker
+                            </option>
+                            <option value="Sag">
+                                Sag
+                            </option>
+                        </Select>
 
-                            {/*       <Select required width="200px" placeholder="Velg pris" value={priceCategory} onChange={(event) => setPriceCategory(event.target.value)}>
+                        {/*       <Select required width="200px" placeholder="Velg pris" value={priceCategory} onChange={(event) => setPriceCategory(event.target.value)}>
                                 <option value="<100">
                                     Under 100 kr
                                 </option>
@@ -164,20 +162,19 @@ const Home = () => {
                                     Leie ut
                                 </option>
                             </Select>  */}
-                        </VStack >
+                    </VStack >
 
-                    </Box >
-                    <Box id="tools" mt="50px">
-                        {
-                            // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
-                            // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
-                            tools?.map((data, id) => (
-                                buildCard(data, id, isSignedIn)
-                            ))
-                        }
-                    </Box>
-                </div >
-            </ChakraProvider >
+                </Box >
+                <Box id="tools" mt="50px">
+                    {
+                        // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
+                        // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
+                        tools?.map((data, id) => (
+                            buildCard(data, id, isSignedIn)
+                        ))
+                    }
+                </Box>
+            </div >
         )
     }
 
