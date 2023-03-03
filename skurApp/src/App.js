@@ -8,7 +8,7 @@ import Login from "./components/login/Login";
 import MyTools from "./components/myTools/MyTools";
 import { auth } from './services/firebaseConfig';
 import SignUp from './components/login/signUp';
-//import createAd from "./components/CreateAd/createAd";
+import User from './components/user/user';
 import { AuthService } from './services/AuthService'
 
 function App() {
@@ -38,6 +38,7 @@ function App() {
 
           ) : [
             <ChakraProvider><Button className='navoption' colorScheme="blue" id="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button></ChakraProvider>,
+            <Link className='navoption' to="/brukersiden"> Min bruker </Link>,
             <Link className='navoption' to="/tool"> Ny annonse </Link>,
             <Link className='navoption' to="/mineannonser"> Mine annonser </Link>,
             <Link className='navoption' to="/"> Mine samlinger </Link>,
@@ -53,6 +54,8 @@ function App() {
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/tool" element={<CreateTools />} />
           <Route path="/mineannonser" element={<MyTools />} />
+          <Route path="/brukersiden" element={<User />} />
+
         </Routes>
       </AuthService>
     </Router >
