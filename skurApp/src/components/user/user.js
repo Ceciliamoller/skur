@@ -68,7 +68,7 @@ function User(){
             </Container>
 
                 <Box id="userAddsAndHistory" maxW="full" mt={0} centerContent overflow="hidden" ml="10%">
-                    <Card key={id} maxW='xs' padding="5%">
+                    {/* <Card key={id} maxW='xs' padding="5%">
                         <CardBody>
                             <Image
                                 src={imageLink}
@@ -97,7 +97,7 @@ function User(){
                                 </Link>
                             </ButtonGroup >
                         </CardFooter >
-                    </Card > 
+                    </Card >  */}
                 
                 </Box>
                 
