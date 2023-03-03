@@ -13,9 +13,25 @@ import {
 
 } from '@chakra-ui/react'
 import { ChakraProvider } from '@chakra-ui/react'
-import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { firestoreService } from '../../services/firebaseConfig';
+import { collection, onSnapshot, query, where, doc, updateDoc, getDoc} from "firebase/firestore";
+import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
+
+async function handleRentTool(id, address) {
+    const toolRef = doc(firestoreService, "tools", id);
+    await updateDoc(toolRef, {
+      available: false
+    });
+    
+    openmaps(address)
+  }
+
+  function openmaps(address){
+    let urlAddress = address.replace(/\s+/g, '+');
+    let googleMapsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + urlAddress;
+    window.open(googleMapsUrl, '_blank');
+  }
+
 
 function buildCard(data, id, signedIn) {
 
@@ -37,6 +53,8 @@ function buildCard(data, id, signedIn) {
     else {
         buttonText = "Lei nå"
     }
+
+    
 
     return (
         <Card key={id} maxW='xs' padding="5%">
@@ -113,6 +131,7 @@ const Home = () => {
         if (toolCategory) {
             ref = query(ref, where('category', '==', toolCategory))
         }
+
 
 
         const unsub = onSnapshot(ref, (snapshot) => {
