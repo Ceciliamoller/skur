@@ -7,6 +7,12 @@ import {
     Image,
     Stack,
     Link,
+    Slider,
+    SliderTrack,
+    SliderFilledTrack,
+    SliderThumb,
+    SliderMark,
+    VisuallyHidden, 
 
     Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack
 } from '@chakra-ui/react'
@@ -16,6 +22,9 @@ import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
 function buildCard(data, id, signedIn) {
+
+    var toolRating=0;
+
 
     var imageLink = ("");
     if (data.category === "Hammer") {
@@ -56,6 +65,34 @@ function buildCard(data, id, signedIn) {
                 </Stack>
             </CardBody>
             <Divider />
+            <Box display="none" id="ratingBox" >
+                <Text> Legg igjen rating:</Text>
+           
+                    <Slider mt="20px" mb="20px" min={1} max={5} aria-label='slider-ex-1' defaultValue={3} onChange={
+                    (val) => {
+                        toolRating = val;
+                    }}>
+                    <SliderMark value={1} mt='1' ml='-2.5' fontSize='sm'>
+                                1
+                            </SliderMark>
+                            <SliderMark value={2} mt='1' ml='-2.5' fontSize='sm'>
+                                2
+                            </SliderMark>
+                            <SliderMark value={3} mt='1' ml='-2.5' fontSize='sm'>
+                                3
+                            </SliderMark>
+                            <SliderMark value={4} mt='1' ml='-2.5' fontSize='sm'>
+                                4
+                            </SliderMark>
+                            <SliderMark value={5} mt='1'  ml='-2.5' fontSize='sm'>
+                                5
+                            </SliderMark>
+                        <SliderTrack>
+                            <SliderFilledTrack />
+                        </SliderTrack>
+                        <SliderThumb />
+                        </Slider>
+                 </Box>
             <CardFooter>
                 <ButtonGroup spacing='2'>
                     <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
@@ -80,8 +117,6 @@ const Home = () => {
     const [sortBy, setSortBy] = useState();
     const [isSignedIn, setIsSignedIn] = useState(currentUser ? true : false);
     const [requestOrShare, setrequestOrShare] = useState("");
-
-
 
 
 
