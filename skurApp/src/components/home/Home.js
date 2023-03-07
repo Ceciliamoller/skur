@@ -19,7 +19,7 @@ import {
     VisuallyHidden,
 
 } from '@chakra-ui/react'
-import { collection, onSnapshot, query, where, doc, updateDoc, getDoc, doc, updateDoc, increment } from "firebase/firestore";
+import { collection, onSnapshot, query, where, doc, updateDoc, getDoc, increment } from "firebase/firestore";
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
@@ -46,6 +46,7 @@ async function handleRentTool(id, address) {
     await updateDoc(toolRef, {
         available: false
     });
+}
 
 function openmaps(address) {
     let urlAddress = address.replace(/\s+/g, '+');
