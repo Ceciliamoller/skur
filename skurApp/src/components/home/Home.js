@@ -29,7 +29,7 @@ async function handleRentTool(id, address) {
         available: false
     });
 
-    openmaps(address)
+    openmaps(address);
 }
 
 
@@ -125,7 +125,7 @@ function buildCard(data, id, signedIn) {
             </Box>
             <CardFooter>
                 <HStack spacing='10'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id)>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={()=>handleRentTool(data.id,data.address)}>
                         {buttonText}
                     </Button>
 
