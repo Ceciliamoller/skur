@@ -23,22 +23,22 @@ import { collection, onSnapshot, query, where, doc, updateDoc, getDoc, increment
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
-async function handleToolRating(e,id) {
+async function handleToolRating(e, id) {
 
     const ref = doc(firebaseService, "tools", id)
     await updateDoc(ref, {
         ratingCount: increment(1),
         totalRating: increment(e.target.value),
-    }) 
+    })
 }
 
-async function handleUserRating(e,id) {
+async function handleUserRating(e, id) {
 
     const ref = doc(firebaseService, "users", id)
     await updateDoc(ref, {
         ratingCount: increment(1),
         totalRating: increment(e.target.value),
-    }) 
+    })
 }
 
 async function handleRentTool(id, address) {
@@ -46,6 +46,7 @@ async function handleRentTool(id, address) {
     await updateDoc(toolRef, {
         available: false
     });
+    openmaps(address)
 }
 
 function openmaps(address) {
@@ -140,7 +141,7 @@ function buildCard(data, id, signedIn) {
             </Box>
             <CardFooter>
                 <HStack spacing='10'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={()=>handleRentTool(data.id,data.address)}>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address)}>
                         {buttonText}
                     </Button>
 
@@ -185,11 +186,11 @@ const Home = () => {
             ref = query(ref, where('type', '==', typeOfAd))
         }
 
-        if (toolCategory){
+        if (toolCategory) {
             ref = query(ref, where('category', '==', toolCategory))
         }
 
-    
+
 
         const unsub = onSnapshot(ref, (snapshot) => {
             const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
