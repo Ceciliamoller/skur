@@ -19,19 +19,33 @@ import {
     VisuallyHidden,
 
 } from '@chakra-ui/react'
-import { collection, onSnapshot, query, where, doc, updateDoc, getDoc } from "firebase/firestore";
-import { firestoreService } from '../../services/firebaseConfig';
+import { collection, onSnapshot, query, where, doc, updateDoc, getDoc, doc, updateDoc, increment } from "firebase/firestore";
+import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
+
+async function handleToolRating(e,id) {
+
+    const ref = doc(firebaseService, "tools", id)
+    await updateDoc(ref, {
+        ratingCount: increment(1),
+        totalRating: increment(e.target.value),
+    }) 
+}
+
+async function handleUserRating(e,id) {
+
+    const ref = doc(firebaseService, "users", id)
+    await updateDoc(ref, {
+        ratingCount: increment(1),
+        totalRating: increment(e.target.value),
+    }) 
+}
 
 async function handleRentTool(id, address) {
     const toolRef = doc(firestoreService, "tools", id);
     await updateDoc(toolRef, {
         available: false
     });
-
-    openmaps(address);
-}
-
 
 function openmaps(address) {
     let urlAddress = address.replace(/\s+/g, '+');
@@ -133,6 +147,8 @@ function buildCard(data, id, signedIn) {
                         <Button>Kontakt eier</Button>
                     </Link>
 
+                    {/* <button value={5} onClick = {(e) => handleRating(e,id,"value")}>Rate her</button> */}
+                    <button value={5} >Rate her</button>
                 </HStack >
             </CardFooter >
         </Card >
