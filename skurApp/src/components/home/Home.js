@@ -178,7 +178,7 @@ const Home = () => {
             setIsSignedIn(true)
         }
 
-        let ref = query(collection(firestoreService, "tools"), where('available', '==', true))
+        let ref = query(collection(firestoreService, "tools"), where('available', '==', true), where('creatorEmail', '!=', currentUser.email))
         //real time update
 
 
