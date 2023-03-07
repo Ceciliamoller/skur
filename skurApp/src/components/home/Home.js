@@ -82,7 +82,8 @@ function buildCard(data, id, signedIn) {
                     <Link isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
                         Kontakt eier
                     </Link>
-                    <button value={5} onClick = {(e) => handleRating(e,id,"value")}>Rate her</button>
+                    {/* <button value={5} onClick = {(e) => handleRating(e,id,"value")}>Rate her</button> */}
+                    <button value={5} >Rate her</button>
                 </ButtonGroup >
             </CardFooter >
         </Card >
