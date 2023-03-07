@@ -125,7 +125,7 @@ function buildCard(data, id, signedIn) {
             </Box>
             <CardFooter>
                 <HStack spacing='10'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id)>
                         {buttonText}
                     </Button>
 
@@ -160,7 +160,7 @@ const Home = () => {
             setIsSignedIn(true)
         }
 
-        let ref = collection(firestoreService, "tools")
+        let ref = query(collection(firestoreService, "tools"), where('available', '==', true))
         //real time update
         console.log('type: ' + typeOfAd);
 
@@ -169,11 +169,11 @@ const Home = () => {
             ref = query(ref, where('type', '==', typeOfAd))
         }
 
-        if (toolCategory) {
+        if (toolCategory){
             ref = query(ref, where('category', '==', toolCategory))
         }
 
-
+    
 
         const unsub = onSnapshot(ref, (snapshot) => {
             const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
