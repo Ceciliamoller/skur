@@ -1,18 +1,13 @@
-
 /tools/{toolID} {
     toolName: string
     price: int
     description: string
     creator: string (uid)
-    cretaorEmail: string
     category: string
     type: string ("request" | "share")
     availible: bool
-    deal: [
-        approved: bool
-        tenant: string (uid)
-        dueDate: date
-    ]
+    rentedby: string
+    address: string
 }
 
 /users/{uid}/ {

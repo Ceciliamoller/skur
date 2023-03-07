@@ -1,17 +1,25 @@
 import './Home.css';
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
+
 import {
     Card,
     CardBody,
     CardFooter,
+    Flex,
     Image,
     Stack,
-    Link,
+    Heading, Text, Divider, Button, Box, Select, VStack, Avatar,
+    Slider,
+    SliderTrack,
+    SliderFilledTrack,
+    SliderThumb,
+    SliderMark,
+    HStack,
+    VisuallyHidden,
 
-    Heading, Text, Divider, ButtonGroup, Button, Box, Select, VStack
 } from '@chakra-ui/react'
-import { ChakraProvider } from '@chakra-ui/react'
-import { collection, onSnapshot, query, where, doc, updateDoc, increment } from "firebase/firestore";
+import { collection, onSnapshot, query, where, doc, updateDoc, getDoc, doc, updateDoc, increment } from "firebase/firestore";
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
@@ -33,7 +41,26 @@ async function handleUserRating(e,id) {
     }) 
 }
 
+async function handleRentTool(id, address) {
+    const toolRef = doc(firestoreService, "tools", id);
+    await updateDoc(toolRef, {
+        available: false
+    });
+
+function openmaps(address) {
+    let urlAddress = address.replace(/\s+/g, '+');
+    let googleMapsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + urlAddress;
+    window.open(googleMapsUrl, '_blank');
+}
+
+
 function buildCard(data, id, signedIn) {
+
+    var toolRating = 0;
+
+    //const creatorData = await getCreatorData(data.creator)
+
+
 
     var imageLink = ("");
     if (data.category === "Hammer") {
@@ -54,6 +81,8 @@ function buildCard(data, id, signedIn) {
         buttonText = "Lei nå"
     }
 
+
+
     return (
         <Card key={id} maxW='xs' padding="5%">
             <CardBody>
@@ -73,18 +102,54 @@ function buildCard(data, id, signedIn) {
                     </Text>
                 </Stack>
             </CardBody>
+            <Link to="/brukersiden">
+                <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+                    <Avatar bg="blue.500" size="sm" src={data.creatorPic}></Avatar>
+                    <Heading size="sm">{data.creatorName ? data.creatorName : "Anonym"}</Heading>
+                </Flex>
+            </Link>
             <Divider />
+            <Box display="none" id="ratingBox" >
+                <Text> Legg igjen rating:</Text>
+
+                <Slider mt="20px" mb="20px" min={1} max={5} aria-label='slider-ex-1' defaultValue={3} onChange={
+                    (val) => {
+                        toolRating = val;
+                    }}>
+                    <SliderMark value={1} mt='1' ml='-2.5' fontSize='sm'>
+                        1
+                    </SliderMark>
+                    <SliderMark value={2} mt='1' ml='-2.5' fontSize='sm'>
+                        2
+                    </SliderMark>
+                    <SliderMark value={3} mt='1' ml='-2.5' fontSize='sm'>
+                        3
+                    </SliderMark>
+                    <SliderMark value={4} mt='1' ml='-2.5' fontSize='sm'>
+                        4
+                    </SliderMark>
+                    <SliderMark value={5} mt='1' ml='-2.5' fontSize='sm'>
+                        5
+                    </SliderMark>
+                    <SliderTrack>
+                        <SliderFilledTrack />
+                    </SliderTrack>
+                    <SliderThumb />
+                </Slider>
+            </Box>
             <CardFooter>
-                <ButtonGroup spacing='2'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
+                <HStack spacing='10'>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={()=>handleRentTool(data.id,data.address)}>
                         {buttonText}
                     </Button>
-                    <Link isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
-                        Kontakt eier
+
+                    <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
+                        <Button>Kontakt eier</Button>
                     </Link>
+
                     {/* <button value={5} onClick = {(e) => handleRating(e,id,"value")}>Rate her</button> */}
                     <button value={5} >Rate her</button>
-                </ButtonGroup >
+                </HStack >
             </CardFooter >
         </Card >
     )
@@ -111,7 +176,7 @@ const Home = () => {
             setIsSignedIn(true)
         }
 
-        let ref = collection(firestoreService, "tools")
+        let ref = query(collection(firestoreService, "tools"), where('available', '==', true))
         //real time update
         console.log('type: ' + typeOfAd);
 
@@ -120,10 +185,11 @@ const Home = () => {
             ref = query(ref, where('type', '==', typeOfAd))
         }
 
-        if (toolCategory) {
+        if (toolCategory){
             ref = query(ref, where('category', '==', toolCategory))
         }
 
+    
 
         const unsub = onSnapshot(ref, (snapshot) => {
             const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
@@ -131,38 +197,37 @@ const Home = () => {
         })
 
         return unsub
-    }, [toolCategory, isSignedIn, typeOfAd])
+    }, [toolCategory, isSignedIn, typeOfAd, currentUser])
 
     if (currentUser) {
         return (
-            <ChakraProvider>
-                <div className="homePage">
-                    <Box id="categories">
-                        <VStack mt="50px" spacing="20px">
-                            <Text fontSize="xl"> Type annonse </Text>
-                            <Select width="200px" placeholder="Alle" value={typeOfAd} onChange={(event) => setTypeOfAd(event.target.value)}>
-                                <option value="share">
-                                    Til utleie
-                                </option>
-                                <option value="request">
-                                    Ønsker å leie
-                                </option>
-                            </Select>
+            <div className="homePage">
+                <Box id="categories">
+                    <VStack mt="50px" spacing="20px">
+                        <Text fontSize="xl"> Type annonse </Text>
+                        <Select width="200px" placeholder="Alle" value={typeOfAd} onChange={(event) => setTypeOfAd(event.target.value)}>
+                            <option value="share">
+                                Til utleie
+                            </option>
+                            <option value="request">
+                                Ønsker å leie
+                            </option>
+                        </Select>
 
-                            <Text fontSize="xl"> Filtrer søk </Text>
-                            <Select width="200px" placeholder="Alle" value={toolCategory} onChange={(event) => setToolCategory(event.target.value)}>
-                                <option value="Hammer">
-                                    Hammer
-                                </option>
-                                <option value="Skrutrekker">
-                                    Skrutrekker
-                                </option>
-                                <option value="Sag">
-                                    Sag
-                                </option>
-                            </Select>
+                        <Text fontSize="xl"> Filtrer søk </Text>
+                        <Select width="200px" placeholder="Alle" value={toolCategory} onChange={(event) => setToolCategory(event.target.value)}>
+                            <option value="Hammer">
+                                Hammer
+                            </option>
+                            <option value="Skrutrekker">
+                                Skrutrekker
+                            </option>
+                            <option value="Sag">
+                                Sag
+                            </option>
+                        </Select>
 
-                            {/*       <Select required width="200px" placeholder="Velg pris" value={priceCategory} onChange={(event) => setPriceCategory(event.target.value)}>
+                        {/*       <Select required width="200px" placeholder="Velg pris" value={priceCategory} onChange={(event) => setPriceCategory(event.target.value)}>
                                 <option value="<100">
                                     Under 100 kr
                                 </option>
@@ -182,20 +247,19 @@ const Home = () => {
                                     Leie ut
                                 </option>
                             </Select>  */}
-                        </VStack >
+                    </VStack >
 
-                    </Box >
-                    <Box id="tools" mt="50px">
-                        {
-                            // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
-                            // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
-                            tools?.map((data, id) => (
-                                buildCard(data, id, isSignedIn)
-                            ))
-                        }
-                    </Box>
-                </div >
-            </ChakraProvider >
+                </Box >
+                <Box id="tools" mt="50px">
+                    {
+                        // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
+                        // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
+                        tools?.map((data, id) => (
+                            buildCard(data, id, isSignedIn)
+                        ))
+                    }
+                </Box>
+            </div >
         )
     }
 
