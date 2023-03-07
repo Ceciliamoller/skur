@@ -51,7 +51,8 @@ export default function CreateTools() {
                 creatorName: currentUser.displayName,
                 creatorPic: currentUser.photoURL,
                 available: true,
-                address: newAddress
+                address: newAddress,
+                rentedBy: null
             });
             navigate('/mineannonser');
             console.log("Document written with ID: ", docRef.id);

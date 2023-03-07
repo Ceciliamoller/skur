@@ -23,10 +23,11 @@ import { collection, onSnapshot, query, where, doc, updateDoc, getDoc } from "fi
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
-async function handleRentTool(id, address) {
+async function handleRentTool(id, address, user) {
     const toolRef = doc(firestoreService, "tools", id);
     await updateDoc(toolRef, {
-        available: false
+        available: false,
+        rentedBy: user
     });
 
     openmaps(address);
@@ -40,7 +41,7 @@ function openmaps(address) {
 }
 
 
-function buildCard(data, id, signedIn) {
+function buildCard(data, id, signedIn, currentUser) {
 
     var toolRating = 0;
 
@@ -125,7 +126,7 @@ function buildCard(data, id, signedIn) {
             </Box>
             <CardFooter>
                 <HStack spacing='10'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={()=>handleRentTool(data.id,data.address)}>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={()=>handleRentTool(data.id,data.address,currentUser.email)}>
                         {buttonText}
                     </Button>
 
@@ -134,7 +135,7 @@ function buildCard(data, id, signedIn) {
                     </Link>
 
                 </HStack >
-            </CardFooter >
+            </CardFooter>
         </Card >
     )
 }
@@ -142,7 +143,7 @@ function buildCard(data, id, signedIn) {
 
 const Home = () => {
 
-    const { currentUser } = useAuthValue()
+    const { currentUser } = useAuthValue();
 
     const [tools, setTools] = useState([]);
     const [toolCategory, setToolCategory] = useState(null);
@@ -239,7 +240,7 @@ const Home = () => {
                         // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
                         // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
                         tools?.map((data, id) => (
-                            buildCard(data, id, isSignedIn)
+                            buildCard(data, id, isSignedIn, currentUser)
                         ))
                     }
                 </Box>
