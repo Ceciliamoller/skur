@@ -1,15 +1,23 @@
 import {
-    Avatar, Box, Button, Container, Card, Divider, ButtonGroup, Stack, CardFooter, Text, CardHeader, CardBody, Flex, Heading, Slider, ChakraProvider, WrapItem, Wrap, VStack, SliderTrack,
+    Avatar, Box, Button, Container, Flex, Heading, Slider, WrapItem, Wrap, VStack, SliderTrack,
     SliderFilledTrack,
     SliderThumb,
-    SliderMark, Image
+    SliderMark
 } from "@chakra-ui/react";
 import { React, useState } from "react";
 import './user.css';
 import { MdEmail } from 'react-icons/md';
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { getDoc, doc } from "firebase/firestore";
+import { firestoreService } from '../../services/firebaseConfig';
+
 
 function User() {
+
+    const { uid } = useParams();
+
+    //FIXME: .data is not a function
+    const userData = getDoc(doc(firestoreService, "users", uid)).data()
 
 
 
@@ -34,7 +42,7 @@ function User() {
                             <WrapItem>
                                 <VStack py={{ base: 5, sm: 5, md: 8, lg: 10 }}>
                                     <Avatar bg="blue.200" ></Avatar>
-                                    <Heading size='md'>Navn</Heading>
+                                    <Heading size='md'>{userData.name}</Heading>
                                     {/* <Text mt={{ sm: 3, md: 3, lg: 5 }} color="white"></Text> */}
                                     <Button
                                         size="md"
@@ -69,7 +77,7 @@ function User() {
                 </Flex>
             </Container>
 
-            <Box id="userAddsAndHistory" maxW="full" mt={0} centerContent overflow="hidden" ml="10%">
+            <Box id="userAdsAndHistory" maxW="full" mt={0} centerContent overflow="hidden" ml="10%">
                 {/* <Card key={id} maxW='xs' padding="5%">
                         <CardBody>
                             <Image

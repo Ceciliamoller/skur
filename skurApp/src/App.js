@@ -63,7 +63,7 @@ function App() {
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/tool" element={<CreateTools />} />
           <Route path="/mineannonser" element={<MyTools />} />
-          <Route path="/brukersiden" element={<User />} />
+          <Route path="/user/:uid" element={<User />} />
 
         </Routes>
       </AuthService>

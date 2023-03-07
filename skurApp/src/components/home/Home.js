@@ -19,20 +19,35 @@ import {
     VisuallyHidden,
 
 } from '@chakra-ui/react'
-import { collection, onSnapshot, query, where, doc, updateDoc, getDoc } from "firebase/firestore";
-import { firestoreService } from '../../services/firebaseConfig';
+import { collection, onSnapshot, query, where, doc, updateDoc, increment } from "firebase/firestore";
+import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
-async function handleRentTool(id, address, user) {
-    const toolRef = doc(firestoreService, "tools", id);
-    await updateDoc(toolRef, {
-        available: false,
-        rentedBy: user
-    });
+async function handleToolRating(e, id) {
 
-    openmaps(address);
+    const ref = doc(firebaseService, "tools", id)
+    await updateDoc(ref, {
+        ratingCount: increment(1),
+        totalRating: increment(e.target.value),
+    })
 }
 
+async function handleUserRating(e, id) {
+
+    const ref = doc(firebaseService, "users", id)
+    await updateDoc(ref, {
+        ratingCount: increment(1),
+        totalRating: increment(e.target.value),
+    })
+}
+
+async function handleRentTool(id, address) {
+    const toolRef = doc(firestoreService, "tools", id);
+    await updateDoc(toolRef, {
+        available: false
+    });
+    openmaps(address)
+}
 
 function openmaps(address) {
     let urlAddress = address.replace(/\s+/g, '+');
@@ -89,7 +104,7 @@ function buildCard(data, id, signedIn, currentUser) {
                     </Text>
                 </Stack>
             </CardBody>
-            <Link to="/brukersiden">
+            <Link to={`/user/${data.creator}`}>
                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                     <Avatar bg="blue.500" size="sm" src={data.creatorPic}></Avatar>
                     <Heading size="sm">{data.creatorName ? data.creatorName : "Anonym"}</Heading>
@@ -126,7 +141,7 @@ function buildCard(data, id, signedIn, currentUser) {
             </Box>
             <CardFooter>
                 <HStack spacing='10'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={()=>handleRentTool(data.id,data.address,currentUser.email)}>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address, currentUser.email)}>
                         {buttonText}
                     </Button>
 
@@ -134,8 +149,10 @@ function buildCard(data, id, signedIn, currentUser) {
                         <Button>Kontakt eier</Button>
                     </Link>
 
+                    {/* <button value={5} onClick = {(e) => handleRating(e,id,"value")}>Rate her</button> */}
+                    <button value={5} >Rate her</button>
                 </HStack >
-            </CardFooter>
+            </CardFooter >
         </Card >
     )
 }
@@ -143,7 +160,7 @@ function buildCard(data, id, signedIn, currentUser) {
 
 const Home = () => {
 
-    const { currentUser } = useAuthValue();
+    const { currentUser } = useAuthValue()
 
     const [tools, setTools] = useState([]);
     const [toolCategory, setToolCategory] = useState(null);
@@ -163,18 +180,17 @@ const Home = () => {
 
         let ref = query(collection(firestoreService, "tools"), where('available', '==', true))
         //real time update
-        console.log('type: ' + typeOfAd);
 
 
         if (typeOfAd) {
             ref = query(ref, where('type', '==', typeOfAd))
         }
 
-        if (toolCategory){
+        if (toolCategory) {
             ref = query(ref, where('category', '==', toolCategory))
         }
 
-    
+
 
         const unsub = onSnapshot(ref, (snapshot) => {
             const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
