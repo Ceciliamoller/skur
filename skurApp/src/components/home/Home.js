@@ -162,7 +162,6 @@ const Home = () => {
 
         let ref = collection(firestoreService, "tools")
         //real time update
-        console.log('type: ' + typeOfAd);
 
 
         if (typeOfAd) {
