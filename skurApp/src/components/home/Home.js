@@ -179,7 +179,6 @@ const Home = () => {
 
         let ref = query(collection(firestoreService, "tools"), where('available', '==', true))
         //real time update
-        console.log('type: ' + typeOfAd);
 
 
         if (typeOfAd) {
