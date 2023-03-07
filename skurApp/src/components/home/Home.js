@@ -20,7 +20,7 @@ async function handleRentTool(id) {
     await updateDoc(toolRef, {
       available: false
     });
-
+    
   }
 
 
@@ -69,7 +69,7 @@ function buildCard(data, id, signedIn) {
             <Divider />
             <CardFooter>
                 <ButtonGroup spacing='2'>
-                    <Button isDisabled={false} id="rentBtn" variant='solid' colorScheme='blue' value="rentTool" onClick={() => handleRentTool(data.id)}>
+                    <Button isDisabled={false} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id)}>
                         {buttonText}
                     </Button>
                     <Link isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
@@ -102,7 +102,7 @@ const Home = () => {
             setIsSignedIn(true)
         }
 
-        let ref = collection(firestoreService, "tools")
+        let ref = query(collection(firestoreService, "tools"), where('available', '==', true))
         //real time update
         
 
@@ -110,9 +110,7 @@ const Home = () => {
             ref = query(ref, where('category', '==', toolCategory))
         }
 
-        if ("rentTool"){
-            ref = query(ref, where('available', '==', true, "AND", 'category', '==', toolCategory))
-        }
+    
 
         const unsub = onSnapshot(ref, (snapshot) => {
             const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
