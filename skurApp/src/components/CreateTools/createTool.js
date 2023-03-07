@@ -48,6 +48,9 @@ export default function CreateTools() {
                 category: toolCategory,
                 creator: currentUser.uid,
                 creatorEmail: currentUser.email,
+                ratingCount: 0,
+                totalRating: 0,
+                toolRating: 0
                 creatorName: currentUser.displayName,
                 creatorPic: currentUser.photoURL,
                 available: true,
