@@ -52,7 +52,8 @@ export default function CreateTools() {
                 creatorPic: currentUser.photoURL,
                 available: true,
                 address: newAddress,
-                rentedBy: null
+                rentedBy: null,
+                history: []
             });
             navigate('/mineannonser');
         } catch (e) {

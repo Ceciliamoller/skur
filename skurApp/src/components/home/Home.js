@@ -19,7 +19,7 @@ import {
     VisuallyHidden,
 
 } from '@chakra-ui/react'
-import { collection, onSnapshot, query, where, doc, updateDoc, increment } from "firebase/firestore";
+import { collection, onSnapshot, query, where, doc, updateDoc, increment, arrayUnion } from "firebase/firestore";
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
@@ -41,11 +41,14 @@ async function handleUserRating(e, id) {
     })
 }
 
-async function handleRentTool(id, address) {
+async function handleRentTool(id, address, uid) {
     const toolRef = doc(firestoreService, "tools", id);
     await updateDoc(toolRef, {
         available: false
     });
+    await updateDoc(doc(firestoreService, 'users', uid), {
+        history: arrayUnion(id)
+    })
     openmaps(address)
 }
 
@@ -150,7 +153,6 @@ function buildCard(data, id, signedIn, currentUser) {
                     </Link>
 
                     {/* <button value={5} onClick = {(e) => handleRating(e,id,"value")}>Rate her</button> */}
-                    <button value={5} >Rate her</button>
                 </HStack >
             </CardFooter >
         </Card >

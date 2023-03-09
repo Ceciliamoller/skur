@@ -2,21 +2,25 @@ import {
     Avatar, Box, Button, CardBody, Stack, HStack, Image, CardFooter, Text, Link, Divider, Flex, Heading, Slider, WrapItem, Wrap, VStack, SliderTrack, Card,
     SliderFilledTrack,
     SliderThumb,
-    SliderMark
+    SliderMark,
+    Center
 } from "@chakra-ui/react";
 import { React, useEffect, useState } from "react";
 import './user.css';
 import { MdEmail } from 'react-icons/md';
 import { useParams } from "react-router-dom";
-import { getDoc, doc, query, collection, where, onSnapshot, updateDoc } from "firebase/firestore";
+import { getDoc, doc, query, collection, where, onSnapshot, updateDoc, documentId, arrayUnion } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from "../../services/AuthService";
 
-async function handleRentTool(id, address) {
+async function handleRentTool(id, address, uid) {
     const toolRef = doc(firestoreService, "tools", id);
     await updateDoc(toolRef, {
         available: false
     });
+    await updateDoc(doc(firestoreService, 'users', uid), {
+        history: arrayUnion(id)
+    })
     openmaps(address)
 }
 
@@ -27,7 +31,7 @@ function openmaps(address) {
 }
 
 
-function buildCard(data, id, currentUser) {
+function buildCard(data, id, currentUser, isMyUser) {
 
     var toolRating = 0;
 
@@ -112,23 +116,21 @@ function buildCard(data, id, currentUser) {
             </Box>
             <CardFooter>
                 <HStack spacing='10'>
-                    <Button id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address, currentUser.email)}>
+                    {!isMyUser ? <Button id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address, currentUser.email, currentUser.uid)}>
                         {buttonText}
-                    </Button>
+                    </Button> : null
+                    }
 
                     <Link className='chakra-button' href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
                         <Button>Kontakt eier</Button>
                     </Link>
 
                     {/* <button value={5} onClick = {(e) => handleRating(e,id,"value")}>Rate her</button> */}
-                    <button value={5} >Rate her</button>
                 </HStack >
             </CardFooter >
         </Card >
     )
 }
-
-
 
 function User() {
 
@@ -139,39 +141,51 @@ function User() {
     const [tools, setTools] = useState([]);
 
 
-
-
     useEffect(() => {
 
-        let ref = query(collection(firestoreService, "tools"), where('creator', '==', uid))
-
-        const unsub = onSnapshot(ref, (snapshot) => {
-            const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-            setTools(newData);
-        })
-
-
-
-
-        if (currentUser.uid === uid) {
-            setMyUser(true)
-        }
-
-        const fetchData = async () => {
+        const fetchUserData = async () => {
             try {
                 await getDoc(doc(firestoreService, "users", uid)).then((snap) => {
 
                     setUserData(snap.data())
 
                 })
+                if (userData) {
+
+
+                    let ref = collection(firestoreService, "tools")
+
+                    console.log({ userData });
+
+                    if (currentUser.uid === uid) {
+                        setMyUser(true)
+
+                        ref = query(ref, where(documentId(), 'in', userData.history))
+                    } else {
+
+                        ref = query(ref, where('creator', '==', uid))
+                    }
+                    const unsub = onSnapshot(ref, (snapshot) => {
+                        if (snapshot) {
+
+                            const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+                            setTools(newData);
+                        }
+                    })
+
+                    return unsub
+                }
+
             } catch (e) {
                 console.log('ERROR ', e);
 
             }
         }
 
-        fetchData();
-        return unsub
+        fetchUserData();
+        console.log('Hello ', userData);
+
+
 
 
     }, [uid, myUser, currentUser])
@@ -236,17 +250,17 @@ function User() {
                         
                     </Box>
                 </Flex>
-                    <Heading ml="5%" mb={30} mt={70} size='md'>{myUser ? "LeieHistorikk" : `${userData.name} sine annonser`}</Heading>
-                    <Box id="userAdsAndHistory" maxW="full" mt={0} centerContent overflow="hidden" ml="5%">
-                        {
-                        tools?.map((data, id) => (
-                        buildCard(data, id, currentUser)
-                        ))
-                        }
-
-                    </Box>
             </Card>
-            
+            <Heading ml="5%" mb={30} mt={70} size='md'>{myUser ? "Historikk" : `${userData.name} sine annonser`}</Heading>
+            {Object.keys(tools).length !== 0 ? <Box id="userAdsAndHistory" maxW="full" mt={0} centerContent overflow="hidden" ml="10%">
+                {
+                    tools?.map((data, id) => (
+                        buildCard(data, id, currentUser, myUser)
+                    ))
+                }
+
+            </Box> : <Center><Heading size="md">Ingen verktøy å vise</Heading></Center>
+            }
         </>
 
 

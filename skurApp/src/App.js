@@ -50,7 +50,8 @@ function App() {
             </IconButton>,
             <Link className='navoption' to="/tool"> Ny annonse </Link>,
             <Link className='navoption' to="/mineannonser"> Mine annonser </Link>,
-            <Link className='navoption' to="/"> Mine samlinger </Link>
+            <Link className='navoption' to="/"> Mine samlinger </Link>,
+            <Link className='navoption' to={`/user/${currentUser.uid}`}> Min Profil </Link>
           ]
           }
 
