@@ -59,11 +59,10 @@ function openmaps(address) {
 function buildCard(data, id, signedIn) {
 
     var toolRating = 0;
-    var toolVisibility="true";
-    var ratingVisibility="none";
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    //const [ratingVisibility, setRatingVisibility] =useState(true)
+
     //const creatorData = await getCreatorData(data.creator)
+
+
 
     var imageLink = ("");
     if (data.category === "Hammer") {
@@ -73,7 +72,7 @@ function buildCard(data, id, signedIn) {
         imageLink = 'https://cdn.pixabay.com/photo/2012/04/13/21/06/screwdriver-33634__480.png'
     }
     else {
-        imageLink = 'https://cdn-icons-png.flaticon.com/512/3417/3417080.png'
+        imageLink = 'https://m.media-amazon.com/images/I/71ecpTA4rwL.jpg'
     }
 
     var buttonText = ("");
@@ -83,6 +82,7 @@ function buildCard(data, id, signedIn) {
     else {
         buttonText = "Lei nå"
     }
+
 
 
     return (
@@ -111,8 +111,8 @@ function buildCard(data, id, signedIn) {
                 </Flex>
             </Link>
             <Divider />
-            <Box display={ratingVisibility} id="ratingBox" >
-                <Text mt="20px"> Legg igjen rating:</Text>
+            <Box display="none" id="ratingBox" >
+                <Text> Legg igjen rating:</Text>
 
                 <Slider mt="20px" mb="20px" min={1} max={5} aria-label='slider-ex-1' defaultValue={3} onChange={
                     (val) => {
@@ -140,18 +140,14 @@ function buildCard(data, id, signedIn) {
                 </Slider>
             </Box>
             <CardFooter>
-                <Button display={ratingVisibility} variant='solid' colorScheme='blue'> Lagre rating </Button>
-                <HStack display={toolVisibility} spacing='10'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
+                <HStack spacing='10'>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address)}>
                         {buttonText}
                     </Button>
 
                     <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
                         <Button>Kontakt eier</Button>
                     </Link>
-
-                    {/* <button value={5} onClick = {(e) => handleRating(e,id,"value")}>Rate her</button> */}
-                    <button value={5} >Rate her</button>
                 </HStack >
             </CardFooter >
         </Card >
@@ -171,13 +167,17 @@ const Home = () => {
     const [typeOfAd, setTypeOfAd] = useState(null);
 
 
+
+
     useEffect(() => {
+        let ref = query(collection(firestoreService, "tools"), where('available', '==', true))
 
         if (currentUser) {
             setIsSignedIn(true)
+            ref = query(ref, where('creatorEmail', '!=', currentUser.email))
+
         }
 
-        let ref = query(collection(firestoreService, "tools"), where('available', '==', true), where('creatorEmail', '!=', currentUser ? currentUser.email : null))
         //real time update
 
 
@@ -189,6 +189,8 @@ const Home = () => {
             ref = query(ref, where('category', '==', toolCategory))
         }
 
+
+
         const unsub = onSnapshot(ref, (snapshot) => {
             const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
             setTools(newData);
@@ -199,12 +201,8 @@ const Home = () => {
 
     if (currentUser) {
         return (
-
-            
-            <div  className="homePage">
-
-                
-                <Box  id="categories">
+            <div className="homePage">
+                <Box id="categories">
                     <VStack mt="50px" spacing="20px">
                         <Text fontSize="xl"> Type annonse </Text>
                         <Select width="200px" placeholder="Alle" value={typeOfAd} onChange={(event) => setTypeOfAd(event.target.value)}>
