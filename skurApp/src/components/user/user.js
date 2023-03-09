@@ -1,10 +1,10 @@
 import {
-    Avatar, Box, Button, Container, Flex, Heading, Slider, WrapItem, Wrap, VStack, SliderTrack,
+    Avatar, Box, Button, Container, Flex, Heading, Slider, WrapItem, Wrap, VStack, SliderTrack, Card,
     SliderFilledTrack,
     SliderThumb,
     SliderMark
 } from "@chakra-ui/react";
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import './user.css';
 import { MdEmail } from 'react-icons/md';
 import { useParams } from "react-router-dom";
@@ -12,12 +12,37 @@ import { getDoc, doc } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 
 
+
+
+
+
 function User() {
 
     const { uid } = useParams();
+    const [userData, setUserData] = useState([])
 
-    //FIXME: .data is not a function
-    const userData = getDoc(doc(firestoreService, "users", uid)).data()
+
+
+    useEffect(() => {
+        console.log('Hello from useEffect');
+
+
+        const fetchData = async () => {
+            try {
+                await getDoc(doc(firestoreService, "users", uid)).then((snap) => {
+
+                    setUserData(snap.data())
+
+                })
+            } catch (e) {
+                console.log('ERROR ', e);
+
+            }
+        }
+
+        fetchData();
+
+    }, [uid])
 
 
 
@@ -31,17 +56,16 @@ function User() {
 
     return (
         <>
-            <Container maxW="full" mt={0} centerContent overflow="hidden">
+            <Card maxW="full" mt={0} centerContent overflow="hidden">
                 <Flex>
-                    <Box bg="blue.500"
-                        color="white"
+                    <Box
                         borderRadius="lg"
-                        m={{ sm: 4, md: 16, lg: 10 }}
-                        p={{ sm: 5, md: 5, lg: 16 }}>
+                        m={{ sm: 4, lg: 10 }}
+                    >
                         <Wrap spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}>
                             <WrapItem>
                                 <VStack py={{ base: 5, sm: 5, md: 8, lg: 10 }}>
-                                    <Avatar bg="blue.200" ></Avatar>
+                                    <Avatar bg="blue.200" src={userData.photo}></Avatar>
                                     <Heading size='md'>{userData.name}</Heading>
                                     {/* <Text mt={{ sm: 3, md: 3, lg: 5 }} color="white"></Text> */}
                                     <Button
@@ -49,10 +73,9 @@ function User() {
                                         height="48px"
                                         width="200px"
                                         variant="ghost"
-                                        color="#DCE2FF"
                                         _hover={{ border: '2px solid #1C6FEB' }}
-                                        leftIcon={<MdEmail color="#1970F1" size="20px" />}>
-                                        email til bruker
+                                        leftIcon={<MdEmail size="20px" />}>
+                                        Email til bruker
                                     </Button>
                                 </VStack>
                             </WrapItem>
@@ -75,7 +98,7 @@ function User() {
                         </Slider>
                     </Box>
                 </Flex>
-            </Container>
+            </Card>
 
             <Box id="userAdsAndHistory" maxW="full" mt={0} centerContent overflow="hidden" ml="10%">
                 {/* <Card key={id} maxW='xs' padding="5%">

@@ -55,7 +55,6 @@ export default function CreateTools() {
                 rentedBy: null
             });
             navigate('/mineannonser');
-            console.log("Document written with ID: ", docRef.id);
         } catch (e) {
             console.error("Error adding document: ", e);
         }
