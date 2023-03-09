@@ -1,9 +1,5 @@
 import {
-<<<<<<< HEAD
-    Avatar, Box, Button, Container, Flex, Heading, Slider, WrapItem, Wrap, VStack, HStack, SliderTrack, Card,
-=======
     Avatar, Box, Button, CardBody, Stack, HStack, Image, CardFooter, Text, Link, Divider, Flex, Heading, Slider, WrapItem, Wrap, VStack, SliderTrack, Card,
->>>>>>> 3d2fec7f540f84b7365b1979bb4c8b3288a3b274
     SliderFilledTrack,
     SliderThumb,
     SliderMark
@@ -196,58 +192,61 @@ function User() {
                 <Flex>
                     <Box
                         borderRadius="lg"
-                        h={600}
+                        h="100%"
                         ml={50}                     
                     >
-                        <Wrap spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}>
+                        <Wrap  spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}>
                             <WrapItem>
-                                <VStack py={{ base: 5, sm: 5, md: 8, lg: 10 }} mt={30} >
-                                    <HStack spacing="75px" mb={50}>
-                                    <Avatar bg="blue.200" src={userData.photo}></Avatar>
-                                    <Heading size='md'>{userData.name}</Heading>
-                                    </HStack>
-            
-                                    {/* <Text mt={{ sm: 3, md: 3, lg: 5 }} color="white"></Text> */}
-                                    <Button
-                                        size="md"
-                                        height="48px"
-                                        width="200px"
-                                        variant="ghost"
-                                        _hover={{ border: '2px solid #1C6FEB' }}
-                                        leftIcon={<MdEmail size="20px" />}>
-                                        Email til bruker
-                                    </Button>
-                                </VStack>
+                                <HStack ml="5%" spacing={400} pr={40}>
+                                    <VStack py={{ base: 13, sm: 5, md: 8, lg: 10 }} spacing={6}> 
+                                    <Avatar size='xl' bg="blue.200" src={userData.photo}></Avatar>
+                                    <Slider aria-label='slider-ex-6' onChange={(val) => setSliderValue(val)} min={1} max={5} colorScheme='green'>
+                                            <SliderMark
+                                                value={sliderValue}
+                                                textAlign='center'
+                                                color='white'
+                                                mt='-10'
+                                                ml='-5'
+                                                w='12'
+                                            >
+                                                {/* {sliderValue} HER LEGGER VI INN GJENNOMSNITT */}
+                                            </SliderMark>
+                                            <SliderTrack>
+                                                <SliderFilledTrack />
+                                            </SliderTrack>
+                                            <SliderThumb />
+                                        </Slider>
+                                        </VStack>
+                                    <VStack align="left" py={{ base: 5, sm: 5, md: 8, lg: 10 }} spacing={6} pr={150}>                               
+                                        <Heading size='lg' pr={150}> {userData.name}</Heading>
+                                        {/* <Text mt={{ sm: 3, md: 3, lg: 5 }} color="white"></Text> */}
+                                        <Button
+                                            size="md"
+                                            height="48px"
+                                            width="200px"
+                                            variant="ghost"
+                                            _hover={{ border: '2px solid #1C6FEB' }}
+                                            leftIcon={<MdEmail size="20px" />}>
+                                            Email til bruker
+                                        </Button>
+                                    </VStack>
+                                </HStack>
                             </WrapItem>
                         </Wrap>
-                        <Slider aria-label='slider-ex-6' onChange={(val) => setSliderValue(val)} min={1} max={5} colorScheme='green'>
-                            <SliderMark
-                                value={sliderValue}
-                                textAlign='center'
-                                color='white'
-                                mt='-10'
-                                ml='-5'
-                                w='12'
-                            >
-                                {/* {sliderValue} HER LEGGER VI INN GJENNOMSNITT */}
-                            </SliderMark>
-                            <SliderTrack>
-                                <SliderFilledTrack />
-                            </SliderTrack>
-                            <SliderThumb />
-                        </Slider>
+                        
                     </Box>
                 </Flex>
-            </Card>
-            <Heading>{myUser ? "LeieHistorikk" : `${userData.name} sine annonser`}</Heading>
-            <Box id="userAdsAndHistory" maxW="full" mt={0} centerContent overflow="hidden" ml="10%">
-                {
-                    tools?.map((data, id) => (
+                    <Heading ml="5%" mb={30} mt={70} size='md'>{myUser ? "LeieHistorikk" : `${userData.name} sine annonser`}</Heading>
+                    <Box id="userAdsAndHistory" maxW="full" mt={0} centerContent overflow="hidden" ml="5%">
+                        {
+                        tools?.map((data, id) => (
                         buildCard(data, id, currentUser)
-                    ))
-                }
+                        ))
+                        }
 
-            </Box>
+                    </Box>
+            </Card>
+            
         </>
 
 
