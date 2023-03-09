@@ -1,5 +1,9 @@
 import {
+<<<<<<< HEAD
+    Avatar, Box, Button, Container, Flex, Heading, Slider, WrapItem, Wrap, VStack, HStack, SliderTrack, Card,
+=======
     Avatar, Box, Button, CardBody, Stack, HStack, Image, CardFooter, Text, Link, Divider, Flex, Heading, Slider, WrapItem, Wrap, VStack, SliderTrack, Card,
+>>>>>>> 3d2fec7f540f84b7365b1979bb4c8b3288a3b274
     SliderFilledTrack,
     SliderThumb,
     SliderMark,
@@ -206,13 +210,17 @@ function User() {
                 <Flex>
                     <Box
                         borderRadius="lg"
-                        m={{ sm: 4, lg: 10 }}
+                        h={600}
+                        ml={50}                     
                     >
                         <Wrap spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}>
                             <WrapItem>
-                                <VStack py={{ base: 5, sm: 5, md: 8, lg: 10 }}>
+                                <VStack py={{ base: 5, sm: 5, md: 8, lg: 10 }} mt={30} >
+                                    <HStack spacing="75px" mb={50}>
                                     <Avatar bg="blue.200" src={userData.photo}></Avatar>
                                     <Heading size='md'>{userData.name}</Heading>
+                                    </HStack>
+            
                                     {/* <Text mt={{ sm: 3, md: 3, lg: 5 }} color="white"></Text> */}
                                     <Button
                                         size="md"
