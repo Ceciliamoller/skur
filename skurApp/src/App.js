@@ -1,6 +1,6 @@
 import './App.css';
 import CreateTools from './components/CreateTools/createTool'
-import { ChakraProvider, Button, useColorMode, toggleColorMode, IconButton } from '@chakra-ui/react'
+import { ChakraProvider, Button, useColorMode, toggleColorMode, IconButton, Avatar } from '@chakra-ui/react'
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./components/home/Home";
@@ -11,6 +11,7 @@ import SignUp from './components/login/signUp';
 import User from './components/user/user';
 import { AuthService } from './services/AuthService'
 import { SunIcon, MoonIcon } from '@chakra-ui/icons'
+import MyCollection from './components/collections/MyCollection';
 
 
 function App() {
@@ -44,13 +45,14 @@ function App() {
             </Link>
 
           ) : [
-
+            
             <Button className='navoption' colorScheme="blue" id="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button>,
+            <Link className='navoption' to="/brukersiden"> <Avatar bg="blue.500" size="sm"></Avatar></Link>,
             <IconButton className='navoption' icon={colorMode === 'dark' ? <SunIcon /> : <MoonIcon />} size='md' onClick={toggleColorMode}>
             </IconButton>,
             <Link className='navoption' to="/tool"> Ny annonse </Link>,
             <Link className='navoption' to="/mineannonser"> Mine annonser </Link>,
-            <Link className='navoption' to="/"> Mine samlinger </Link>
+            <Link className='navoption' to="/samlinger"> Mine samlinger </Link>
           ]
           }
 
@@ -64,6 +66,7 @@ function App() {
           <Route path="/tool" element={<CreateTools />} />
           <Route path="/mineannonser" element={<MyTools />} />
           <Route path="/brukersiden" element={<User />} />
+          <Route path="/samlinger" element={<MyCollection />} />
 
         </Routes>
       </AuthService>

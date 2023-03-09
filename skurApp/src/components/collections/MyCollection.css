@@ -1,0 +1,9 @@
+.collectionPage{
+    margin: 5%;
+}
+.myCollections{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-right: 10%;
+}
+

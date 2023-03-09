@@ -1,6 +1,7 @@
 import './Home.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+import {AiOutlineStar} from "react-icons/ai";
 
 import {
     Card,
@@ -17,6 +18,7 @@ import {
     SliderMark,
     HStack,
     VisuallyHidden,
+    IconButton,
 
 } from '@chakra-ui/react'
 import { collection, onSnapshot, query, where, doc, updateDoc, getDoc, increment } from "firebase/firestore";
@@ -87,6 +89,9 @@ function buildCard(data, id, signedIn) {
 
     return (
         <Card key={id} maxW='xs' padding="5%">
+            <IconButton ml="85%" colorScheme='white' color="blue.500" icon={<AiOutlineStar size="35px"/> } />
+            {/* En pop-up hvor man legger til annonsen i en liste man har laget tidligere eller lage en ny en
+            Muligens legge til slik at hvis brukeren har lagret annonsen så vil stjernen fylles inn: AiFillStar*/}
             <CardBody>
                 <Image
                     src={imageLink}
