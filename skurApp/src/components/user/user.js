@@ -119,7 +119,7 @@ function buildCard(data, id, currentUser, isMyUser, isRented) {
             <CardFooter>
                 <HStack>
                     {!isMyUser ? <Button variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address, currentUser.uid)}>
-                        Kontakt
+                        Lei nå
                     </Button> :
 
                         <div>
