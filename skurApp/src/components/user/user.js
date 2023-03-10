@@ -9,7 +9,7 @@ import { React, useEffect, useState } from "react";
 import './user.css';
 import { MdEmail } from 'react-icons/md';
 import { useParams } from "react-router-dom";
-import { getDoc, doc, query, collection, where, onSnapshot, updateDoc, documentId, arrayUnion } from "firebase/firestore";
+import { getDoc, doc, query, collection, where, onSnapshot, updateDoc, arrayUnion } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from "../../services/AuthService";
 
@@ -25,6 +25,14 @@ async function handleRentTool(id, address, uid) {
     openmaps(address)
 }
 
+async function handleDeliverTool(id) {
+    const toolRef = doc(firestoreService, "tools", id);
+    await updateDoc(toolRef, {
+        available: true,
+        rentedBy: null
+    });
+}
+
 function openmaps(address) {
     let urlAddress = address.replace(/\s+/g, '+');
     let googleMapsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + urlAddress;
@@ -32,7 +40,7 @@ function openmaps(address) {
 }
 
 
-function buildCard(data, id, currentUser, isMyUser) {
+function buildCard(data, id, currentUser, isMyUser, isRented) {
 
     var toolRating = 0;
 
@@ -117,9 +125,20 @@ function buildCard(data, id, currentUser, isMyUser) {
             </Box>
             <CardFooter>
                 <HStack spacing='10'>
-                    {!isMyUser ? <Button id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address, currentUser.uid)}>
+                    {!isMyUser ? <Button variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address, currentUser.uid)}>
                         {buttonText}
-                    </Button> : null
+                    </Button> :
+
+                        <div>
+                            {
+                                isRented ? <Button variant='solid' colorScheme='blue' onClick={() => handleDeliverTool(data.id)}>
+                                    Returner
+                                </Button> :
+                                    null
+                            }
+
+                        </div>
+
                     }
 
                     <Link className='chakra-button' href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
@@ -201,7 +220,7 @@ function User() {
 
 
 
-    }, [uid, myUser, currentUser,])
+    }, [uid, myUser, currentUser])
 
 
 
@@ -272,7 +291,7 @@ function User() {
                                     <div id="toolsIown">
                                         {
                                             tools?.map((data, id) => (
-                                                buildCard(data, id, currentUser, myUser)
+                                                buildCard(data, id, currentUser, myUser, true)
                                             ))
                                         }
                                     </div>
@@ -282,7 +301,7 @@ function User() {
                                     <div id="request">
                                         {
                                             rentedTools?.map((data, id) => (
-                                                buildCard(data, id, currentUser, myUser)
+                                                buildCard(data, id, currentUser, myUser, false)
                                             ))
                                         }
 
@@ -291,7 +310,7 @@ function User() {
                             </div> : <div>
                                 {
                                     tools?.map((data, id) => (
-                                        buildCard(data, id, currentUser, myUser)
+                                        buildCard(data, id, currentUser, myUser, null)
                                     ))
                                 }
                             </div>
