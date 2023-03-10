@@ -8,6 +8,7 @@
     availible: bool
     rentedby: string
     address: string
+    ratings: list[(String, float)]
 }
 
 /users/{uid}/ {
