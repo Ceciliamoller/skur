@@ -30,25 +30,26 @@ async function getRatingAvg(ratings){
     for (let i = 0; i < ratings.length; i++){
         cumulativeRating += ratings[i][1];
     }
-    return cumulativeRating/length(ratings);
+    return cumulativeRating/ratings.length;
 }
 
-async function handleToolRating(e,id) {
-    //get the tool using id
-    const ref = doc(firebaseService, "tools", id)
+async function handleToolRating(e,tool,currentUser) {
     //get the rating from event e
     const rating = e.target.value;
+    //get the tool reference
+    const toolRef = doc(firestoreService, "tools", id);
+    
     //add the rating to the list as a tuple (userID, rating) or change if user has already rated
     let find=1;
     for (let i=0; i<tool.ratings.length; i++){
-        if (tool.ratings[i][0] === user.id){
+        if (tool.ratings[i][0] === currentUser.id){
             tool.ratings[i][1] = rating;
             find=0;
-            break
+            break;    
         }
     }
     if (find){
-        tool.ratings.push([user.id, rating]);
+        tool.ratings.push([currentUser.id, rating]);
     }
     //update the tool rating using getRatingAvg(tool.ratings)
     await updateDoc(ref, {
