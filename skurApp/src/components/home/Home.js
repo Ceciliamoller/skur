@@ -4,6 +4,13 @@ import { Link } from "react-router-dom";
 import {AiOutlineStar} from "react-icons/ai";
 
 import {
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    AlertDialogCloseButton,
+    AlertDialogOverlay,
     Card,
     CardBody,
     CardFooter,
@@ -19,6 +26,7 @@ import {
     HStack,
     VisuallyHidden,
     IconButton,
+    useDisclosure
 
 } from '@chakra-ui/react'
 import { collection, onSnapshot, query, where, doc, updateDoc, getDoc, increment } from "firebase/firestore";
@@ -56,7 +64,11 @@ function openmaps(address) {
     let googleMapsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + urlAddress;
     window.open(googleMapsUrl, '_blank');
 }
-
+function alertForRent(data){
+    if (window.confirm("Du er i ferd med å leie dette verktøyet, hvis du er sikker på at du vil leie det og inngå en avtale med uteleier: velg Ok, hvis ikke avbryt.") == true) {
+        handleRentTool(data.id, data.address);
+  }
+}
 
 function buildCard(data, id, signedIn) {
 
@@ -146,9 +158,13 @@ function buildCard(data, id, signedIn) {
             </Box>
             <CardFooter>
                 <HStack spacing='10'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address)}>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => alertForRent(data)}>
                         {buttonText}
                     </Button>
+
+                    {/* <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address)}>
+                        {buttonText}
+                    </Button> */}
 
                     <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
                         <Button>Kontakt eier</Button>
