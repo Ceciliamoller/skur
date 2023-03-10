@@ -202,18 +202,20 @@ function User() {
 
     return (
         <>
-            <Card maxW="full" mt={0} centerContent overflow="hidden">
-                <Flex>
+            <Card maxW="full" mt={0} minH="100vh" centerContent overflow="hidden" h="100%">
+                <Flex h="100%">
                     <Box
                         borderRadius="lg"
                         h="100%"
-                        ml={50}                     
+                        ml={50}
+                                            
                     >
-                        <Wrap  spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}>
+                        <Wrap spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}>
                             <WrapItem>
-                                <HStack ml="5%" spacing={400} pr={40}>
+                                <HStack spacing={400}>
                                     <VStack py={{ base: 13, sm: 5, md: 8, lg: 10 }} spacing={6}> 
                                     <Avatar size='xl' bg="blue.200" src={userData.photo}></Avatar>
+                                    <Box pr={150}></Box>
                                     <Slider aria-label='slider-ex-6' onChange={(val) => setSliderValue(val)} min={1} max={5} colorScheme='green'>
                                             <SliderMark
                                                 value={sliderValue}
@@ -231,8 +233,8 @@ function User() {
                                             <SliderThumb />
                                         </Slider>
                                         </VStack>
-                                    <VStack align="left" py={{ base: 5, sm: 5, md: 8, lg: 10 }} spacing={6} pr={150}>                               
-                                        <Heading size='lg' pr={150}> {userData.name}</Heading>
+                                    <VStack alignItems="center" py={{ base: 5, sm: 5, md: 8, lg: 10 }} spacing={6}>                               
+                                        <Heading size='lg'> {userData.name}</Heading>
                                         {/* <Text mt={{ sm: 3, md: 3, lg: 5 }} color="white"></Text> */}
                                         <Button
                                             size="md"
@@ -247,20 +249,21 @@ function User() {
                                 </HStack>
                             </WrapItem>
                         </Wrap>
-                        
+
+                        <Heading ml="5%" mb={30} mt={70} size='md'>{myUser ? "Historikk" : `${userData.name} sine annonser`}</Heading>
+                        {Object.keys(tools).length !== 0 ? <Box id="userAdsAndHistory" maxW="full" mt={0} centerContent overflow="hidden" ml="10%">
+                            {
+                                tools?.map((data, id) => (
+                                    buildCard(data, id, currentUser, myUser)
+                                ))
+                            }
+
+                        </Box> : <Center><Heading size="md">Ingen verktøy å vise</Heading></Center>
+                        }                  
                     </Box>
                 </Flex>
             </Card>
-            <Heading ml="5%" mb={30} mt={70} size='md'>{myUser ? "Historikk" : `${userData.name} sine annonser`}</Heading>
-            {Object.keys(tools).length !== 0 ? <Box id="userAdsAndHistory" maxW="full" mt={0} centerContent overflow="hidden" ml="10%">
-                {
-                    tools?.map((data, id) => (
-                        buildCard(data, id, currentUser, myUser)
-                    ))
-                }
-
-            </Box> : <Center><Heading size="md">Ingen verktøy å vise</Heading></Center>
-            }
+        
         </>
 
 
