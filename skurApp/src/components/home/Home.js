@@ -27,18 +27,32 @@ import { useAuthValue } from '../../services/AuthService';
 
 async function getRatingAvg(ratings){
     let cumulativeRating = 0;
-    for (let i = 0; i < length(ratings); i++){
+    for (let i = 0; i < ratings.length; i++){
         cumulativeRating += ratings[i][1];
     }
     return cumulativeRating/length(ratings);
 }
 
-async function handleToolRating(e, id) {
-
+async function handleToolRating(e,id) {
+    //get the tool using id
     const ref = doc(firebaseService, "tools", id)
+    //get the rating from event e
+    const rating = e.target.value;
+    //add the rating to the list as a tuple (userID, rating) or change if user has already rated
+    let find=1;
+    for (let i=0; i<tool.ratings.length; i++){
+        if (tool.ratings[i][0] === user.id){
+            tool.ratings[i][1] = rating;
+            find=0;
+            break
+        }
+    }
+    if (find){
+        tool.ratings.push([user.id, rating]);
+    }
+    //update the tool rating using getRatingAvg(tool.ratings)
     await updateDoc(ref, {
-        ratingCount: increment(1),
-        totalRating: increment(e.target.value),
+        rating: getRatingAvg(tool.ratings),
     })
 }
 
