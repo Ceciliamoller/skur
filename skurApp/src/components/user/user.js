@@ -261,15 +261,18 @@ function User() {
                                     <VStack alignItems="center" py={{ base: 5, sm: 5, md: 8, lg: 10 }} spacing={6}>
                                         <Heading size='lg'> {userData.name}</Heading>
                                         {/* <Text mt={{ sm: 3, md: 3, lg: 5 }} color="white"></Text> */}
-                                        <Button
-                                            size="md"
-                                            height="48px"
-                                            width="200px"
-                                            variant="ghost"
-                                            _hover={{ border: '2px solid #1C6FEB' }}
-                                            leftIcon={<MdEmail size="20px" />}>
-                                            Email til bruker
-                                        </Button>
+                                        <Link href={"mailto:" + userData.email} >
+                                            <Button
+                                                size="md"
+                                                height="48px"
+                                                width="200px"
+                                                variant="ghost"
+                                                _hover={{ border: '2px solid #1C6FEB' }}
+                                                leftIcon={<MdEmail size="20px" />}
+                                                >
+                                                Email til bruker
+                                            </Button>
+                                        </Link>
                                     </VStack>
                                 </HStack>
                             </WrapItem>
