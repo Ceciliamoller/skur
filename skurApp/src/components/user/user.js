@@ -280,7 +280,7 @@ function User() {
 
 
                         <Heading mb={30} mt={70} size='lg'>{myUser ? "Historikk" : `${userData.name} sine annonser`}</Heading>
-                        {Object.keys(tools).length !== 0 && Object.keys(rentedTools).length !== 0 ? <Box maxW="full" centerContent overflow="hidden">
+                        {(Object.keys(tools).length !== 0 || (myUser && Object.keys(rentedTools).length !== 0)) ? <Box maxW="full" centerContent overflow="hidden">
                             {myUser ? <div id="MyTools">
                                 <div>
                                     <h1 className='title'>Leid</h1>
