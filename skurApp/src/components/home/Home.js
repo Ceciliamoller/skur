@@ -2,6 +2,7 @@ import './Home.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import {AiOutlineStar} from "react-icons/ai";
+import {FiSave} from "react-icons/fi";
 
 import {
     Card,
@@ -19,6 +20,12 @@ import {
     HStack,
     VisuallyHidden,
     IconButton,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuGroup,
+    MenuItem,
+    color,
 
 } from '@chakra-ui/react'
 import { collection, onSnapshot, query, where, doc, updateDoc, getDoc, increment } from "firebase/firestore";
@@ -89,9 +96,20 @@ function buildCard(data, id, signedIn) {
 
     return (
         <Card key={id} maxW='xs' padding="5%">
-            <IconButton ml="85%" colorScheme='white' color="blue.500" icon={<AiOutlineStar size="35px"/> } />
-            {/* En pop-up hvor man legger til annonsen i en liste man har laget tidligere eller lage en ny en
-            Muligens legge til slik at hvis brukeren har lagret annonsen så vil stjernen fylles inn: AiFillStar*/}
+            <Menu>
+                <MenuButton as={Button} rightIcon={<AiOutlineStar size="35px"/>} colorScheme="white" color="blue.500" />
+                <MenuList>
+                    <MenuGroup title='Dine lister'>
+                        <MenuItem>1</MenuItem>
+                        <MenuItem>2</MenuItem>
+                        <MenuItem>3</MenuItem>
+                    </MenuGroup>
+                    <MenuGroup title='Lag en ny liste' closeOnSelect="false">
+                        <MenuItem ><input placeholder='Ny liste' onClick={e => e.stopPropagation()} /> <Button ml="4px">Lag</Button></MenuItem>
+                    </MenuGroup>
+                </MenuList>
+            </Menu>
+
             <CardBody>
                 <Image
                     src={imageLink}
