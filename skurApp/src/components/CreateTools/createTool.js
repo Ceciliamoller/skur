@@ -57,12 +57,10 @@ export default function CreateTools() {
                 address: newAddress
             });
             navigate('/mineannonser');
-            console.log("Document written with ID: ", docRef.id);
         } catch (e) {
             console.error("Error adding document: ", e);
         }
     }
-
 
     if (currentUser) {
         return (

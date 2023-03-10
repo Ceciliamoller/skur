@@ -8,6 +8,12 @@
     availible: bool
     rentedby: string
     address: string
+
+    history: [
+        tenant: string (uid)
+    ]
+
+    
 }
 
 /users/{uid}/ {
@@ -23,12 +29,6 @@
             toolID: string (toolID)
         ]
     }
-    /history/{toolID} {
-        participants: [
-            owner: string (uid)
-            tenant: string (uid)
-        ]
-
-    }
+    
 
 }

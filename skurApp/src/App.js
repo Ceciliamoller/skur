@@ -47,7 +47,7 @@ function App() {
           ) : [
             
             <Button className='navoption' colorScheme="blue" id="buttonSignout" onClick={() => auth.signOut()}>Logg ut </Button>,
-            <Link className='navoption' to="/brukersiden"> <Avatar bg="blue.500" size="sm"></Avatar></Link>,
+            <Link className='navoption' to={`/user/${currentUser.uid}`}> <Avatar bg="blue.500" size="sm"></Avatar></Link>,
             <IconButton className='navoption' icon={colorMode === 'dark' ? <SunIcon /> : <MoonIcon />} size='md' onClick={toggleColorMode}>
             </IconButton>,
             <Link className='navoption' to="/tool"> Ny annonse </Link>,
@@ -65,7 +65,7 @@ function App() {
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/tool" element={<CreateTools />} />
           <Route path="/mineannonser" element={<MyTools />} />
-          <Route path="/brukersiden" element={<User />} />
+          <Route path="/user/:uid" element={<User />} />
           <Route path="/samlinger" element={<MyCollection />} />
 
         </Routes>
