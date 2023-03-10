@@ -44,7 +44,8 @@ async function handleUserRating(e, id) {
 async function handleRentTool(id, address, uid) {
     const toolRef = doc(firestoreService, "tools", id);
     await updateDoc(toolRef, {
-        available: false
+        available: false,
+        rentedBy: uid
     });
     await updateDoc(doc(firestoreService, 'users', uid), {
         history: arrayUnion(id)

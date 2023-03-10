@@ -16,7 +16,8 @@ import { useAuthValue } from "../../services/AuthService";
 async function handleRentTool(id, address, uid) {
     const toolRef = doc(firestoreService, "tools", id);
     await updateDoc(toolRef, {
-        available: false
+        available: false,
+        rentedBy: uid
     });
     await updateDoc(doc(firestoreService, 'users', uid), {
         history: arrayUnion(id)
@@ -139,6 +140,7 @@ function User() {
     const [userData, setUserData] = useState([])
     const [myUser, setMyUser] = useState(false)
     const [tools, setTools] = useState([]);
+    const [rentedTools, setRentedTools] = useState([]);
 
 
     useEffect(() => {
@@ -161,6 +163,17 @@ function User() {
                         setMyUser(true)
 
                         ref = query(ref, where(documentId(), 'in', userData.history))
+                        let ref2 = query(ref, where('rentedBy', '==', currentUser.uid))
+
+                        onSnapshot(ref2, (snapshot) => {
+                            if (snapshot) {
+
+                                const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+                                setRentedTools(newData);
+                            }
+                        })
+
+
                     } else {
 
                         ref = query(ref, where('creator', '==', uid), where('available', '==', true))
@@ -188,7 +201,7 @@ function User() {
 
 
 
-    }, [uid, myUser, currentUser])
+    }, [uid, myUser, currentUser,])
 
 
 
@@ -253,10 +266,38 @@ function User() {
             </Card>
             <Heading ml="5%" mb={30} mt={70} size='md'>{myUser ? "Historikk" : `${userData.name} sine annonser`}</Heading>
             {Object.keys(tools).length !== 0 ? <Box id="userAdsAndHistory" maxW="full" mt={0} centerContent overflow="hidden" ml="10%">
-                {
-                    tools?.map((data, id) => (
-                        buildCard(data, id, currentUser, myUser)
-                    ))
+                {myUser ? <div id="MyTools">
+                    <div>
+                        <h1 className='title'>Utleid</h1>
+                        <div id="toolsIown">
+                            {
+                                tools?.map((data, id) => (
+                                    buildCard(data, id, currentUser, myUser)
+                                ))
+                            }
+                        </div>
+                    </div>
+                    <div>
+                        <h1 className='title'>Leid</h1>
+                        <div id="request">
+                            {
+                                tools?.map((data, id) => (
+                                    buildCard(data, id, currentUser, myUser)
+                                ))
+                            }
+
+                        </div>
+                    </div>
+                </div> : <div>
+                    {
+                        rentedTools?.map((data, id) => (
+                            buildCard(data, id, currentUser, myUser)
+                        ))
+                    }
+                </div>
+
+
+
                 }
 
             </Box> : <Center><Heading size="md">Ingen verktøy å vise</Heading></Center>

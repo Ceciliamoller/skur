@@ -52,7 +52,6 @@ export default function CreateTools() {
                 creatorPic: currentUser.photoURL,
                 available: true,
                 address: newAddress,
-                rentedBy: null,
                 history: []
             });
             navigate('/mineannonser');
@@ -60,7 +59,6 @@ export default function CreateTools() {
             console.error("Error adding document: ", e);
         }
     }
-
 
     if (currentUser) {
         return (
