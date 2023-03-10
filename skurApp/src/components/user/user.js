@@ -59,13 +59,6 @@ function buildCard(data, id, currentUser, isMyUser, isRented) {
         imageLink = 'https://m.media-amazon.com/images/I/71ecpTA4rwL.jpg'
     }
 
-    var buttonText = ("");
-    if (data.type === "request") {
-        buttonText = "Lei ut nå"
-    }
-    else {
-        buttonText = "Lei nå"
-    }
 
 
 
@@ -124,9 +117,9 @@ function buildCard(data, id, currentUser, isMyUser, isRented) {
                 </Slider>
             </Box>
             <CardFooter>
-                <HStack spacing='10'>
+                <HStack>
                     {!isMyUser ? <Button variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address, currentUser.uid)}>
-                        {buttonText}
+                        Kontakt
                     </Button> :
 
                         <div>
@@ -142,7 +135,7 @@ function buildCard(data, id, currentUser, isMyUser, isRented) {
                     }
 
                     <Link className='chakra-button' href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
-                        <Button>Kontakt eier</Button>
+                        <Button>Kontakt</Button>
                     </Link>
 
                     {/* <button value={5} onClick = {(e) => handleRating(e,id,"value")}>Rate her</button> */}
@@ -181,8 +174,8 @@ function User() {
                     if (currentUser.uid === uid) {
                         setMyUser(true)
 
+                        let ref2 = query(collection(firestoreService, "tools"), where('creator', '==', uid), where('available', '==', false))
                         ref = query(ref, where('rentedBy', '==', uid))
-                        let ref2 = query(ref, where('creator', '==', uid), where('available', '==', false))
 
                         onSnapshot(ref2, (snapshot) => {
                             if (snapshot) {
@@ -283,12 +276,12 @@ function User() {
                         </Wrap>
 
 
-                        <Heading ml="5%" mb={30} mt={70} size='md'>{myUser ? "Historikk" : `${userData.name} sine annonser`}</Heading>
-                        {Object.keys(tools).length !== 0 ? <Box id="userAdsAndHistory" maxW="full" mt={0} centerContent overflow="hidden" ml="10%">
+                        <Heading mb={30} mt={70} size='lg'>{myUser ? "Historikk" : `${userData.name} sine annonser`}</Heading>
+                        {Object.keys(tools).length !== 0 && Object.keys(rentedTools).length !== 0 ? <Box maxW="full" centerContent overflow="hidden">
                             {myUser ? <div id="MyTools">
                                 <div>
                                     <h1 className='title'>Leid</h1>
-                                    <div id="toolsIown">
+                                    <div className="toolGrid">
                                         {
                                             tools?.map((data, id) => (
                                                 buildCard(data, id, currentUser, myUser, true)
@@ -298,7 +291,7 @@ function User() {
                                 </div>
                                 <div>
                                     <h1 className='title'>Utleid</h1>
-                                    <div id="request">
+                                    <div className="toolGrid">
                                         {
                                             rentedTools?.map((data, id) => (
                                                 buildCard(data, id, currentUser, myUser, false)
@@ -307,7 +300,7 @@ function User() {
 
                                     </div>
                                 </div>
-                            </div> : <div>
+                            </div> : <div className="toolGrid3">
                                 {
                                     tools?.map((data, id) => (
                                         buildCard(data, id, currentUser, myUser, null)

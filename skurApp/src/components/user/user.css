@@ -1,4 +1,9 @@
-#userAdsAndHistory{
+.toolGrid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.toolGrid3{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 }
