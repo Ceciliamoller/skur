@@ -36,24 +36,26 @@ async function getRatingAvg(ratings){
 async function handleToolRating(e,tool,currentUser) {
     //get the rating from event e
     const rating = e.target.value;
-    //get the tool reference
-    const toolRef = doc(firestoreService, "tools", id);
     
     //add the rating to the list as a tuple (userID, rating) or change if user has already rated
     let find=1;
     for (let i=0; i<tool.ratings.length; i++){
         if (tool.ratings[i][0] === currentUser.id){
-            tool.ratings[i][1] = rating; //TODO change this to support firebase
+            tool.ratings[i][1] = rating; 
             find=0;
             break;    
         }
     }
     if (find){
-        tool.ratings.push([currentUser.id, rating]); //TODO change this to support firebase
+        tool.ratings.push([currentUser.id, rating]); 
     }
+    //get the tool reference
+    const toolRef = doc(firestoreService, "tools", tool.id);
+    //update tool.ratings to firebase
     //update the tool rating using getRatingAvg(tool.ratings)
-    await updateDoc(ref, {
-        rating: getRatingAvg(tool.ratings), //TODO change this to support firebase
+    await updateDoc(toolRef, {
+        ratings: tool.ratings,
+        rating: getRatingAvg(tool.ratings),
     })
 }
 
