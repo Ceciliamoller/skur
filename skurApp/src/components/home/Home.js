@@ -43,17 +43,17 @@ async function handleToolRating(e,tool,currentUser) {
     let find=1;
     for (let i=0; i<tool.ratings.length; i++){
         if (tool.ratings[i][0] === currentUser.id){
-            tool.ratings[i][1] = rating;
+            tool.ratings[i][1] = rating; //TODO change this to support firebase
             find=0;
             break;    
         }
     }
     if (find){
-        tool.ratings.push([currentUser.id, rating]);
+        tool.ratings.push([currentUser.id, rating]); //TODO change this to support firebase
     }
     //update the tool rating using getRatingAvg(tool.ratings)
     await updateDoc(ref, {
-        rating: getRatingAvg(tool.ratings),
+        rating: getRatingAvg(tool.ratings), //TODO change this to support firebase
     })
 }
 
