@@ -47,9 +47,7 @@ async function handleRentTool(id, address, uid) {
         available: false,
         rentedBy: uid
     });
-    await updateDoc(doc(firestoreService, 'users', uid), {
-        history: arrayUnion(id)
-    })
+
     openmaps(address)
 }
 
@@ -145,7 +143,7 @@ function buildCard(data, id, signedIn, currentUser) {
             </Box>
             <CardFooter>
                 <HStack spacing='10'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address, currentUser.email)}>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address, currentUser.uid)}>
                         {buttonText}
                     </Button>
 
@@ -182,8 +180,6 @@ const Home = () => {
         }
 
         let ref = query(collection(firestoreService, "tools"), where('available', '==', true))
-        //real time update
-
 
         if (typeOfAd) {
             ref = query(ref, where('type', '==', typeOfAd))

@@ -51,8 +51,7 @@ export default function CreateTools() {
                 creatorName: currentUser.displayName,
                 creatorPic: currentUser.photoURL,
                 available: true,
-                address: newAddress,
-                history: []
+                address: newAddress
             });
             navigate('/mineannonser');
         } catch (e) {

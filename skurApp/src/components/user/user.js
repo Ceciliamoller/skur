@@ -117,7 +117,7 @@ function buildCard(data, id, currentUser, isMyUser) {
             </Box>
             <CardFooter>
                 <HStack spacing='10'>
-                    {!isMyUser ? <Button id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address, currentUser.email, currentUser.uid)}>
+                    {!isMyUser ? <Button id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address, currentUser.uid)}>
                         {buttonText}
                     </Button> : null
                     }
@@ -162,8 +162,8 @@ function User() {
                     if (currentUser.uid === uid) {
                         setMyUser(true)
 
-                        ref = query(ref, where(documentId(), 'in', userData.history))
-                        let ref2 = query(ref, where('rentedBy', '==', currentUser.uid))
+                        ref = query(ref, where('rentedBy', '==', uid))
+                        let ref2 = query(ref, where('creator', '==', uid), where('available', '==', false))
 
                         onSnapshot(ref2, (snapshot) => {
                             if (snapshot) {
@@ -263,57 +263,50 @@ function User() {
                             </WrapItem>
                         </Wrap>
 
+
                         <Heading ml="5%" mb={30} mt={70} size='md'>{myUser ? "Historikk" : `${userData.name} sine annonser`}</Heading>
                         {Object.keys(tools).length !== 0 ? <Box id="userAdsAndHistory" maxW="full" mt={0} centerContent overflow="hidden" ml="10%">
-                            {
-                                tools?.map((data, id) => (
-                                    buildCard(data, id, currentUser, myUser)
-                                ))
+                            {myUser ? <div id="MyTools">
+                                <div>
+                                    <h1 className='title'>Leid</h1>
+                                    <div id="toolsIown">
+                                        {
+                                            tools?.map((data, id) => (
+                                                buildCard(data, id, currentUser, myUser)
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                                <div>
+                                    <h1 className='title'>Utleid</h1>
+                                    <div id="request">
+                                        {
+                                            rentedTools?.map((data, id) => (
+                                                buildCard(data, id, currentUser, myUser)
+                                            ))
+                                        }
+
+                                    </div>
+                                </div>
+                            </div> : <div>
+                                {
+                                    tools?.map((data, id) => (
+                                        buildCard(data, id, currentUser, myUser)
+                                    ))
+                                }
+                            </div>
+
+
+
                             }
+
 
                         </Box> : <Center><Heading size="md">Ingen verktøy å vise</Heading></Center>
                         }
+
                     </Box>
                 </Flex>
             </Card>
-            <Heading ml="5%" mb={30} mt={70} size='md'>{myUser ? "Historikk" : `${userData.name} sine annonser`}</Heading>
-            {Object.keys(tools).length !== 0 ? <Box id="userAdsAndHistory" maxW="full" mt={0} centerContent overflow="hidden" ml="10%">
-                {myUser ? <div id="MyTools">
-                    <div>
-                        <h1 className='title'>Utleid</h1>
-                        <div id="toolsIown">
-                            {
-                                tools?.map((data, id) => (
-                                    buildCard(data, id, currentUser, myUser)
-                                ))
-                            }
-                        </div>
-                    </div>
-                    <div>
-                        <h1 className='title'>Leid</h1>
-                        <div id="request">
-                            {
-                                tools?.map((data, id) => (
-                                    buildCard(data, id, currentUser, myUser)
-                                ))
-                            }
-
-                        </div>
-                    </div>
-                </div> : <div>
-                    {
-                        rentedTools?.map((data, id) => (
-                            buildCard(data, id, currentUser, myUser)
-                        ))
-                    }
-                </div>
-
-
-
-                }
-
-            </Box> : <Center><Heading size="md">Ingen verktøy å vise</Heading></Center>
-            }
         </>
 
 
