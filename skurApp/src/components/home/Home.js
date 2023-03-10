@@ -25,6 +25,14 @@ import { collection, onSnapshot, query, where, doc, updateDoc, getDoc, increment
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
+async function getRatingAvg(ratings){
+    let cumulativeRating = 0;
+    for (let i = 0; i < length(ratings); i++){
+        cumulativeRating += ratings[i][1];
+    }
+    return cumulativeRating/length(ratings);
+}
+
 async function handleToolRating(e, id) {
 
     const ref = doc(firebaseService, "tools", id)
