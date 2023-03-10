@@ -163,7 +163,7 @@ function User() {
                         ref = query(ref, where(documentId(), 'in', userData.history))
                     } else {
 
-                        ref = query(ref, where('creator', '==', uid))
+                        ref = query(ref, where('creator', '==', uid), where('available', '==', true))
                     }
                     const unsub = onSnapshot(ref, (snapshot) => {
                         if (snapshot) {

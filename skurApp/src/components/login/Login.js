@@ -3,7 +3,7 @@ import './login.css';
 import { Link, useNavigate } from "react-router-dom";
 import { auth, signInWithGoogle } from '../../services/firebaseConfig';
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { Avatar, Box, Button, Flex, Heading, Stack } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, Heading, IconButton, Stack } from "@chakra-ui/react";
 
 
 
