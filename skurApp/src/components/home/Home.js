@@ -2,8 +2,10 @@ import './Home.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import ReactDOM from "react-dom";
-import {ThemeProvider, CSSReset } from '@chakra-ui/react'
+import {ThemeProvider, CSSReset, Icon } from '@chakra-ui/react'
 import Rating from "./Rating";
+import { AiOutlineStar } from 'react-icons/ai';
+import { ratingValue } from './Rating';
 
 
 import {
@@ -58,11 +60,15 @@ function openmaps(address) {
 }
 
 
+
 function buildCard(data, id, signedIn) {
 
+    //const [ratingValue, setRatingValue] = useState(2);
     var toolRating = 0;
-    var toolVisibility="none";
-    var ratingVisibility="true";
+    var toolVisibility="true";
+    var ratingVisibility="none";
+
+    
     // eslint-disable-next-line react-hooks/rules-of-hooks
     //const [ratingVisibility, setRatingVisibility] =useState(true)
     //const creatorData = await getCreatorData(data.creator)
@@ -86,10 +92,16 @@ function buildCard(data, id, signedIn) {
         buttonText = "Lei nå"
     }
 
-
     return (
         <Card key={id} maxW='xs' padding="5%">
             <CardBody>
+                <HStack ml="-10px" spacing="3px">
+                     <Icon 
+                    as={AiOutlineStar}
+                    boxSize="25px"   
+                     ></Icon>
+                     <Text> {data.rating} </Text>
+                 </HStack>
                 <Image
                     src={imageLink}
                 />
@@ -115,7 +127,7 @@ function buildCard(data, id, signedIn) {
             <Divider />
             <Box display={ratingVisibility} id="ratingBox" >
                 <Text mt="20px"> Legg igjen rating:</Text>
-                <Box>
+                <Box mt="-20px">
                     <CSSReset />
                     <Rating
                         size={48}
@@ -125,44 +137,12 @@ function buildCard(data, id, signedIn) {
                         strokeColor="grey"
                     />
                 </Box>
-
-                
-                
-{/*                 <Slider mt="20px" mb="20px" min={1} max={5} aria-label='slider-ex-1' defaultValue={3} onChange={
-                    (val) => {
-                        toolRating = val;
-                    }}>
-                    <SliderMark value={1} mt='1' ml='-2.5' fontSize='sm'>
-                        1
-                    </SliderMark>
-                    <SliderMark value={2} mt='1' ml='-2.5' fontSize='sm'>
-                        2
-                    </SliderMark>
-                    <SliderMark value={3} mt='1' ml='-2.5' fontSize='sm'>
-                        3
-                    </SliderMark>
-                    <SliderMark value={4} mt='1' ml='-2.5' fontSize='sm'>
-                        4
-                    </SliderMark>
-                    <SliderMark value={5} mt='1' ml='-2.5' fontSize='sm'>
-                        5
-                    </SliderMark>
-                    <SliderTrack>
-                        <SliderFilledTrack />
-                    </SliderTrack>
-                    <SliderThumb />
-                </Slider> */}
             </Box>
             <CardFooter>
-
-
-                
-                <Button display={ratingVisibility} variant='solid' colorScheme='blue'> Lagre rating </Button>
                 <HStack display={toolVisibility} spacing='10'>
                     <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
                         {buttonText}
                     </Button>
-
                     <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
                         <Button>Kontakt eier</Button>
                     </Link>
@@ -276,4 +256,5 @@ const Home = () => {
     }
 
 }
+
 export default Home;

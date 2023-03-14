@@ -6,33 +6,23 @@ import {Box, Icon, IconButton, Stack, Text, useStatStyles } from '@chakra-ui/rea
 
 //Kode basert på: https://codesandbox.io/s/y8zfo?file=/src/Rating.js:898-907
 
+var ratingValue=2;
+
 const Rating = React.forwardRef(
-  ({ size, icon, scale, fillColor, strokeColor }, ref) => {
+  ({ size, icon, scale, fillColor, strokeColor, ratingValue }, ref) => {
     const [rating, setRating] = useState(0);
     const buttons = [];
+    const [starColor,setStarColor] = useState("white");
 
     const onClick = idx => {
       if (!isNaN(idx)) {
           setRating(idx);
+          console.log({ratingValue})
       }
     };
 
-const [buttonColor, setButtonColor] = useState("teal");
-
     const RatingButton = ({ idx, fill, buttonColor }) => {
       return (
-
-/*         <Box display='flex' mt='2' alignItems='center'>
-        {Array(5)
-          .fill('')
-          .map((_, i) => (
-            <StarIcon 
-              size="35px"
-              key={i}
-              color={i < rating ? 'teal.500' : 'gray.300'}
-            />
-          ))}
-      </Box> */
 
         <IconButton
         colorScheme={buttonColor}
@@ -40,31 +30,25 @@ const [buttonColor, setButtonColor] = useState("teal");
         size="lg"
         
         onClick={() => {
+          ratingValue=rating
           onClick(idx)
+          
         }}
         fill={fill}
         aria-label={`Rate ${idx}`} 
-        icon={<AiOutlineStar size="35px"/>}
+        icon={<AiOutlineStar size="35px" color={buttonColor} />}
         >
         </IconButton> 
       );
     };
-
     for (let i = 1; i <= scale; i++) {
-      buttons.push(<RatingButton key={i} idx={i} fill={i <= rating}/>);
+      buttons.push(<RatingButton key={i} idx={i} buttonColor={i <= rating ? 'yellow' : 'gray'}/>);
   }
-
     return (
       <Stack spacing="-3" isInline mt={8} justify="center">
         <input name="rating" type="hidden" value={rating} ref={ref} />
         {buttons}
         <Box width={`${size * 1.5}px`} textAlign="center">
-          <Text fontSize="sm" textTransform="uppercase">
-            Rating
-          </Text>
-          <Text fontSize="2xl" fontWeight="semibold" lineHeight="1.2em">
-            {rating}
-          </Text>
         </Box>
       </Stack>
     );
@@ -73,4 +57,5 @@ const [buttonColor, setButtonColor] = useState("teal");
 
 Rating.displayName = "Rating";
 
+export {ratingValue};
 export default Rating;
