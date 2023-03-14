@@ -30,19 +30,23 @@ import firebaseService, { firestoreService } from '../../services/firebaseConfig
 import { useAuthValue } from '../../services/AuthService';
 
 async function getRatingAvg(ratings){
-    let cumulativeRating = 0;
-    for (let i = 0; i < ratings.length; i++){
-        cumulativeRating += ratings[i][1];
-    }
-    return cumulativeRating/ratings.length;
+    let sum = 0;
+    let count = 0;
+
+  for (const user in ratings) {
+    const value = ratings[user];
+    sum += value;
+    count++;
+  }
+  return sum / count;
 }
 
-async function handleToolRating(e,tool,currentUser) {
+async function handleToolRating(e,tool,uid) {
     //get the rating from event e
     //const rating = e.target.value;
-    const rating = 5;
-    console.log("handleToolRating")
-    tool.ratings[currentUser.uid] = rating;
+    const rating = 3;
+
+    tool.ratings[uid] = rating;
     //get the tool reference
     const toolRef = doc(firestoreService, "tools", tool.id);
     //update tool.ratings to firebase
@@ -111,7 +115,7 @@ function buildCard(data, id, signedIn, currentUser) {
 
     return (
         <Card key={id} maxW='xs' padding="5%">
-            <IconButton ml="85%" colorScheme='white' color="blue.500" onClick={(e)=>handleToolRating(e,data,currentUser)} icon={<AiOutlineStar> size="35px"</AiOutlineStar> }/>
+            <IconButton ml="85%" colorScheme='white' color="blue.500" onClick={(e)=>handleToolRating(e,data,currentUser.uid)} icon={<AiOutlineStar> size="35px"</AiOutlineStar> }/>
             {/* En pop-up hvor man legger til annonsen i en liste man har laget tidligere eller lage en ny en
             Muligens legge til slik at hvis brukeren har lagret annonsen så vil stjernen fylles inn: AiFillStar*/}
             <CardBody>
