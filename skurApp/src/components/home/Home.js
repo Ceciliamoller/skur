@@ -1,6 +1,10 @@
 import './Home.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+import ReactDOM from "react-dom";
+import {ThemeProvider, CSSReset } from '@chakra-ui/react'
+import Rating from "./Rating";
+
 
 import {
     Card,
@@ -16,8 +20,6 @@ import {
     SliderThumb,
     SliderMark,
     HStack,
-    VisuallyHidden,
-
 } from '@chakra-ui/react'
 import { collection, onSnapshot, query, where, doc, updateDoc, getDoc, increment } from "firebase/firestore";
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
@@ -59,8 +61,8 @@ function openmaps(address) {
 function buildCard(data, id, signedIn) {
 
     var toolRating = 0;
-    var toolVisibility="true";
-    var ratingVisibility="none";
+    var toolVisibility="none";
+    var ratingVisibility="true";
     // eslint-disable-next-line react-hooks/rules-of-hooks
     //const [ratingVisibility, setRatingVisibility] =useState(true)
     //const creatorData = await getCreatorData(data.creator)
@@ -113,8 +115,20 @@ function buildCard(data, id, signedIn) {
             <Divider />
             <Box display={ratingVisibility} id="ratingBox" >
                 <Text mt="20px"> Legg igjen rating:</Text>
+                <Box>
+                    <CSSReset />
+                    <Rating
+                        size={48}
+                        icon="star"
+                        scale={5}
+                        fillColor="gold"
+                        strokeColor="grey"
+                    />
+                </Box>
 
-                <Slider mt="20px" mb="20px" min={1} max={5} aria-label='slider-ex-1' defaultValue={3} onChange={
+                
+                
+{/*                 <Slider mt="20px" mb="20px" min={1} max={5} aria-label='slider-ex-1' defaultValue={3} onChange={
                     (val) => {
                         toolRating = val;
                     }}>
@@ -137,9 +151,12 @@ function buildCard(data, id, signedIn) {
                         <SliderFilledTrack />
                     </SliderTrack>
                     <SliderThumb />
-                </Slider>
+                </Slider> */}
             </Box>
             <CardFooter>
+
+
+                
                 <Button display={ratingVisibility} variant='solid' colorScheme='blue'> Lagre rating </Button>
                 <HStack display={toolVisibility} spacing='10'>
                     <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
@@ -149,9 +166,6 @@ function buildCard(data, id, signedIn) {
                     <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
                         <Button>Kontakt eier</Button>
                     </Link>
-
-                    {/* <button value={5} onClick = {(e) => handleRating(e,id,"value")}>Rate her</button> */}
-                    <button value={5} >Rate her</button>
                 </HStack >
             </CardFooter >
         </Card >
@@ -177,7 +191,7 @@ const Home = () => {
             setIsSignedIn(true)
         }
 
-        let ref = query(collection(firestoreService, "tools"), where('available', '==', true), where('creatorEmail', '!=', currentUser ? currentUser.email : null))
+        let ref = query(collection(firestoreService, "tools"), where('available', '==', true))
         //real time update
 
 
@@ -199,11 +213,7 @@ const Home = () => {
 
     if (currentUser) {
         return (
-
-            
             <div  className="homePage">
-
-                
                 <Box  id="categories">
                     <VStack mt="50px" spacing="20px">
                         <Text fontSize="xl"> Type annonse </Text>
