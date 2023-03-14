@@ -1,6 +1,10 @@
 import './Home.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+import ReactDOM from "react-dom";
+import {ThemeProvider, CSSReset } from '@chakra-ui/react'
+import Rating from "./Rating";
+
 import {AiOutlineStar} from "react-icons/ai";
 
 import {
@@ -86,7 +90,10 @@ function openmaps(address) {
 function buildCard(data, id, signedIn) {
 
     var toolRating = 0;
-
+    var toolVisibility="none";
+    var ratingVisibility="true";
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    //const [ratingVisibility, setRatingVisibility] =useState(true)
     //const creatorData = await getCreatorData(data.creator)
 
 
@@ -141,10 +148,22 @@ function buildCard(data, id, signedIn) {
                 </Flex>
             </Link>
             <Divider />
-            <Box display="none" id="ratingBox" >
-                <Text> Legg igjen rating:</Text>
+            <Box display={ratingVisibility} id="ratingBox" >
+                <Text mt="20px"> Legg igjen rating:</Text>
+                <Box>
+                    <CSSReset />
+                    <Rating
+                        size={48}
+                        icon="star"
+                        scale={5}
+                        fillColor="gold"
+                        strokeColor="grey"
+                    />
+                </Box>
 
-                <Slider mt="20px" mb="20px" min={1} max={5} aria-label='slider-ex-1' defaultValue={3} onChange={
+                
+                
+{/*                 <Slider mt="20px" mb="20px" min={1} max={5} aria-label='slider-ex-1' defaultValue={3} onChange={
                     (val) => {
                         toolRating = val;
                     }}>
@@ -167,11 +186,15 @@ function buildCard(data, id, signedIn) {
                         <SliderFilledTrack />
                     </SliderTrack>
                     <SliderThumb />
-                </Slider>
+                </Slider> */}
             </Box>
             <CardFooter>
-                <HStack spacing='10'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address)}>
+
+
+                
+                <Button display={ratingVisibility} variant='solid' colorScheme='blue'> Lagre rating </Button>
+                <HStack display={toolVisibility} spacing='10'>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
                         {buttonText}
                     </Button>
 
@@ -208,6 +231,7 @@ const Home = () => {
 
         }
 
+        let ref = query(collection(firestoreService, "tools"), where('available', '==', true), where('creatorEmail', '!=', currentUser ? currentUser.email : null))
         //real time update
 
 
