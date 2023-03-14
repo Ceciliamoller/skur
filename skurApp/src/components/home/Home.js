@@ -230,8 +230,6 @@ const Home = () => {
             ref = query(ref, where('creatorEmail', '!=', currentUser.email))
 
         }
-
-        let ref = query(collection(firestoreService, "tools"), where('available', '==', true), where('creatorEmail', '!=', currentUser ? currentUser.email : null))
         //real time update
 
 
