@@ -120,6 +120,9 @@ function buildCard(data, id, signedIn, currentUser) {
                     <Text id="toolPrice" color='blue.600' fontSize='2xl'>
                         {data.price} kr
                     </Text>
+                    <Text id="toolAddress" color='blue.600' fontSize='ml'>
+                        {data.address}
+                    </Text>
                 </Stack>
             </CardBody>
             <Link to={`/user/${data.creator}`}>

@@ -71,8 +71,8 @@ export default function CreateTools() {
                         <Box>
                             <RadioGroup onChange={setType} value={newType}>
                                 <Stack direction='row'>
-                                    <Radio value='share'> Ønsker å leie ut</Radio>
-                                    <Radio mr="20px" value='request'> Ønsker å leie </Radio>
+                                    <Radio value='share'> Leie ut</Radio>
+                                    <Radio mr="20px" value='request'> Ønskes leid</Radio>
                                 </Stack>
                             </RadioGroup>
                             <Text fontSize="large" mt="40px"> Tittel </Text>
@@ -88,7 +88,7 @@ export default function CreateTools() {
                         </Box>
                         <Box>
                             <FormLabel> Addresse </FormLabel>
-                            <Input required type="text" id="priceID" placeholder='Skriv inn adressen din...' value={newAddress} min="0" w="500px" focusBorderColor='#567189' onChange={(event) => setNewAddress(event.target.value)} />
+                            <Input required type="text" id="addressID" placeholder='Skriv inn adressen din...' value={newAddress} min="0" w="500px" focusBorderColor='#567189' onChange={(event) => setNewAddress(event.target.value)} />
                         </Box>
                         <Box>
                             <FormLabel> Kategori </FormLabel>
