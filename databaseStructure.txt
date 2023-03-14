@@ -8,6 +8,12 @@
     availible: bool
     rentedby: string
     address: string
+
+    history: [
+        tenant: string (uid)
+    ]
+
+    
     ratings: list[(String, float)]
 }
 
@@ -24,12 +30,6 @@
             toolID: string (toolID)
         ]
     }
-    /history/{toolID} {
-        participants: [
-            owner: string (uid)
-            tenant: string (uid)
-        ]
-
-    }
+    
 
 }

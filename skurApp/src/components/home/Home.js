@@ -8,6 +8,13 @@ import Rating from "./Rating";
 import {AiOutlineStar} from "react-icons/ai";
 
 import {
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    AlertDialogCloseButton,
+    AlertDialogOverlay,
     Card,
     CardBody,
     CardFooter,
@@ -23,9 +30,10 @@ import {
     HStack,
     VisuallyHidden,
     IconButton,
+    useDisclosure
 
 } from '@chakra-ui/react'
-import { collection, onSnapshot, query, where, doc, updateDoc, getDoc, increment } from "firebase/firestore";
+import { collection, onSnapshot, query, where, doc, updateDoc, increment, arrayUnion } from "firebase/firestore";
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
@@ -65,10 +73,11 @@ async function handleUserRating(e, id) {
     })
 }
 
-async function handleRentTool(id, address) {
+async function handleRentTool(id, address, uid) {
     const toolRef = doc(firestoreService, "tools", id);
     await updateDoc(toolRef, {
-        available: false
+        available: false,
+        rentedBy: uid
     });
     openmaps(address)
 }
@@ -77,6 +86,11 @@ function openmaps(address) {
     let urlAddress = address.replace(/\s+/g, '+');
     let googleMapsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + urlAddress;
     window.open(googleMapsUrl, '_blank');
+}
+function alertForRent(data, currentUser){
+    if (window.confirm("Du er i ferd med å leie dette verktøyet, hvis du er sikker på at du vil leie det og inngå en avtale med uteleier: velg Ok, hvis ikke avbryt.") == true) {
+        handleRentTool(data.id, data.address, currentUser.uid);
+  }
 }
 
 
@@ -134,7 +148,7 @@ function buildCard(data, id, signedIn, currentUser) {
                     </Text>
                 </Stack>
             </CardBody>
-            <Link to="/brukersiden">
+            <Link to={`/user/${data.creator}`}>
                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                     <Avatar bg="blue.500" size="sm" src={data.creatorPic}></Avatar>
                     <Heading size="sm">{data.creatorName ? data.creatorName : "Anonym"}</Heading>
@@ -182,14 +196,20 @@ function buildCard(data, id, signedIn, currentUser) {
                 </Slider> */}
             </Box>
             <CardFooter>
-                <HStack display={toolVisibility} spacing='10'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
+                <HStack spacing='10'>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => alertForRent(data, currentUser)}>
                         {buttonText}
                     </Button>
+
+                    {/* <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address)}>
+                        {buttonText}
+                    </Button> */}
 
                     <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
                         <Button>Kontakt eier</Button>
                     </Link>
+
+                    {/* <button value={5} onClick = {(e) => handleRating(e,id,"value")}>Rate her</button> */}
                 </HStack >
             </CardFooter >
         </Card >
@@ -220,6 +240,7 @@ const Home = () => {
 
         }
         //real time update
+
 
 
         if (typeOfAd) {
@@ -296,6 +317,7 @@ const Home = () => {
                         // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
                         // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
                         tools?.map((data, id) => (
+                            buildCard(data, id, isSignedIn, currentUser)
                             buildCard(data, id, isSignedIn, currentUser)
                         ))
                     }

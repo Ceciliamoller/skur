@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardBody, CardFooter, Image, Stack, Heading, Text, Divider, ButtonGroup, Button, Box, Input } from '@chakra-ui/react'
-import { collection, getDocs, onSnapshot, query, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot, query, where } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import './MyTools.css';
 import { useAuthValue } from '../../services/AuthService';
+
+async function deleteTool(id) {
+    await deleteDoc(doc(firestoreService, "tools", id));
+}
 
 function buildCard(data, id, type) {
 
@@ -38,13 +42,13 @@ function buildCard(data, id, type) {
             </CardBody>
             <Divider />
             <CardFooter>
-                <ButtonGroup spacing='2'>
+                <ButtonGroup>
                     <Button id="rentBtn" variant='solid' colorScheme='blue'>
                         Se reservasjoner
                     </Button>
 
                     {type === "share" ? (
-                        <Button id="contactBtn" variant='ghost' colorScheme='blue'>
+                        <Button id="contactBtn" variant='ghost' colorScheme='blue' onClick={() => deleteTool(data.id)}>
                             Slett
                         </Button>
                     ) : <Button id="contactBtn" variant='ghost' colorScheme='blue'>
@@ -53,7 +57,7 @@ function buildCard(data, id, type) {
 
                 </ButtonGroup>
             </CardFooter>
-        </Card>
+        </Card >
 
     )
 }
