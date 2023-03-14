@@ -41,19 +41,8 @@ async function handleToolRating(e,tool,currentUser) {
     //get the rating from event e
     //const rating = e.target.value;
     const rating = 5;
-    
-    //add the rating to the list as a tuple (userID, rating) or change if user has already rated
-    let find=1;
-    for (let i=0; i<tool.ratings.length; i++){
-        if (tool.ratings[i][0] === currentUser.id){
-            tool.ratings[i][1] = rating; 
-            find=0;
-            break;    
-        }
-    }
-    if (find){
-        tool.ratings.push([currentUser.id, rating]); 
-    }
+    console.log("handleToolRating")
+    tool.ratings[currentUser.uid] = rating;
     //get the tool reference
     const toolRef = doc(firestoreService, "tools", tool.id);
     //update tool.ratings to firebase
@@ -88,7 +77,7 @@ function openmaps(address) {
 }
 
 
-function buildCard(data, id, signedIn) {
+function buildCard(data, id, signedIn, currentUser) {
 
     var toolRating = 0;
     var toolVisibility="none";
@@ -122,7 +111,7 @@ function buildCard(data, id, signedIn) {
 
     return (
         <Card key={id} maxW='xs' padding="5%">
-            <IconButton ml="85%" colorScheme='white' color="blue.500" icon={<AiOutlineStar> size="35px"</AiOutlineStar> } onclick={(e,currentUser)=>handleToolRating(e,e.target.value,currentUser)} />
+            <IconButton ml="85%" colorScheme='white' color="blue.500" onClick={(e)=>handleToolRating(e,data,currentUser)} icon={<AiOutlineStar> size="35px"</AiOutlineStar> }/>
             {/* En pop-up hvor man legger til annonsen i en liste man har laget tidligere eller lage en ny en
             Muligens legge til slik at hvis brukeren har lagret annonsen så vil stjernen fylles inn: AiFillStar*/}
             <CardBody>
@@ -304,7 +293,7 @@ const Home = () => {
                         // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
                         // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
                         tools?.map((data, id) => (
-                            buildCard(data, id, isSignedIn)
+                            buildCard(data, id, isSignedIn, currentUser)
                         ))
                     }
                 </Box>
