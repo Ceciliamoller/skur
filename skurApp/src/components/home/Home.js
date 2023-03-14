@@ -39,7 +39,8 @@ async function getRatingAvg(ratings){
 
 async function handleToolRating(e,tool,currentUser) {
     //get the rating from event e
-    const rating = e.target.value;
+    //const rating = e.target.value;
+    const rating = 5;
     
     //add the rating to the list as a tuple (userID, rating) or change if user has already rated
     let find=1;
@@ -121,7 +122,7 @@ function buildCard(data, id, signedIn) {
 
     return (
         <Card key={id} maxW='xs' padding="5%">
-            <IconButton ml="85%" colorScheme='white' color="blue.500" icon={<AiOutlineStar size="35px"/> } />
+            <IconButton ml="85%" colorScheme='white' color="blue.500" icon={<AiOutlineStar> size="35px"</AiOutlineStar> } onclick={(e,currentUser)=>handleToolRating(e,e.target.value,currentUser)} />
             {/* En pop-up hvor man legger til annonsen i en liste man har laget tidligere eller lage en ny en
             Muligens legge til slik at hvis brukeren har lagret annonsen så vil stjernen fylles inn: AiFillStar*/}
             <CardBody>
@@ -189,10 +190,6 @@ function buildCard(data, id, signedIn) {
                 </Slider> */}
             </Box>
             <CardFooter>
-
-
-                
-                <Button display={ratingVisibility} variant='solid' colorScheme='blue'> Lagre rating </Button>
                 <HStack display={toolVisibility} spacing='10'>
                     <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
                         {buttonText}
