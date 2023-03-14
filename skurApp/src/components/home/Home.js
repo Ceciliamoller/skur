@@ -5,6 +5,7 @@ import ReactDOM from "react-dom";
 import {ThemeProvider, CSSReset, Icon } from '@chakra-ui/react'
 import Rating from "./Rating";
 import { AiOutlineStar } from 'react-icons/ai';
+import { AiOutlineHeart} from 'react-icons/ai';
 import { ratingValue } from './Rating';
 
 
@@ -77,7 +78,6 @@ function alertForRent(data, currentUser){
 }
 
 
-
 function buildCard(data, id, signedIn) {
 
     //const [ratingValue, setRatingValue] = useState(2);
@@ -100,7 +100,7 @@ function buildCard(data, id, signedIn) {
         imageLink = 'https://cdn.pixabay.com/photo/2012/04/13/21/06/screwdriver-33634__480.png'
     }
     else {
-        imageLink = 'https://m.media-amazon.com/images/I/71ecpTA4rwL.jpg'
+        imageLink = 'https://cdn-icons-png.flaticon.com/512/3417/3417080.png'
     }
 
     var buttonText = ("");
@@ -114,16 +114,17 @@ function buildCard(data, id, signedIn) {
 
     return (
         <Card key={id} maxW='xs' padding="5%">
-            <IconButton ml="85%" colorScheme='white' color="blue.500" icon={<AiOutlineHeart size="35px"/> } />
-            {/* En pop-up hvor man legger til annonsen i en liste man har laget tidligere eller lage en ny en
-            Muligens legge til slik at hvis brukeren har lagret annonsen så vil stjernen fylles inn: AiFillStar*/}
             <CardBody>
-                <HStack ml="-10px" spacing="3px">
-                     <Icon 
+           
+                <HStack ml="-10px" spacing="190px">
+                    <HStack>
+                        <Icon 
                     as={AiOutlineStar}
                     boxSize="25px"   
                      ></Icon>
                      <Text> {data.rating} </Text>
+                     </HStack> 
+                     <IconButton ml="200px" colorScheme='white' color="blue.500" icon={<AiOutlineHeart size="35px"/> } />
                  </HStack>
                 <Image
                     src={imageLink}
@@ -201,8 +202,6 @@ const Home = () => {
             ref = query(ref, where('creatorEmail', '!=', currentUser.email))
 
         }
-
-        let ref = query(collection(firestoreService, "tools"), where('available', '==', true))
         //real time update
 
 
@@ -226,67 +225,66 @@ const Home = () => {
 
     if (currentUser) {
         return (
-            <div  className="homePage">
-                <Box  id="categories">
-            <div className="homePage">
-                <Box id="categories">
-                    <VStack mt="50px" spacing="20px">
-                        <Text fontSize="xl"> Type annonse </Text>
-                        <Select width="200px" placeholder="Alle" value={typeOfAd} onChange={(event) => setTypeOfAd(event.target.value)}>
-                            <option value="share">
-                                Til utleie
-                            </option>
-                            <option value="request">
-                                Ønsker å leie
-                            </option>
-                        </Select>
+                    <div className="homePage">
+                        <Box id="categories">
+                            <VStack mt="50px" spacing="20px">
+                                <Text fontSize="xl"> Type annonse </Text>
+                                <Select width="200px" placeholder="Alle" value={typeOfAd} onChange={(event) => setTypeOfAd(event.target.value)}>
+                                    <option value="share">
+                                        Til utleie
+                                    </option>
+                                    <option value="request">
+                                        Ønsker å leie
+                                    </option>
+                                </Select>
 
-                        <Text fontSize="xl"> Filtrer søk </Text>
-                        <Select width="200px" placeholder="Alle" value={toolCategory} onChange={(event) => setToolCategory(event.target.value)}>
-                            <option value="Hammer">
-                                Hammer
-                            </option>
-                            <option value="Skrutrekker">
-                                Skrutrekker
-                            </option>
-                            <option value="Sag">
-                                Sag
-                            </option>
-                        </Select>
+                                <Text fontSize="xl"> Filtrer søk </Text>
+                                <Select width="200px" placeholder="Alle" value={toolCategory} onChange={(event) => setToolCategory(event.target.value)}>
+                                    <option value="Hammer">
+                                        Hammer
+                                    </option>
+                                    <option value="Skrutrekker">
+                                        Skrutrekker
+                                    </option>
+                                    <option value="Sag">
+                                        Sag
+                                    </option>
+                                </Select>
 
-                        {/*       <Select required width="200px" placeholder="Velg pris" value={priceCategory} onChange={(event) => setPriceCategory(event.target.value)}>
-                                <option value="<100">
-                                    Under 100 kr
-                                </option>
-                                <option value="asc">
-                                    Stigende pris
-                                </option>
+                                {/*       <Select required width="200px" placeholder="Velg pris" value={priceCategory} onChange={(event) => setPriceCategory(event.target.value)}>
+                                        <option value="<100">
+                                            Under 100 kr
+                                        </option>
+                                        <option value="asc">
+                                            Stigende pris
+                                        </option>
 
-                                <option value=">300">
-                                    Over 300 kr
-                                </option>
-                            </Select>  
-                            <Select required width="200px" placeholder="Leie/leie ut" value={requestOrShare} onChange={(event) => setrequestOrShare(event.target.value)}>
-                                <option value="request">
-                                    Leie
-                                </option>
-                                <option value="share">
-                                    Leie ut
-                                </option>
-                            </Select>  */}
-                    </VStack >
+                                        <option value=">300">
+                                            Over 300 kr
+                                        </option>
+                                    </Select>  
+                                    <Select required width="200px" placeholder="Leie/leie ut" value={requestOrShare} onChange={(event) => setrequestOrShare(event.target.value)}>
+                                        <option value="request">
+                                            Leie
+                                        </option>
+                                        <option value="share">
+                                            Leie ut
+                                        </option>
+                                    </Select>  */}
+                            </VStack >
 
-                </Box >
-                <Box id="tools" mt="50px">
-                    {
-                        // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
-                        // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
-                        tools?.map((data, id) => (
-                            buildCard(data, id, isSignedIn, currentUser)
-                        ))
-                    }
-                </Box>
-            </div >
+                        </Box >
+                        <Box id="tools" mt="50px">
+                            {
+                                // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
+                                // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
+                                tools?.map((data, id) => (
+                                    buildCard(data, id, isSignedIn, currentUser)
+                                ))
+                            }
+                        </Box>
+                    
+                    </div >
         )
     }
 
