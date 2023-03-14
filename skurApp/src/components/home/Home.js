@@ -1,7 +1,12 @@
 import './Home.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import {AiOutlineHeart} from "react-icons/ai";
+import ReactDOM from "react-dom";
+import {ThemeProvider, CSSReset, Icon } from '@chakra-ui/react'
+import Rating from "./Rating";
+import { AiOutlineStar } from 'react-icons/ai';
+import { ratingValue } from './Rating';
+
 
 import {
     AlertDialog,
@@ -71,10 +76,18 @@ function alertForRent(data, currentUser){
   }
 }
 
-function buildCard(data, id, signedIn, currentUser) {
 
+
+function buildCard(data, id, signedIn) {
+
+    //const [ratingValue, setRatingValue] = useState(2);
     var toolRating = 0;
+    var toolVisibility="true";
+    var ratingVisibility="none";
 
+    
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    //const [ratingVisibility, setRatingVisibility] =useState(true)
     //const creatorData = await getCreatorData(data.creator)
 
 
@@ -99,13 +112,19 @@ function buildCard(data, id, signedIn, currentUser) {
     }
 
 
-
     return (
         <Card key={id} maxW='xs' padding="5%">
             <IconButton ml="85%" colorScheme='white' color="blue.500" icon={<AiOutlineHeart size="35px"/> } />
             {/* En pop-up hvor man legger til annonsen i en liste man har laget tidligere eller lage en ny en
             Muligens legge til slik at hvis brukeren har lagret annonsen så vil stjernen fylles inn: AiFillStar*/}
             <CardBody>
+                <HStack ml="-10px" spacing="3px">
+                     <Icon 
+                    as={AiOutlineStar}
+                    boxSize="25px"   
+                     ></Icon>
+                     <Text> {data.rating} </Text>
+                 </HStack>
                 <Image
                     src={imageLink}
                 />
@@ -132,49 +151,27 @@ function buildCard(data, id, signedIn, currentUser) {
                 </Flex>
             </Link>
             <Divider />
-            <Box display="none" id="ratingBox" >
-                <Text> Legg igjen rating:</Text>
-
-                <Slider mt="20px" mb="20px" min={1} max={5} aria-label='slider-ex-1' defaultValue={3} onChange={
-                    (val) => {
-                        toolRating = val;
-                    }}>
-                    <SliderMark value={1} mt='1' ml='-2.5' fontSize='sm'>
-                        1
-                    </SliderMark>
-                    <SliderMark value={2} mt='1' ml='-2.5' fontSize='sm'>
-                        2
-                    </SliderMark>
-                    <SliderMark value={3} mt='1' ml='-2.5' fontSize='sm'>
-                        3
-                    </SliderMark>
-                    <SliderMark value={4} mt='1' ml='-2.5' fontSize='sm'>
-                        4
-                    </SliderMark>
-                    <SliderMark value={5} mt='1' ml='-2.5' fontSize='sm'>
-                        5
-                    </SliderMark>
-                    <SliderTrack>
-                        <SliderFilledTrack />
-                    </SliderTrack>
-                    <SliderThumb />
-                </Slider>
+            <Box display={ratingVisibility} id="ratingBox" >
+                <Text mt="20px"> Legg igjen rating:</Text>
+                <Box mt="-20px">
+                    <CSSReset />
+                    <Rating
+                        size={48}
+                        icon="star"
+                        scale={5}
+                        fillColor="gold"
+                        strokeColor="grey"
+                    />
+                </Box>
             </Box>
             <CardFooter>
-                <HStack spacing='10'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => alertForRent(data, currentUser)}>
+                <HStack display={toolVisibility} spacing='10'>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
                         {buttonText}
                     </Button>
-
-                    {/* <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => handleRentTool(data.id, data.address)}>
-                        {buttonText}
-                    </Button> */}
-
                     <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
                         <Button>Kontakt eier</Button>
                     </Link>
-
-                    {/* <button value={5} onClick = {(e) => handleRating(e,id,"value")}>Rate her</button> */}
                 </HStack >
             </CardFooter >
         </Card >
@@ -205,6 +202,9 @@ const Home = () => {
 
         }
 
+        let ref = query(collection(firestoreService, "tools"), where('available', '==', true))
+        //real time update
+
 
         if (typeOfAd) {
             ref = query(ref, where('type', '==', typeOfAd))
@@ -226,6 +226,8 @@ const Home = () => {
 
     if (currentUser) {
         return (
+            <div  className="homePage">
+                <Box  id="categories">
             <div className="homePage">
                 <Box id="categories">
                     <VStack mt="50px" spacing="20px">
@@ -289,4 +291,5 @@ const Home = () => {
     }
 
 }
+
 export default Home;
