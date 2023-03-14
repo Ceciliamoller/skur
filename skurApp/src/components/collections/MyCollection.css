@@ -6,4 +6,7 @@
     grid-template-columns: 1fr 1fr 1fr;
     margin-right: 10%;
 }
-
+#categories{
+    margin-right: 10%;
+    margin-left: 20%;
+}

@@ -28,6 +28,7 @@ import {
     VisuallyHidden,
     IconButton,
     useDisclosure,
+    useToast,
     Menu,
     MenuButton,
     MenuList,
@@ -36,7 +37,7 @@ import {
     color,
 
 } from '@chakra-ui/react'
-import { collection, onSnapshot, query, where, doc, updateDoc, increment, arrayUnion } from "firebase/firestore";
+import { collection, onSnapshot, query, where, doc, updateDoc, increment, addDoc, arrayUnion } from "firebase/firestore";
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
@@ -78,7 +79,39 @@ function alertForRent(data, currentUser) {
     }
 }
 
-function buildCard(data, id, signedIn, currentUser) {
+async function createNewList(name, uid, e, setNewListName) {
+    e.stopPropagation()
+    setNewListName("")
+    let ref = collection(firestoreService, `users/${uid}/list`)
+
+    await addDoc(ref, {
+        listName: name
+    });
+
+
+}
+
+async function uploadToList(uid, e, toolId, list, toast) {
+
+    e.stopPropagation()
+    let ref = doc(firestoreService, `users/${uid}/list`, list.id)
+
+
+    await updateDoc(ref, {
+        tools: arrayUnion(toolId)
+    }).then(() => {
+        toast({
+            title: `Lagt til i liste: ${list.listName}`,
+            status: 'success',
+            duration: 4000,
+            isClosable: true,
+        })
+    })
+
+
+}
+function buildCard(data, id, signedIn, currentUser, newListName, setNewListName, allLists, toast) {
+
 
     var toolRating = 0;
 
@@ -113,12 +146,16 @@ function buildCard(data, id, signedIn, currentUser) {
                 <MenuButton as={Button} rightIcon={<AiOutlineStar size="35px" />} colorScheme="white" color="blue.500" />
                 <MenuList>
                     <MenuGroup title='Dine lister'>
-                        <MenuItem>1</MenuItem>
-                        <MenuItem>2</MenuItem>
-                        <MenuItem>3</MenuItem>
+                        {
+                            allLists?.map((listData, id) => (
+                                <MenuItem key={id} onClick={(e) => uploadToList(currentUser.uid, e, data.id, listData, toast)}>
+                                    {listData.listName}
+                                </MenuItem>
+                            ))
+                        }
                     </MenuGroup>
                     <MenuGroup title='Lag en ny liste' closeOnSelect="false">
-                        <MenuItem ><input placeholder='Ny liste' onClick={e => e.stopPropagation()} /> <Button ml="4px">Lag</Button></MenuItem>
+                        <MenuItem ><input placeholder='Ny liste' value={newListName} onClick={e => e.stopPropagation()} onChange={(e) => setNewListName(e.target.value)} /> <Button ml="4px" onClick={(e) => createNewList(newListName, currentUser.uid, e, setNewListName)}>Lag</Button></MenuItem>
                     </MenuGroup>
                 </MenuList>
             </Menu>
@@ -207,6 +244,11 @@ const Home = () => {
     const [isSignedIn, setIsSignedIn] = useState(currentUser ? true : false);
     const [requestOrShare, setrequestOrShare] = useState("");
     const [typeOfAd, setTypeOfAd] = useState(null);
+    const [newListName, setNewListName] = useState("");
+    const [allLists, setAllLists] = useState(null);
+
+    const toast = useToast();
+
 
 
 
@@ -216,8 +258,14 @@ const Home = () => {
 
         if (currentUser) {
             setIsSignedIn(true)
-            ref = query(ref, where('creatorEmail', '!=', currentUser.email))
+            ref = query(ref, where('creator', '!=', currentUser.uid))
+            let listRef = collection(firestoreService, `users/${currentUser.uid}/list`)
 
+
+            onSnapshot(listRef, (snapshot) => {
+                const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+                setAllLists(newData);
+            })
         }
 
 
@@ -231,10 +279,16 @@ const Home = () => {
 
 
 
+
         const unsub = onSnapshot(ref, (snapshot) => {
             const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
             setTools(newData);
         })
+
+
+
+
+
 
         return unsub
     }, [toolCategory, isSignedIn, typeOfAd, currentUser])
@@ -295,7 +349,7 @@ const Home = () => {
                         // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
                         // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
                         tools?.map((data, id) => (
-                            buildCard(data, id, isSignedIn, currentUser)
+                            buildCard(data, id, isSignedIn, currentUser, newListName, setNewListName, allLists, toast)
                         ))
                     }
                 </Box>
