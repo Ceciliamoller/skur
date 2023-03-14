@@ -1,6 +1,6 @@
 import './App.css';
 import CreateTools from './components/CreateTools/createTool'
-import { ChakraProvider, Button, useColorMode, toggleColorMode, IconButton, Avatar } from '@chakra-ui/react'
+import { ChakraProvider, Button, useColorMode, toggleColorMode, IconButton, Avatar, Text } from '@chakra-ui/react'
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./components/home/Home";
@@ -37,7 +37,7 @@ function App() {
     <Router>
       <AuthService value={{ currentUser }}>
         <nav>
-          <Link id='logo' to="/"><strong>⌂ skur</strong> </Link>
+          <Link id='logo' to="/"><Text fontSize="3xl"><b>⌂ skur</b></Text> </Link>
           {/* Router guard */}
           {!currentUser ? (
             <Link className="navoption" id="buttonSignin" to="/login">
