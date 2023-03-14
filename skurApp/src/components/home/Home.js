@@ -29,7 +29,7 @@ import { collection, onSnapshot, query, where, doc, updateDoc, getDoc, increment
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
-async function getRatingAvg(ratings){
+function getRatingAvg(ratings){
     let sum = 0;
     let count = 0;
 
@@ -38,22 +38,21 @@ async function getRatingAvg(ratings){
     sum += value;
     count++;
   }
+  console.log(sum/count);
   return sum / count;
+  
 }
 
 async function handleToolRating(e,tool,uid) {
     //get the rating from event e
     //const rating = e.target.value;
-    const rating = 3;
-
+    const rating = 4;
     tool.ratings[uid] = rating;
-    //get the tool reference
     const toolRef = doc(firestoreService, "tools", tool.id);
-    //update tool.ratings to firebase
-    //update the tool rating using getRatingAvg(tool.ratings)
+    let ratingAvg = getRatingAvg(tool.ratings);
     await updateDoc(toolRef, {
         ratings: tool.ratings,
-        rating: getRatingAvg(tool.ratings),
+        rating: ratingAvg,
     })
 }
 
