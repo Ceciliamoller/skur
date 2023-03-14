@@ -52,6 +52,7 @@ export default function CreateTools() {
                 ratingCount: 0,
                 totalRating: 0,
                 toolRating: 0,
+                ratings: new Map,
                 creatorName: currentUser.displayName,
                 creatorPic: currentUser.photoURL,
                 available: true,

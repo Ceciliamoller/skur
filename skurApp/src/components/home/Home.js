@@ -191,8 +191,6 @@ function buildCard(data, id, signedIn) {
             <CardFooter>
 
 
-                
-                <Button display={ratingVisibility} variant='solid' colorScheme='blue'> Lagre rating </Button>
                 <HStack display={toolVisibility} spacing='10'>
                     <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
                         {buttonText}
