@@ -1,12 +1,18 @@
 .collectionPage{
-    margin: 5%;
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 1fr;
+
 }
 .myCollections{
+    grid-column-end: span 2;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    margin-right: 10%;
+    margin-right: 5%;
 }
+
 #categories{
     margin-right: 10%;
     margin-left: 20%;
 }
+
+

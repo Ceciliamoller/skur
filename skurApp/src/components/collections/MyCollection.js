@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Box, VStack, Text, Select, Heading, Card, CardBody, Image, Stack, Link, Flex, Avatar, Divider, SliderMark, Slider, Button, HStack, CardFooter, SliderTrack, SliderThumb, SliderFilledTrack } from '@chakra-ui/react';
+import { Box, VStack, Text, Select, Heading, Card, CardBody, Image, Stack, Link, Flex, Avatar, Divider, SliderMark, Slider, Button, HStack, CardFooter, SliderTrack, SliderThumb, SliderFilledTrack, Center } from '@chakra-ui/react';
 import { TriangleDownIcon } from '@chakra-ui/icons';
 import "./MyCollection.css";
 import { firestoreService } from '../../services/firebaseConfig';
@@ -186,10 +186,9 @@ function MyCollection() {
 
     return (
         <Box className="collectionPage">
-            <Heading mb="2%">Mine samlinger</Heading>
             <Box id="categories">
                 <VStack mt="50px" spacing="20px">
-                    <Text fontSize="xl"> Type annonse </Text>
+                    <Text fontSize="xl"> Velg liste </Text>
                     <Select width="200px" placeholder="Velg en liste" value={typeOfCollection} onChange={(event) => setTypeOfCollection(event.target.value)}>
                         {
                             allLists?.map((data, id) => (
@@ -204,11 +203,9 @@ function MyCollection() {
             </Box >
             <Box className="myCollections">
                 {
+                    typeOfCollection === "" ? <Center>Velg en liste</Center> :
 
-
-                    typeOfCollection === "" ? <Text>Velg en liste</Text> :
-
-                        isEmpty ? <Text>Ingen verktøy lagt inn i {allLists.find((e) => e.id === typeOfCollection).listName}</Text> :
+                        isEmpty ? <Center>Ingen verktøy lagt inn i {allLists.find((e) => e.id === typeOfCollection).listName}</Center> :
                             tools?.map((data, id) => (
                                 buildCard(data, id)
                             ))
