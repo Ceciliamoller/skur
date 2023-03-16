@@ -34,7 +34,7 @@ function openmaps(address) {
     window.open(googleMapsUrl, '_blank');
 }
 
-function buildCard(data, id, currentUser) {
+function buildCard(data, id) {
 
     var toolRating = 0;
 
@@ -124,12 +124,11 @@ function buildCard(data, id, currentUser) {
 
 function MyCollection() {
 
-    const [typeOfCollection, setTypeOfCollection] = useState("");
     const { currentUser } = useAuthValue()
     const [tools, setTools] = useState([]);
     const [allLists, setAllLists] = useState([]);
-
-
+    const [isEmpty, setisEmpty] = useState(false);
+    const [typeOfCollection, setTypeOfCollection] = useState("");
 
 
     useEffect(() => {
@@ -140,39 +139,48 @@ function MyCollection() {
             let toolRef = collection(firestoreService, 'tools/')
 
             if (typeOfCollection !== "") {
+
                 let selectedTool = allLists.find((element) => element.id === typeOfCollection)
 
-                console.log({ selectedTool });
+                console.log(selectedTool.listName);
 
 
-                if (selectedTool) {
-
-                    toolRef = query(toolRef, where(documentId(), "in", selectedTool.tools))
-
+                if (!selectedTool.tools) {
+                    setisEmpty(true)
                 }
-            }
 
+
+                if (selectedTool && selectedTool.tools != null) {
+                    setisEmpty(false)
+                    toolRef = query(toolRef, where(documentId(), "in", selectedTool.tools))
+                }
+
+
+
+
+                onSnapshot(toolRef, (snapshot) => {
+                    const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+                    setTools(newData);
+
+                })
+
+                console.log({ isEmpty });
+
+
+            }
             const unsub = onSnapshot(ref, (snapshot) => {
+
                 const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
                 setAllLists(newData);
 
             })
+            return (unsub)
 
-
-            const unsubTools = onSnapshot(toolRef, (snapshot) => {
-                const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
-                setTools(newData);
-
-            })
-
-
-
-            return (unsub, unsubTools)
         }
 
 
 
-    }, [typeOfCollection, currentUser, allLists])
+    }, [typeOfCollection, currentUser])
 
 
 
@@ -182,10 +190,10 @@ function MyCollection() {
             <Box id="categories">
                 <VStack mt="50px" spacing="20px">
                     <Text fontSize="xl"> Type annonse </Text>
-                    <Select width="200px" placeholder="Alle" value={typeOfCollection} onChange={(event) => setTypeOfCollection(event.target.value)}>
+                    <Select width="200px" placeholder="Velg en liste" value={typeOfCollection} onChange={(event) => setTypeOfCollection(event.target.value)}>
                         {
                             allLists?.map((data, id) => (
-                                <option value={data.id}>
+                                <option key={id} value={data.id}>
                                     {data.listName}
                                 </option>
                             ))
@@ -196,9 +204,14 @@ function MyCollection() {
             </Box >
             <Box className="myCollections">
                 {
-                    tools?.map((data, id) => (
-                        buildCard(data, id, currentUser)
-                    ))
+
+
+                    typeOfCollection === "" ? <Text>Velg en liste</Text> :
+
+                        isEmpty ? <Text>Ingen verktøy lagt inn i {allLists.find((e) => e.id === typeOfCollection).listName}</Text> :
+                            tools?.map((data, id) => (
+                                buildCard(data, id)
+                            ))
                 }
 
             </Box>
