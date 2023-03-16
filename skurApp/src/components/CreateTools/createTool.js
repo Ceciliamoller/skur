@@ -33,6 +33,7 @@ export default function CreateTools() {
     const [newPrice, setNewPrice] = useState("");
     const [newAddress, setNewAddress] = useState("");
     const [toolCategory, setNewToolCategory] = useState("");
+    const [toolRatings, setToolRatings] = useState("");
 
     /* Method for creating new tool in firebase */
     async function handleCreateTool(e) {
@@ -48,9 +49,8 @@ export default function CreateTools() {
                 category: toolCategory,
                 creator: currentUser.uid,
                 creatorEmail: currentUser.email,
-                ratingCount: 0,
-                totalRating: 0,
                 toolRating: 0,
+                ratings: {},
                 creatorName: currentUser.displayName,
                 creatorPic: currentUser.photoURL,
                 available: true,

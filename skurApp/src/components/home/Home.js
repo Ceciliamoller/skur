@@ -34,15 +34,6 @@ import { collection, onSnapshot, query, where, doc, updateDoc, increment, addDoc
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
-async function handleToolRating(e, id) {
-
-    const ref = doc(firebaseService, "tools", id)
-    await updateDoc(ref, {
-        ratingCount: increment(1),
-        totalRating: increment(e.target.value),
-    })
-}
-
 async function handleUserRating(e, id) {
 
     const ref = doc(firebaseService, "users", id)
@@ -205,12 +196,15 @@ function buildCard(data, id, signedIn, currentUser, newListName, setNewListName,
                         scale={5}
                         fillColor="gold"
                         strokeColor="grey"
+                        data={data}
+                        currentUser={currentUser}
+                        doc={doc}
                     />
                 </Box>
             </Box>
             <CardFooter>
-                <HStack display={toolVisibility} spacing='5'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
+                <HStack spacing='10'>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => alertForRent(data, currentUser)}>
                         {buttonText}
                     </Button>
                     <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
