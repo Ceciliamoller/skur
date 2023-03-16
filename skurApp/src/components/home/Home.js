@@ -6,7 +6,6 @@ import { ThemeProvider, CSSReset, Icon } from '@chakra-ui/react'
 import Rating from "./Rating";
 import { AiOutlineStar } from 'react-icons/ai';
 import { AiOutlineHeart } from 'react-icons/ai';
-import { ratingValue } from './Rating';
 import { FiSave } from "react-icons/fi";
 
 import {
@@ -33,6 +32,7 @@ import {
 import { collection, onSnapshot, query, where, doc, updateDoc, increment, addDoc, arrayUnion } from "firebase/firestore";
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
+import { CloseIcon } from '@chakra-ui/icons';
 
 async function handleToolRating(e, id) {
 
