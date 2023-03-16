@@ -140,23 +140,6 @@ function buildCard(data, id, signedIn, currentUser, newListName, setNewListName,
 
     return (
         <Card key={id} maxW='xs' padding="5%">
-            <Menu>
-                <MenuButton as={Button} rightIcon={<AiOutlineStar size="35px" />} colorScheme="white" color="blue.500" />
-                <MenuList>
-                    <MenuGroup title='Dine lister'>
-                        {
-                            allLists?.map((listData, id) => (
-                                <MenuItem key={id} onClick={(e) => uploadToList(currentUser.uid, e, data.id, listData, toast)}>
-                                    {listData.listName}
-                                </MenuItem>
-                            ))
-                        }
-                    </MenuGroup>
-                    <MenuGroup title='Lag en ny liste' closeOnSelect="false">
-                        <MenuItem ><input placeholder='Ny liste' value={newListName} onClick={e => e.stopPropagation()} onChange={(e) => setNewListName(e.target.value)} /> <Button ml="4px" onClick={(e) => createNewList(newListName, currentUser.uid, e, setNewListName)}>Lag</Button></MenuItem>
-                    </MenuGroup>
-                </MenuList>
-            </Menu>
 
             <CardBody>
 
@@ -168,7 +151,23 @@ function buildCard(data, id, signedIn, currentUser, newListName, setNewListName,
                         ></Icon>
                         <Text> {data.rating} </Text>
                     </HStack>
-                    <IconButton ml="200px" colorScheme='white' color="blue.500" icon={<AiOutlineHeart size="35px" />} />
+                    <Menu>
+                        <MenuButton as={Button} rightIcon={<AiOutlineHeart size="35px" />} colorScheme="white" color="blue.500" />
+                        <MenuList>
+                            <MenuGroup title='Dine lister'>
+                                {
+                                    allLists?.map((listData, id) => (
+                                        <MenuItem key={id} onClick={(e) => uploadToList(currentUser.uid, e, data.id, listData, toast)}>
+                                            {listData.listName}
+                                        </MenuItem>
+                                    ))
+                                }
+                            </MenuGroup>
+                            <MenuGroup title='Lag en ny liste' closeOnSelect="false">
+                                <MenuItem ><input placeholder='Ny liste' value={newListName} onClick={e => e.stopPropagation()} onChange={(e) => setNewListName(e.target.value)} /> <Button ml="4px" onClick={(e) => createNewList(newListName, currentUser.uid, e, setNewListName)}>Lag</Button></MenuItem>
+                            </MenuGroup>
+                        </MenuList>
+                    </Menu>
                 </HStack>
                 <Image
                     src={imageLink}
@@ -210,12 +209,12 @@ function buildCard(data, id, signedIn, currentUser, newListName, setNewListName,
                 </Box>
             </Box>
             <CardFooter>
-                <HStack display={toolVisibility} spacing='10'>
+                <HStack display={toolVisibility} spacing='5'>
                     <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
                         {buttonText}
                     </Button>
                     <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
-                        <Button>Kontakt eier</Button>
+                        <Button>Kontakt</Button>
                     </Link>
                 </HStack >
             </CardFooter >
