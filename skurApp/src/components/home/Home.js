@@ -39,15 +39,6 @@ import { collection, onSnapshot, query, where, doc, updateDoc, increment, arrayU
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
-async function handleToolRating(e, id) {
-
-    const ref = doc(firebaseService, "tools", id)
-    await updateDoc(ref, {
-        ratingCount: increment(1),
-        totalRating: increment(e.target.value),
-    })
-}
-
 async function handleUserRating(e, id) {
 
     const ref = doc(firebaseService, "users", id)
@@ -78,12 +69,14 @@ function alertForRent(data, currentUser){
 }
 
 
-function buildCard(data, id, signedIn) {
+
+
+function buildCard(data, id, signedIn, currentUser) {
 
     //const [ratingValue, setRatingValue] = useState(2);
     var toolRating = 0;
-    var toolVisibility="true";
-    var ratingVisibility="none";
+    var toolVisibility="none";
+    var ratingVisibility="true";
 
     
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -114,6 +107,8 @@ function buildCard(data, id, signedIn) {
 
     return (
         <Card key={id} maxW='xs' padding="5%">
+            {/* En pop-up hvor man legger til annonsen i en liste man har laget tidligere eller lage en ny en
+            Muligens legge til slik at hvis brukeren har lagret annonsen så vil stjernen fylles inn: AiFillStar*/}
             <CardBody>
            
                 <HStack ml="-10px" spacing="190px">
@@ -162,12 +157,15 @@ function buildCard(data, id, signedIn) {
                         scale={5}
                         fillColor="gold"
                         strokeColor="grey"
+                        data={data}
+                        currentUser={currentUser}
+                        doc={doc}
                     />
                 </Box>
             </Box>
             <CardFooter>
-                <HStack display={toolVisibility} spacing='10'>
-                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
+                <HStack spacing='10'>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue' onClick={() => alertForRent(data, currentUser)}>
                         {buttonText}
                     </Button>
                     <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
