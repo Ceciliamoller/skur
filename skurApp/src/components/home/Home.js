@@ -2,7 +2,7 @@ import './Home.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import ReactDOM from "react-dom";
-import { ThemeProvider, CSSReset, Icon } from '@chakra-ui/react'
+import { ThemeProvider, CSSReset, Icon, Input } from '@chakra-ui/react'
 import Rating from "./Rating";
 import { AiOutlineStar } from 'react-icons/ai';
 import { AiOutlineHeart } from 'react-icons/ai';
@@ -84,6 +84,7 @@ async function createNewList(name, uid, e, setNewListName) {
 
 }
 
+
 async function uploadToList(uid, e, toolId, list, toast) {
 
     e.stopPropagation()
@@ -164,7 +165,10 @@ function buildCard(data, id, signedIn, currentUser, newListName, setNewListName,
                                 }
                             </MenuGroup>
                             <MenuGroup title='Lag en ny liste' closeOnSelect="false">
-                                <MenuItem ><input placeholder='Ny liste' value={newListName} onClick={e => e.stopPropagation()} onChange={(e) => setNewListName(e.target.value)} /> <Button ml="4px" onClick={(e) => createNewList(newListName, currentUser.uid, e, setNewListName)}>Lag</Button></MenuItem>
+                                <MenuItem>
+                                    <Input placeholder='Ny liste' value={newListName} onClick={e => e.stopPropagation()} onChange={(e) => setNewListName(e.target.value)} />
+                                    <Button ml="4px" onClick={(e) => createNewList(newListName, currentUser.uid, e, setNewListName)}>Lag</Button>
+                                </MenuItem>
                             </MenuGroup>
                         </MenuList>
                     </Menu>
