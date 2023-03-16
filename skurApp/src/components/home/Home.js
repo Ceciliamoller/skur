@@ -1,22 +1,12 @@
 import './Home.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import ReactDOM from "react-dom";
 import {ThemeProvider, CSSReset, Icon } from '@chakra-ui/react'
 import Rating from "./Rating";
 import { AiOutlineStar } from 'react-icons/ai';
 import { AiOutlineHeart} from 'react-icons/ai';
-import { ratingValue } from './Rating';
-
 
 import {
-    AlertDialog,
-    AlertDialogBody,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogContent,
-    AlertDialogCloseButton,
-    AlertDialogOverlay,
     Card,
     CardBody,
     CardFooter,
@@ -24,11 +14,6 @@ import {
     Image,
     Stack,
     Heading, Text, Divider, Button, Box, Select, VStack, Avatar,
-    Slider,
-    SliderTrack,
-    SliderFilledTrack,
-    SliderThumb,
-    SliderMark,
     HStack,
     VisuallyHidden,
     IconButton,
@@ -82,8 +67,8 @@ function buildCard(data, id, signedIn) {
 
     //const [ratingValue, setRatingValue] = useState(2);
     var toolRating = 0;
-    var toolVisibility="true";
-    var ratingVisibility="none";
+    var toolVisibility="none";
+    var ratingVisibility="true";
 
     
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -124,7 +109,7 @@ function buildCard(data, id, signedIn) {
                      ></Icon>
                      <Text> {data.rating} </Text>
                      </HStack> 
-                     <IconButton ml="200px" colorScheme='white' color="blue.500" icon={<AiOutlineHeart size="35px"/> } />
+                     <IconButton ml="200px" colorScheme='grey' color="blue.500" icon={<AiOutlineHeart size="35px"/> } />
                  </HStack>
                 <Image
                     src={imageLink}
