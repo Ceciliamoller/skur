@@ -37,33 +37,6 @@ import { collection, onSnapshot, query, where, doc, updateDoc, increment, arrayU
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
-function getRatingAvg(ratings){
-    let sum = 0;
-    let count = 0;
-
-  for (const user in ratings) {
-    const value = ratings[user];
-    sum += value;
-    count++;
-  }
-  console.log(sum/count);
-  return sum / count;
-  
-}
-
-async function handleToolRating(e,tool,uid) {
-    //get the rating from event e
-    //const rating = e.target.value;
-    const rating = 4;
-    tool.ratings[uid] = rating;
-    const toolRef = doc(firestoreService, "tools", tool.id);
-    let ratingAvg = getRatingAvg(tool.ratings);
-    await updateDoc(toolRef, {
-        ratings: tool.ratings,
-        rating: ratingAvg,
-    })
-}
-
 async function handleUserRating(e, id) {
 
     const ref = doc(firebaseService, "users", id)
@@ -165,7 +138,9 @@ function buildCard(data, id, signedIn, currentUser) {
                         scale={5}
                         fillColor="gold"
                         strokeColor="grey"
-                        onClick={(e)=>handleToolRating(e.target.key,data,currentUser.uid)}
+                        data={data}
+                        currentUser={currentUser}
+                        doc={doc}
                     />
                 </Box>
 
