@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import { getDoc, doc, query, collection, where, onSnapshot, updateDoc, arrayUnion } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from "../../services/AuthService";
+import Rating from "./Rating";
 
 async function handleRentTool(id, address, uid) {
     const toolRef = doc(firestoreService, "tools", id);
@@ -241,22 +242,19 @@ function User() {
                                     <VStack py={{ base: 13, sm: 5, md: 8, lg: 10 }} spacing={6}>
                                         <Avatar size='xl' bg="blue.200" src={userData.photo}></Avatar>
                                         <Box pr={150}></Box>
-                                        <Slider aria-label='slider-ex-6' onChange={(val) => setSliderValue(val)} min={1} max={5} colorScheme='green'>
-                                            <SliderMark
-                                                value={sliderValue}
-                                                textAlign='center'
-                                                color='white'
-                                                mt='-10'
-                                                ml='-5'
-                                                w='12'
-                                            >
-                                                {/* {sliderValue} HER LEGGER VI INN GJENNOMSNITT */}
-                                            </SliderMark>
-                                            <SliderTrack>
-                                                <SliderFilledTrack />
-                                            </SliderTrack>
-                                            <SliderThumb />
-                                        </Slider>
+                                        <Box ml="500px" display="true" id="ratingBox" >
+                                            <Text  mb="-25px"> Legg igjen vurdering:</Text>
+                                                <Rating
+                                                        size={48}
+                                                        icon="star"
+                                                        scale={5}
+                                                        fillColor="gold"
+                                                        strokeColor="grey"
+                                                        userData ={userData}
+                                                        currentUser ={currentUser}
+                                                        doc={doc}
+                                                    />
+                                        </Box>
                                     </VStack>
                                     <VStack alignItems="center" py={{ base: 5, sm: 5, md: 8, lg: 10 }} spacing={6}>
                                         <Heading size='lg'> {userData.name}</Heading>

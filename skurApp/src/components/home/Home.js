@@ -39,14 +39,6 @@ import { collection, onSnapshot, query, where, doc, updateDoc, increment, arrayU
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
 
-async function handleUserRating(e, id) {
-
-    const ref = doc(firebaseService, "users", id)
-    await updateDoc(ref, {
-        ratingCount: increment(1),
-        totalRating: increment(e.target.value),
-    })
-}
 
 async function handleRentTool(id, address, uid) {
     const toolRef = doc(firestoreService, "tools", id);
