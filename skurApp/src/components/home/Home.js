@@ -128,7 +128,7 @@ function buildCard(data, id, signedIn, currentUser) {
 
     return (
         <Card key={id} maxW='xs' padding="5%">
-            <IconButton ml="85%" colorScheme='white' color="blue.500" onClick={(e)=>handleToolRating(e,data,currentUser.uid)} icon={<AiOutlineStar> size="35px"</AiOutlineStar> }/>
+            <IconButton ml="85%" colorScheme='white' color="blue.500" icon={<AiOutlineStar> size="35px"</AiOutlineStar> }/>
             {/* En pop-up hvor man legger til annonsen i en liste man har laget tidligere eller lage en ny en
             Muligens legge til slik at hvis brukeren har lagret annonsen så vil stjernen fylles inn: AiFillStar*/}
             <CardBody>
@@ -165,6 +165,7 @@ function buildCard(data, id, signedIn, currentUser) {
                         scale={5}
                         fillColor="gold"
                         strokeColor="grey"
+                        onClick={(e)=>handleToolRating(e.target.key,data,currentUser.uid)}
                     />
                 </Box>
 
@@ -317,7 +318,6 @@ const Home = () => {
                         // FIXME: Does not fire when user signs out. Buttons is enabled when user signs out
                         // https://stackoverflow.com/questions/55030208/react-passing-state-value-as-parameter-to-method
                         tools?.map((data, id) => (
-                            buildCard(data, id, isSignedIn, currentUser)
                             buildCard(data, id, isSignedIn, currentUser)
                         ))
                     }
