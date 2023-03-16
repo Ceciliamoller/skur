@@ -106,124 +106,121 @@ async function uploadToList(uid, e, toolId, list, toast) {
 function buildCard(data, id, signedIn, currentUser, newListName, setNewListName, allLists, toast) {
 
 
-    function buildCard(data, id, signedIn) {
-
-        //const [ratingValue, setRatingValue] = useState(2);
-        var toolRating = 0;
-        var toolVisibility = "true";
-        var ratingVisibility = "none";
+    //const [ratingValue, setRatingValue] = useState(2);
+    var toolRating = 0;
+    var toolVisibility = "true";
+    var ratingVisibility = "none";
 
 
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        //const [ratingVisibility, setRatingVisibility] =useState(true)
-        //const creatorData = await getCreatorData(data.creator)
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    //const [ratingVisibility, setRatingVisibility] =useState(true)
+    //const creatorData = await getCreatorData(data.creator)
 
 
 
-        var imageLink = ("");
-        if (data.category === "Hammer") {
-            imageLink = 'http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
-        }
-        else if (data.category === "Skrutrekker") {
-            imageLink = 'https://cdn.pixabay.com/photo/2012/04/13/21/06/screwdriver-33634__480.png'
-        }
-        else {
-            imageLink = 'https://cdn-icons-png.flaticon.com/512/3417/3417080.png'
-        }
-
-        var buttonText = ("");
-        if (data.type === "request") {
-            buttonText = "Tilby utleie"
-        }
-        else {
-            buttonText = "Lei nå"
-        }
-
-
-        return (
-            <Card key={id} maxW='xs' padding="5%">
-                <Menu>
-                    <MenuButton as={Button} rightIcon={<AiOutlineStar size="35px" />} colorScheme="white" color="blue.500" />
-                    <MenuList>
-                        <MenuGroup title='Dine lister'>
-                            {
-                                allLists?.map((listData, id) => (
-                                    <MenuItem key={id} onClick={(e) => uploadToList(currentUser.uid, e, data.id, listData, toast)}>
-                                        {listData.listName}
-                                    </MenuItem>
-                                ))
-                            }
-                        </MenuGroup>
-                        <MenuGroup title='Lag en ny liste' closeOnSelect="false">
-                            <MenuItem ><input placeholder='Ny liste' value={newListName} onClick={e => e.stopPropagation()} onChange={(e) => setNewListName(e.target.value)} /> <Button ml="4px" onClick={(e) => createNewList(newListName, currentUser.uid, e, setNewListName)}>Lag</Button></MenuItem>
-                        </MenuGroup>
-                    </MenuList>
-                </Menu>
-
-                <CardBody>
-
-                    <HStack ml="-10px" spacing="190px">
-                        <HStack>
-                            <Icon
-                                as={AiOutlineStar}
-                                boxSize="25px"
-                            ></Icon>
-                            <Text> {data.rating} </Text>
-                        </HStack>
-                        <IconButton ml="200px" colorScheme='white' color="blue.500" icon={<AiOutlineHeart size="35px" />} />
-                    </HStack>
-                    <Image
-                        src={imageLink}
-                    />
-                    <Stack mt='6' spacing='3'>
-                        <Heading id="toolTitle" size='md'>{data.toolName}</Heading>
-                        <Text id="toolDescription">
-                            <b>Kategori:</b> {data.category}
-                        </Text>
-                        <Text id="toolDescription">
-                            {data.description}
-                        </Text>
-                        <Text id="toolPrice" color='blue.600' fontSize='2xl'>
-                            {data.price} kr
-                        </Text>
-                        <Text id="toolAddress" color='blue.600' fontSize='ml'>
-                            {data.address}
-                        </Text>
-                    </Stack>
-                </CardBody>
-                <Link to={`/user/${data.creator}`}>
-                    <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                        <Avatar bg="blue.500" size="sm" src={data.creatorPic}></Avatar>
-                        <Heading size="sm">{data.creatorName ? data.creatorName : "Anonym"}</Heading>
-                    </Flex>
-                </Link>
-                <Divider />
-                <Box display={ratingVisibility} id="ratingBox" >
-                    <Text mt="20px"> Legg igjen rating:</Text>
-                    <Box mt="-20px">
-                        <CSSReset />
-                        <Rating
-                            size={48}
-                            icon="star"
-                            scale={5}
-                            fillColor="gold"
-                            strokeColor="grey"
-                        />
-                    </Box>
-                </Box>
-                <CardFooter>
-                    <HStack display={toolVisibility} spacing='10'>
-                        <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
-                            {buttonText}
-                        </Button>
-                        <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
-                            <Button>Kontakt eier</Button>
-                        </Link>
-                    </HStack >
-                </CardFooter >
-            </Card >
-        )
+    var imageLink = ("");
+    if (data.category === "Hammer") {
+        imageLink = 'http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
     }
+    else if (data.category === "Skrutrekker") {
+        imageLink = 'https://cdn.pixabay.com/photo/2012/04/13/21/06/screwdriver-33634__480.png'
+    }
+    else {
+        imageLink = 'https://cdn-icons-png.flaticon.com/512/3417/3417080.png'
+    }
+
+    var buttonText = ("");
+    if (data.type === "request") {
+        buttonText = "Tilby utleie"
+    }
+    else {
+        buttonText = "Lei nå"
+    }
+
+
+    return (
+        <Card key={id} maxW='xs' padding="5%">
+            <Menu>
+                <MenuButton as={Button} rightIcon={<AiOutlineStar size="35px" />} colorScheme="white" color="blue.500" />
+                <MenuList>
+                    <MenuGroup title='Dine lister'>
+                        {
+                            allLists?.map((listData, id) => (
+                                <MenuItem key={id} onClick={(e) => uploadToList(currentUser.uid, e, data.id, listData, toast)}>
+                                    {listData.listName}
+                                </MenuItem>
+                            ))
+                        }
+                    </MenuGroup>
+                    <MenuGroup title='Lag en ny liste' closeOnSelect="false">
+                        <MenuItem ><input placeholder='Ny liste' value={newListName} onClick={e => e.stopPropagation()} onChange={(e) => setNewListName(e.target.value)} /> <Button ml="4px" onClick={(e) => createNewList(newListName, currentUser.uid, e, setNewListName)}>Lag</Button></MenuItem>
+                    </MenuGroup>
+                </MenuList>
+            </Menu>
+
+            <CardBody>
+
+                <HStack ml="-10px" spacing="190px">
+                    <HStack>
+                        <Icon
+                            as={AiOutlineStar}
+                            boxSize="25px"
+                        ></Icon>
+                        <Text> {data.rating} </Text>
+                    </HStack>
+                    <IconButton ml="200px" colorScheme='white' color="blue.500" icon={<AiOutlineHeart size="35px" />} />
+                </HStack>
+                <Image
+                    src={imageLink}
+                />
+                <Stack mt='6' spacing='3'>
+                    <Heading id="toolTitle" size='md'>{data.toolName}</Heading>
+                    <Text id="toolDescription">
+                        <b>Kategori:</b> {data.category}
+                    </Text>
+                    <Text id="toolDescription">
+                        {data.description}
+                    </Text>
+                    <Text id="toolPrice" color='blue.600' fontSize='2xl'>
+                        {data.price} kr
+                    </Text>
+                    <Text id="toolAddress" color='blue.600' fontSize='ml'>
+                        {data.address}
+                    </Text>
+                </Stack>
+            </CardBody>
+            <Link to={`/user/${data.creator}`}>
+                <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+                    <Avatar bg="blue.500" size="sm" src={data.creatorPic}></Avatar>
+                    <Heading size="sm">{data.creatorName ? data.creatorName : "Anonym"}</Heading>
+                </Flex>
+            </Link>
+            <Divider />
+            <Box display={ratingVisibility} id="ratingBox" >
+                <Text mt="20px"> Legg igjen rating:</Text>
+                <Box mt="-20px">
+                    <CSSReset />
+                    <Rating
+                        size={48}
+                        icon="star"
+                        scale={5}
+                        fillColor="gold"
+                        strokeColor="grey"
+                    />
+                </Box>
+            </Box>
+            <CardFooter>
+                <HStack display={toolVisibility} spacing='10'>
+                    <Button isDisabled={!signedIn} id="rentBtn" variant='solid' colorScheme='blue'>
+                        {buttonText}
+                    </Button>
+                    <Link className='chakra-button' isDisabled={!signedIn} href={"mailto:" + data.creatorEmail + "?subject=Angående din annonse på Skur: " + data.toolName} id="contactBtn" variant='ghost' colorScheme='blue'>
+                        <Button>Kontakt eier</Button>
+                    </Link>
+                </HStack >
+            </CardFooter >
+        </Card >
+    )
 }
 
 
