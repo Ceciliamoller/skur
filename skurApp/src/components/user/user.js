@@ -1,9 +1,6 @@
 import {
     Avatar, Box, Button, CardBody, Stack, HStack, Image, CardFooter, Text, Link, Divider, Flex, Heading, Slider, WrapItem, Wrap, VStack, SliderTrack, Card,
-    SliderFilledTrack,
-    SliderThumb,
-    SliderMark,
-    Center
+    Center,
 } from "@chakra-ui/react";
 import { React, useEffect, useState } from "react";
 import './user.css';
@@ -12,6 +9,7 @@ import { useParams } from "react-router-dom";
 import { getDoc, doc, query, collection, where, onSnapshot, updateDoc, arrayUnion } from "firebase/firestore";
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from "../../services/AuthService";
+import Rating from "../home/Rating"
 
 async function handleRentTool(id, address, uid) {
     const toolRef = doc(firestoreService, "tools", id);
@@ -56,7 +54,7 @@ function buildCard(data, id, currentUser, isMyUser, isRented) {
         imageLink = 'https://cdn.pixabay.com/photo/2012/04/13/21/06/screwdriver-33634__480.png'
     }
     else {
-        imageLink = 'https://m.media-amazon.com/images/I/71ecpTA4rwL.jpg'
+        imageLink = 'https://cdn-icons-png.flaticon.com/512/3417/3417080.png'
     }
 
 
@@ -91,30 +89,13 @@ function buildCard(data, id, currentUser, isMyUser, isRented) {
             <Box display="none" id="ratingBox" >
                 <Text> Legg igjen rating:</Text>
 
-                <Slider mt="20px" mb="20px" min={1} max={5} aria-label='slider-ex-1' defaultValue={3} onChange={
-                    (val) => {
-                        toolRating = val;
-                    }}>
-                    <SliderMark value={1} mt='1' ml='-2.5' fontSize='sm'>
-                        1
-                    </SliderMark>
-                    <SliderMark value={2} mt='1' ml='-2.5' fontSize='sm'>
-                        2
-                    </SliderMark>
-                    <SliderMark value={3} mt='1' ml='-2.5' fontSize='sm'>
-                        3
-                    </SliderMark>
-                    <SliderMark value={4} mt='1' ml='-2.5' fontSize='sm'>
-                        4
-                    </SliderMark>
-                    <SliderMark value={5} mt='1' ml='-2.5' fontSize='sm'>
-                        5
-                    </SliderMark>
-                    <SliderTrack>
-                        <SliderFilledTrack />
-                    </SliderTrack>
-                    <SliderThumb />
-                </Slider>
+                <Rating
+                        size={48}
+                        icon="star"
+                        scale={5}
+                        fillColor="gold"
+                        strokeColor="grey"
+                    />
             </Box>
             <CardFooter>
                 <HStack>
@@ -153,9 +134,11 @@ function User() {
     const [myUser, setMyUser] = useState(false)
     const [tools, setTools] = useState([]);
     const [rentedTools, setRentedTools] = useState([]);
-
+    const [infoText, setInfotext] =useState(0);
 
     useEffect(() => {
+
+
 
         const fetchUserData = async () => {
             try {
@@ -203,7 +186,6 @@ function User() {
 
             } catch (e) {
                 console.log('ERROR ', e);
-
             }
         }
 
@@ -224,6 +206,8 @@ function User() {
         ml: '-2.5',
         fontSize: 'sm',
     }
+  if(userData.rating===0){setInfotext(userData.name + "har ingen vurdering enda")}
+    else if(userData.rating!==0){setInfotext(userData.name +" sin rating: "+ userData.rating)} 
 
     return (
         <>
@@ -233,33 +217,17 @@ function User() {
                         borderRadius="lg"
                         h="100%"
                         ml={50}
-
                     >
                         <Wrap spacing={{ base: 20, sm: 3, md: 5, lg: 20 }}>
                             <WrapItem>
-                                <HStack spacing={400}>
-                                    <VStack py={{ base: 13, sm: 5, md: 8, lg: 10 }} spacing={6}>
-                                        <Avatar size='xl' bg="blue.200" src={userData.photo}></Avatar>
-                                        <Box pr={150}></Box>
-                                        <Slider aria-label='slider-ex-6' onChange={(val) => setSliderValue(val)} min={1} max={5} colorScheme='green'>
-                                            <SliderMark
-                                                value={sliderValue}
-                                                textAlign='center'
-                                                color='white'
-                                                mt='-10'
-                                                ml='-5'
-                                                w='12'
-                                            >
-                                                {/* {sliderValue} HER LEGGER VI INN GJENNOMSNITT */}
-                                            </SliderMark>
-                                            <SliderTrack>
-                                                <SliderFilledTrack />
-                                            </SliderTrack>
-                                            <SliderThumb />
-                                        </Slider>
-                                    </VStack>
-                                    <VStack alignItems="center" py={{ base: 5, sm: 5, md: 8, lg: 10 }} spacing={6}>
-                                        <Heading size='lg'> {userData.name}</Heading>
+                                <VStack mt="5%" spacing="5%"> 
+                               <Heading mt="20px" size='lg'> {userData.name}</Heading>
+                                <HStack mt="20px" w="1000px" spacing={70} border="2px">
+                                <Avatar ml="20px" size='xl' bg="blue.200" src={userData.photo}></Avatar> 
+                                <Text as="b" > vurdering: 5 </Text> 
+                 
+                                    <VStack mr="200px" alignItems="center" py={{ base: 5, sm: 5, md: 8, lg: 10 }} spacing={6}>
+                                       
                                         {/* <Text mt={{ sm: 3, md: 3, lg: 5 }} color="white"></Text> */}
                                         <Link href={"mailto:" + userData.email} >
                                             <Button
@@ -272,9 +240,22 @@ function User() {
                                                 >
                                                 Email til bruker
                                             </Button>
+                                
                                         </Link>
                                     </VStack>
+                                                               
+                                    <Box ml="500px" display="true" id="ratingBox" >
+                                            <Text  mb="-25px"> Legg igjen vurdering:</Text>
+                                                <Rating
+                                                        size={48}
+                                                        icon="star"
+                                                        scale={5}
+                                                        fillColor="gold"
+                                                        strokeColor="grey"
+                                                    />
+                                        </Box>
                                 </HStack>
+                                </VStack> 
                             </WrapItem>
                         </Wrap>
 

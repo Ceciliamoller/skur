@@ -41,7 +41,8 @@ const Rating = React.forwardRef(
 
     const onClick = idx => {
       if (!isNaN(idx)) {
-          setRating(idx);
+          setRating(Math.round((idx) * 10) / 10);
+          console.log({ratingValue})
       }
     };
 
