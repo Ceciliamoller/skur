@@ -160,6 +160,7 @@ function User() {
 
         const fetchUserData = async () => {
             try {
+                
                 console.log(uid)
                 await getDoc(doc(firestoreService, "users", uid)).then((snap) => {
 
@@ -258,6 +259,7 @@ function User() {
                                                         currentUser ={currentUser}
                                                         doc={doc}
                                                     />
+                                                <Text>{userData.userRating}</Text>
                                         </Box>
                                     </VStack>
                                     <VStack alignItems="center" py={{ base: 5, sm: 5, md: 8, lg: 10 }} spacing={6}>
