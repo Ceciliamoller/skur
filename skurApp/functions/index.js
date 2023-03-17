@@ -31,13 +31,13 @@ exports.removeTool = functions.firestore
     .onUpdate(async (change, context) => {
         const newValue = change.after.data();
 
-        // access a particular field as you would any JS property
-        const ratingCount = newValue.ratingCount;
-        const totalRating = newValue.totalRating;
-        const average = totalRating / ratingCount;
+        const average = newValue.rating;
+        const allRatings = newValue.ratings;
+
+
 
         // perform desired operations ...
-        if (average < 2.0 && ratingCount >= 3) {
+        if (average < 2.0 && Object.keys(allRatings).length >= 3) {
             db.doc("tools/" + context.params.docId).delete().then(() => {
                 sendMail(newValue.creatorEmail, newValue.toolName + "has been removed", "Your tool has been removed from skur due to bad ratings from other users.")
             })
@@ -50,11 +50,10 @@ exports.removeUser = functions.firestore
     .onUpdate(async (change, context) => {
         const newValue = change.after.data();
 
-        const numberOfUserRatings = newValue.numberOfUserRatings;
-        const totalUserRating = newValue.totalUserRating;
-        const averageUserRating = totalUserRating / numberOfUserRatings;
+        const average = newValue.userRating;
+        const allRatings = newValue.ratings;
 
-        if (averageUserRating < 2 && numberOfUserRatings >= 3) {
+        if (average < 2.0 && Object.keys(allRatings).length >= 3) {
             const dbQuery = db.collection("tools").where("creator", "==", context.params.docId)
             db.doc("users/" + context.params.docId).delete().then(() => {
 

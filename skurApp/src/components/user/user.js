@@ -29,6 +29,7 @@ async function handleDeliverTool(id) {
         available: true,
         rentedBy: null
     });
+
 }
 
 function openmaps(address) {
