@@ -21,11 +21,11 @@ function getRatingAvg(ratings){
 async function handleUserRating(e,user,uid) {
   const rating = e;
   user.ratings[uid] = rating;
-  const userRef = doc(firestoreService, "users", user.id);
+  const userRef = doc(firestoreService, "users", user.uid);
   let ratingAvg = getRatingAvg(user.ratings);
   await updateDoc(userRef, {
       ratings: user.ratings,
-      userRating: ratingAvg,
+      userRating: ratingAvg
   })
 }
 

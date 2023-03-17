@@ -160,10 +160,14 @@ function User() {
 
         const fetchUserData = async () => {
             try {
+                console.log(uid)
                 await getDoc(doc(firestoreService, "users", uid)).then((snap) => {
 
-                    setUserData(snap.data())
 
+                    const data = snap.data()
+                    data.uid = snap.id
+
+                    setUserData(data)
                 })
                 if (userData) {
 
