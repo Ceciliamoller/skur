@@ -18,13 +18,10 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     margin-right: 10%;
-
 }
 
 .chakra-card {
     margin: 15px;
 }
-
-
 
 
