@@ -140,6 +140,8 @@ function User() {
 
         const fetchUserData = async () => {
             try {
+                
+                console.log(uid)
                 await getDoc(doc(firestoreService, "users", uid)).then((snap) => {
 
                     const data = snap.data()
@@ -223,18 +225,17 @@ function User() {
                                         <Box ml="500px" display="true" id="ratingBox" >
                                             <Text mb="-25px"> Legg igjen vurdering:</Text>
                                             <Rating
-                                                size={48}
-                                                icon="star"
-                                                scale={5}
-                                                fillColor="gold"
-                                                strokeColor="grey"
-                                                userData={userData}
-                                                currentUser={currentUser}
-                                                doc={doc}
-                                            />
+                                                        icon="star"
+                                                        scale={5}
+                                                        fillColor="gold"
+                                                        strokeColor="grey"
+                                                        userData ={userData}
+                                                        currentUser ={currentUser}
+                                                        doc={doc}
+                                                    />
+                                                <Text>{userData.userRating}</Text>
                                         </Box>
                                     </VStack>
-                                    <VStack alignItems="center" py={{ base: 5, sm: 5, md: 8, lg: 10 }} spacing={6}>
                                         <Heading size='lg'> {userData.name}</Heading>
                                         {/* <Text mt={{ sm: 3, md: 3, lg: 5 }} color="white"></Text> */}
                                         <Link href={"mailto:" + userData.email} >
@@ -250,7 +251,6 @@ function User() {
                                             </Button>
 
                                         </Link>
-                                    </VStack>
                                 </HStack>
                             </WrapItem>
                         </Wrap>
@@ -298,7 +298,7 @@ function User() {
                         }
 
                     </Box >
-                </Flex >
+                </Flex>
             </Card >
         </>
 
