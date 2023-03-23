@@ -93,7 +93,7 @@ function buildCard(data, id, signedIn, currentUser, newListName, setNewListName,
     //const [ratingValue, setRatingValue] = useState(2);
     var toolRating = 0;
     var toolVisibility = "true";
-    var ratingVisibility = "none";
+    var ratingVisibility = "";
 
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -129,11 +129,11 @@ function buildCard(data, id, signedIn, currentUser, newListName, setNewListName,
 
                 <HStack ml="-10px" spacing="190px">
                     <HStack>
-                        <Icon
+                    
+                        {data.rating ? <><Icon
                             as={AiOutlineStar}
                             boxSize="25px"
-                        ></Icon>
-                        <Text> {data.rating} </Text>
+                        ></Icon><Text> {data.rating} </Text></> : <></>}
                     </HStack>
                     <Menu>
                         <MenuButton as={Button} rightIcon={<AiOutlineHeart size="35px" />} colorScheme="white" color="blue.500" />
