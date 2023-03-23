@@ -39,10 +39,9 @@ function openmaps(address) {
 }
 
 
-function buildCard(data, id, currentUser, isMyUser, isRented) {
+function buildCard(data, id, currentUser, isMyUser, isRented, newRatingVisibility) {
 
     var toolRating = 0;
-
     //const creatorData = await getCreatorData(data.creator)
 
     var imageLink = ("");
@@ -82,9 +81,8 @@ function buildCard(data, id, currentUser, isMyUser, isRented) {
                 </Flex>
             </Link>
             <Divider />
-            <Box display="none" id="ratingBox" >
-                <Text> Legg igjen rating:</Text>
-
+            <Box mt="5%" display={newRatingVisibility} id="ratingBox" >
+                <Text ml="5%" mb="-10%"> Legg igjen vurdering:</Text>
                 <Rating
                     size={48}
                     icon="star"
@@ -200,93 +198,110 @@ function User() {
 
     return (
 
-        <Card maxW="full" mt={0} minH="100vh" centerContent overflow="hidden" h="100%">
-            <Flex h="100%">
+        <div className="userPage">
 
-                <div className="userPage">
+            <Wrap>
+                <WrapItem>
 
-                    <Wrap>
-                        <WrapItem>
+                    <VStack mt="50%" ml="30%" spacing={6}>
+                        <Avatar size='xl' bg="blue.200" src={userData.photo}></Avatar>
+                        <Heading size="md" > {userData.name} </Heading>
+                        {!myUser ? <Link href={"mailto:" + userData.email} >
+                            <Button
+                                size="xl"
+                                height="48px"
+                                width="200px"
+                                variant="ghost"
+                                _hover={{ border: '2px solid #1C6FEB' }}
+                                leftIcon={<MdEmail size="25px" />}
+                            >
+                                Email
+                            </Button>
+                        </Link> : <div></div>}
+                        {myUser ? <Box mt="-100%" mb="-100%" ></Box> :
+                            <Box ml="500px" display="true" id="ratingBox" >
+                                <Text mb="-15%" > Legg igjen vurdering:</Text>
+                                <Rating
 
-                            <VStack mt="50%" ml="30%" spacing={6}>
+                                    icon="star"
+                                    scale={5}
+                                    fillColor="gold"
+                                    strokeColor="grey"
+                                    userData={userData}
+                                    currentUser={currentUser}
+                                    doc={doc}
+                                />
+                            </Box>
+                        }
+                        {/* <Text mt={{ sm: 3, md: 3, lg: 5 }} color="white"></Text> */}
 
-                                <Avatar size='xl' bg="blue.200" src={userData.photo}></Avatar>
-                                <Heading size="md" >  {userData.name} </Heading>
-                                <Box pr={150}></Box>
-                                {!myUser ? <Box ml="500px" display="true" id="ratingBox" >
-                                    <Text mb="-15%" > Legg igjen vurdering:</Text>
-                                    <Rating
-
-                                        icon="star"
-                                        scale={5}
-                                        fillColor="gold"
-                                        strokeColor="grey"
-                                        userData={userData}
-                                        currentUser={currentUser}
-                                        doc={doc}
-                                    />
-                                </Box> : <div></div>}
-
-                                {!myUser ? <Link href={"mailto:" + userData.email} >
-                                    <Button
-                                        size="xl"
-                                        height="48px"
-                                        width="200px"
-                                        variant="ghost"
-                                        _hover={{ border: '2px solid #1C6FEB' }}
-                                        leftIcon={<MdEmail size="25px" />}
-                                    >
-                                        Email
-                                    </Button>
-
-                                </Link> : <div></div>}
-                            </VStack>
+                    </VStack>
 
 
-                        </WrapItem>
-                    </Wrap>
+                </WrapItem>
+            </Wrap>
 
 
-                    <Box>
-                        <Heading ml="10%" mb={30} mt={70} size='lg'>{myUser ? "Historikk" : "Annonser"}</Heading>
-                        {
-                            (Object.keys(tools).length !== 0 || (myUser && Object.keys(rentedTools).length !== 0)) ? <Box maxW="full" centerContent overflow="hidden">
-                                {myUser ? <div id="MyTools">
-                                    <div>
-                                        <h1 className='title'>Leid</h1>
-                                        <div >
-                                            {
-                                                tools?.map((data, id) => (
-                                                    buildCard(data, id, currentUser, myUser, true)
-                                                ))
-                                            }
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h1 className='title'>Utleid</h1>
-                                        <div >
-                                            {
-                                                rentedTools?.map((data, id) => (
-                                                    buildCard(data, id, currentUser, myUser, false)
-                                                ))
-                                            }
-                                        </div>
-                                    </div>
-                                </div> : <div className="toolGrid3">
+        </WrapItem>
+                    </Wrap >
+
+
+        <Box>
+            <Heading ml="10%" mb={30} mt={70} size='lg'>{myUser ? "Historikk" : "Annonser"}</Heading>
+            {
+                (Object.keys(tools).length !== 0 || (myUser && Object.keys(rentedTools).length !== 0)) ? <Box maxW="full" centerContent overflow="hidden">
+                    {myUser ? <div id="MyTools">
+                        <div>
+                            <h1 className='title'>Leid</h1>
+                            <div >
+                                {
+                                    tools?.map((data, id) => (
+                                        buildCard(data, id, currentUser, myUser, true)
+                                    ))
+                                }
+                            </div>
+                            <div>
+                                <h1 className='title'>Utleid</h1>
+                                <div >
                                     {
-                                        tools?.map((data, id) => (
-                                            buildCard(data, id, currentUser, myUser, null)
+                                        rentedTools?.map((data, id) => (
+                                            buildCard(data, id, currentUser, myUser, false, "none")
                                         ))
                                     }
                                 </div>
+                            </div>
+                        </div> : <div className="toolGrid3">
+                            {
+                                tools?.map((data, id) => (
+                                    buildCard(data, id, currentUser, myUser, null, "none")
+                                ))
+                            }
+                        </div>
+                        <div>
+                            <h1 className='title'>Utleid</h1>
+                            <div >
+                                {
+                                    rentedTools?.map((data, id) => (
+                                        buildCard(data, id, currentUser, myUser, false)
+                                    ))
                                 }
-
-                            </Box> : <Center><Heading size="md">Ingen verktøy å vise</Heading></Center>
+                            </div>
+                        </div>
+                    </div> : <div className="toolGrid3">
+                        {
+                            tools?.map((data, id) => (
+                                buildCard(data, id, currentUser, myUser, null)
+                            ))
                         }
-                    </Box>
-                </div>
+                    </div>
+                    }
 
-            </Flex>
+                </Box> : <Center><Heading size="md">Ingen verktøy å vise</Heading></Center>
+            }
+        </Box>
+                </div >
+
+            </Flex >
         </Card >
 
 
