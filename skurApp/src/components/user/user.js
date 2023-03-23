@@ -1,5 +1,5 @@
 import {
-    Avatar, Box, Button, CardBody, Stack, HStack, Image, CardFooter, Text, Link, Divider, Flex, Heading, WrapItem, Wrap, VStack, Card,
+    Avatar, Box, Button, CardBody, Icon, Stack, HStack, Image, CardFooter, Text, Link, Divider, Flex, Heading, WrapItem, Wrap, VStack, Card,
     Center,
 } from "@chakra-ui/react";
 import { React, useEffect, useState } from "react";
@@ -10,6 +10,7 @@ import { getDoc, doc, query, collection, where, onSnapshot, updateDoc, arrayUnio
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from "../../services/AuthService";
 import Rating from "./Rating";
+import { AiOutlineStar } from 'react-icons/ai';
 
 async function handleRentTool(id, address, uid) {
     const toolRef = doc(firestoreService, "tools", id);
@@ -58,6 +59,15 @@ function buildCard(data, id, currentUser, isMyUser, isRented, newRatingVisibilit
     return (
         <Card key={id} maxW='xs' padding="5%">
             <CardBody>
+                {data.rating ?
+                    <HStack>
+                        <Icon
+                            as={AiOutlineStar}
+                            boxSize="25px"
+                        ></Icon>
+                        <Text> {data.rating} </Text>
+                    </HStack>
+                    : <></>}
                 <Image
                     src={imageLink}
                 />
@@ -138,14 +148,17 @@ function User() {
                 await getDoc(doc(firestoreService, "users", uid)).then((snap) => {
 
                     const data = snap.data()
-                    data.uid = snap.id
 
-                    setUserData(data)
+
+                    data.uid = snap.id
+                    if (userData !== data) {
+                        setUserData(data)
+                    }
                 })
                 if (userData) {
 
                     let ref = collection(firestoreService, "tools")
-
+                    let toolUnsub = null
 
                     if (currentUser.uid === uid) {
                         if (!myUser) {
@@ -154,7 +167,7 @@ function User() {
                         let ref2 = query(collection(firestoreService, "tools"), where('sharedBy', '==', uid), where('available', '==', false))
                         ref = query(ref, where('rentedBy', '==', uid))
 
-                        onSnapshot(ref2, (snapshot) => {
+                        toolUnsub = onSnapshot(ref2, (snapshot) => {
                             if (snapshot) {
 
                                 const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
@@ -167,7 +180,7 @@ function User() {
 
                         ref = query(ref, where('creator', '==', uid), where('available', '==', true))
                     }
-                    const unsub = onSnapshot(ref, (snapshot) => {
+                    const toolUnsub2 = onSnapshot(ref, (snapshot) => {
                         if (snapshot) {
 
                             const newData = snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
@@ -175,7 +188,7 @@ function User() {
                         }
                     })
 
-                    return unsub
+                    return (toolUnsub2, toolUnsub)
                 }
 
             } catch (e) {
@@ -203,9 +216,18 @@ function User() {
             <Wrap>
                 <WrapItem>
 
-                    <VStack mt="50%" ml="30%" spacing={6}>
+                    <VStack mt="50%" ml="50%" spacing={6}>
                         <Avatar size='xl' bg="blue.200" src={userData.photo}></Avatar>
                         <Heading size="md" > {userData.name} </Heading>
+                        {userData.userRating ?
+                            <HStack>
+                                <Icon
+                                    as={AiOutlineStar}
+                                    boxSize="25px"
+                                ></Icon>
+                                <Text> {userData.userRating} </Text>
+                            </HStack>
+                            : <></>}
                         {!myUser ? <Link href={"mailto:" + userData.email} >
                             <Button
                                 size="xl"
@@ -217,7 +239,7 @@ function User() {
                             >
                                 Email
                             </Button>
-                        </Link> : <div></div>}
+                        </Link> : <Box></Box>}
                         {myUser ? <Box mt="-100%" mb="-100%" ></Box> :
                             <Box ml="500px" display="true" id="ratingBox" >
                                 <Text mb="-15%" > Legg igjen vurdering:</Text>
@@ -272,7 +294,7 @@ function User() {
                         </div> : <div className="toolGrid3">
                             {
                                 tools?.map((data, id) => (
-                                    buildCard(data, id, currentUser, myUser, null)
+                                    buildCard(data, id, currentUser, myUser, null, "none")
                                 ))
                             }
                         </div>
