@@ -256,32 +256,18 @@ function User() {
                                         ))
                                     }
                                 </div>
-                                <div>
-                                    <h1 className='title'>Utleid</h1>
-                                    <div >
-                                        {
-                                            rentedTools?.map((data, id) => (
-                                                buildCard(data, id, currentUser, myUser, false, "none")
-                                            ))
-                                        }
-                                    </div>
-                                </div>
-                            </div> : <div className="toolGrid3">
-                                {
-                                    tools?.map((data, id) => (
-                                        buildCard(data, id, currentUser, myUser, null, "none")
-                                    ))
-                                }
                             </div>
-                            <div>
+
+                            <div>                                <div>
                                 <h1 className='title'>Utleid</h1>
                                 <div >
                                     {
                                         rentedTools?.map((data, id) => (
-                                            buildCard(data, id, currentUser, myUser, false)
+                                            buildCard(data, id, currentUser, myUser, false, "none")
                                         ))
                                     }
                                 </div>
+                            </div>
                             </div>
                         </div> : <div className="toolGrid3">
                             {
