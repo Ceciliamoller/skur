@@ -111,7 +111,7 @@ function buildCard(data, id, signedIn, currentUser, newListName, setNewListName,
     //const [ratingValue, setRatingValue] = useState(2);
     var toolRating = 0;
     var toolVisibility = "true";
-    var ratingVisibility = "";
+    var ratingVisibility = "none";
 
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
