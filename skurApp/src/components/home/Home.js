@@ -2,11 +2,10 @@ import './Home.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import ReactDOM from "react-dom";
-import { ThemeProvider, CSSReset, Icon, Input } from '@chakra-ui/react'
+import { CSSReset, Icon, Input } from '@chakra-ui/react'
 import Rating from "./Rating";
 import { AiOutlineStar } from 'react-icons/ai';
 import { AiOutlineHeart } from 'react-icons/ai';
-import { FiSave } from "react-icons/fi";
 
 import {
     Card,
@@ -34,11 +33,17 @@ import { CloseIcon } from '@chakra-ui/icons';
 
 async function handleRentTool(id, address, uid) {
     const toolRef = doc(firestoreService, "tools", id);
+    const userRef = doc(firestoreService, "users", uid);
     await updateDoc(toolRef, {
         available: false,
         rentedBy: uid
     });
-    openmaps(address)
+    await updateDoc(userRef, {
+        history: arrayUnion(id)
+    }).then(() => {
+
+        openmaps(address)
+    })
 }
 
 async function handleShareTool(id, creator, address, uid) {

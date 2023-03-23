@@ -1,5 +1,5 @@
 import {
-    Avatar, Box, Button, CardBody, Stack, HStack, Image, CardFooter, Text, Link, Divider, Flex, Heading, WrapItem, Wrap, VStack, SliderTrack, Card,
+    Avatar, Box, Button, CardBody, Stack, HStack, Image, CardFooter, Text, Link, Divider, Flex, Heading, WrapItem, Wrap, VStack, Card,
     Center,
 } from "@chakra-ui/react";
 import { React, useEffect, useState } from "react";
@@ -45,8 +45,6 @@ function buildCard(data, id, currentUser, isMyUser, isRented) {
 
     //const creatorData = await getCreatorData(data.creator)
 
-
-
     var imageLink = ("");
     if (data.category === "Hammer") {
         imageLink = 'http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
@@ -57,9 +55,6 @@ function buildCard(data, id, currentUser, isMyUser, isRented) {
     else {
         imageLink = 'https://cdn-icons-png.flaticon.com/512/3417/3417080.png'
     }
-
-
-
 
     return (
         <Card key={id} maxW='xs' padding="5%">
