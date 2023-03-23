@@ -242,21 +242,34 @@ function User() {
             </Wrap>
 
 
-        </WrapItem>
-                    </Wrap >
-
-
-        <Box>
-            <Heading ml="10%" mb={30} mt={70} size='lg'>{myUser ? "Historikk" : "Annonser"}</Heading>
-            {
-                (Object.keys(tools).length !== 0 || (myUser && Object.keys(rentedTools).length !== 0)) ? <Box maxW="full" centerContent overflow="hidden">
-                    {myUser ? <div id="MyTools">
-                        <div>
-                            <h1 className='title'>Leid</h1>
-                            <div >
+            <Box>
+                <Heading ml="10%" mb={30} mt={70} size='lg'>{myUser ? "Historikk" : "Annonser"}</Heading>
+                {
+                    (Object.keys(tools).length !== 0 || (myUser && Object.keys(rentedTools).length !== 0)) ? <Box maxW="full" centerContent overflow="hidden">
+                        {myUser ? <div id="MyTools">
+                            <div>
+                                <h1 className='title'>Leid</h1>
+                                <div >
+                                    {
+                                        tools?.map((data, id) => (
+                                            buildCard(data, id, currentUser, myUser, true)
+                                        ))
+                                    }
+                                </div>
+                                <div>
+                                    <h1 className='title'>Utleid</h1>
+                                    <div >
+                                        {
+                                            rentedTools?.map((data, id) => (
+                                                buildCard(data, id, currentUser, myUser, false, "none")
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                            </div> : <div className="toolGrid3">
                                 {
                                     tools?.map((data, id) => (
-                                        buildCard(data, id, currentUser, myUser, true)
+                                        buildCard(data, id, currentUser, myUser, null, "none")
                                     ))
                                 }
                             </div>
@@ -265,7 +278,7 @@ function User() {
                                 <div >
                                     {
                                         rentedTools?.map((data, id) => (
-                                            buildCard(data, id, currentUser, myUser, false, "none")
+                                            buildCard(data, id, currentUser, myUser, false)
                                         ))
                                     }
                                 </div>
@@ -273,37 +286,16 @@ function User() {
                         </div> : <div className="toolGrid3">
                             {
                                 tools?.map((data, id) => (
-                                    buildCard(data, id, currentUser, myUser, null, "none")
+                                    buildCard(data, id, currentUser, myUser, null)
                                 ))
                             }
                         </div>
-                        <div>
-                            <h1 className='title'>Utleid</h1>
-                            <div >
-                                {
-                                    rentedTools?.map((data, id) => (
-                                        buildCard(data, id, currentUser, myUser, false)
-                                    ))
-                                }
-                            </div>
-                        </div>
-                    </div> : <div className="toolGrid3">
-                        {
-                            tools?.map((data, id) => (
-                                buildCard(data, id, currentUser, myUser, null)
-                            ))
                         }
-                    </div>
-                    }
 
-                </Box> : <Center><Heading size="md">Ingen verktøy å vise</Heading></Center>
-            }
-        </Box>
-                </div >
-
-            </Flex >
-        </Card >
-
+                    </Box> : <Center><Heading size="md">Ingen verktøy å vise</Heading></Center>
+                }
+            </Box>
+        </div >
 
 
     );
