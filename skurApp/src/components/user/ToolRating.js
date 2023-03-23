@@ -33,7 +33,7 @@ async function handleToolRating(e,tool,uid) {
 
 var ratingValue=2;
 
-const Rating = React.forwardRef(
+const ToolRating = React.forwardRef(
   ({ size, icon, scale, fillColor, strokeColor, data, currentUser, doc }, ref) => {
     const [rating, setRating] = useState(0);
     const buttons = [];
@@ -79,7 +79,7 @@ const Rating = React.forwardRef(
   }
 );
 
-Rating.displayName = "Rating";
+ToolRating.displayName = "ToolRating";
 
 export {ratingValue};
-export default Rating;
+export default ToolRating;

@@ -10,6 +10,7 @@ import { getDoc, doc, query, collection, where, onSnapshot, updateDoc, arrayUnio
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from "../../services/AuthService";
 import Rating from "./Rating";
+import ToolRating from "./ToolRating";
 
 async function handleRentTool(id, address, uid) {
     const toolRef = doc(firestoreService, "tools", id);
@@ -83,12 +84,15 @@ function buildCard(data, id, currentUser, isMyUser, isRented, newRatingVisibilit
             <Divider />
             <Box mt="5%" display={newRatingVisibility} id="ratingBox" >
                 <Text ml="5%" mb="-10%"> Legg igjen vurdering:</Text>
-                <Rating
+                <ToolRating
                     size={48}
                     icon="star"
                     scale={5}
                     fillColor="gold"
                     strokeColor="grey"
+                    data={data}
+                    currentUser={currentUser}
+                    doc={doc}
                 />
             </Box>
             <CardFooter>
@@ -222,7 +226,6 @@ function User() {
                             <Box ml="500px" display="true" id="ratingBox" >
                                 <Text mb="-15%" > Legg igjen vurdering:</Text>
                                 <Rating
-
                                     icon="star"
                                     scale={5}
                                     fillColor="gold"

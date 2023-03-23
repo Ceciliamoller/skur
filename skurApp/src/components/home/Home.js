@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import ReactDOM from "react-dom";
 import { CSSReset, Icon, Input } from '@chakra-ui/react'
-import Rating from "./Rating";
+import Rating from "../user/ToolRating";
 import { AiOutlineStar } from 'react-icons/ai';
 import { AiOutlineHeart } from 'react-icons/ai';
 
