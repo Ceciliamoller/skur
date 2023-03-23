@@ -17,17 +17,12 @@ import {
     Stack,
     Heading, Text, Divider, Button, Box, Select, VStack, Avatar,
     HStack,
-    VisuallyHidden,
-    IconButton,
-    useDisclosure,
     useToast,
     Menu,
     MenuButton,
     MenuList,
     MenuGroup,
     MenuItem,
-    color,
-
 } from '@chakra-ui/react'
 import { collection, onSnapshot, query, where, doc, updateDoc, increment, addDoc, arrayUnion } from "firebase/firestore";
 import firebaseService, { firestoreService } from '../../services/firebaseConfig';

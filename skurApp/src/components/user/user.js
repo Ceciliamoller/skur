@@ -1,5 +1,5 @@
 import {
-    Avatar, Box, Button, CardBody, Stack, HStack, Image, CardFooter, Text, Link, Divider, Flex, Heading, Slider, WrapItem, Wrap, VStack, SliderTrack, Card,
+    Avatar, Box, Button, CardBody, Stack, HStack, Image, CardFooter, Text, Link, Divider, Flex, Heading, Icon, Slider, WrapItem, Wrap, VStack, SliderTrack, Card,
     Center,
 } from "@chakra-ui/react";
 import { React, useEffect, useState } from "react";
@@ -10,6 +10,7 @@ import { getDoc, doc, query, collection, where, onSnapshot, updateDoc, arrayUnio
 import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from "../../services/AuthService";
 import Rating from "./Rating";
+import { AiOutlineStar } from 'react-icons/ai';
 
 async function handleRentTool(id, address, uid) {
     const toolRef = doc(firestoreService, "tools", id);
@@ -29,7 +30,6 @@ async function handleDeliverTool(id) {
         available: true,
         rentedBy: null
     });
-
 }
 
 function openmaps(address) {
@@ -218,6 +218,14 @@ function User() {
                                     <VStack mt="50%" ml="30%" spacing={6}>
                                         <Avatar size='xl' bg="blue.200" src={userData.photo}></Avatar>
                                         <Heading size="md" > {userData.name} </Heading>
+    
+                                        <HStack>
+                                            <Icon
+                                                as={AiOutlineStar}
+                                                boxSize="25px"
+                                            ></Icon>
+                                            <Text> {userData.userRating} </Text>
+                                        </HStack>
                                         <Link href={"mailto:" + userData.email} >
                                             <Button
                                                 size="xl"

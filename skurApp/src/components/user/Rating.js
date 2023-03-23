@@ -47,7 +47,6 @@ const Rating = React.forwardRef(
 
     const RatingButton = ({ idx, fill, buttonColor }) => {
       return (
-
         <IconButton
         colorScheme={buttonColor}
         variant="ghost"
