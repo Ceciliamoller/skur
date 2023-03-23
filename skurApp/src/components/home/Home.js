@@ -17,16 +17,13 @@ import {
     Stack,
     Heading, Text, Divider, Button, Box, Select, VStack, Avatar,
     HStack,
-    VisuallyHidden,
-    IconButton,
-    useDisclosure,
     useToast,
     Menu,
     MenuButton,
     MenuList,
     MenuGroup,
     MenuItem,
-    color,
+    AbsoluteCenter
 
 } from '@chakra-ui/react'
 import { collection, onSnapshot, query, where, doc, updateDoc, increment, addDoc, arrayUnion } from "firebase/firestore";
@@ -44,14 +41,27 @@ async function handleRentTool(id, address, uid) {
     openmaps(address)
 }
 
+async function handleShareTool(id, creator, address) {
+    const toolRef = doc(firestoreService, "tools", id);
+    await updateDoc(toolRef, {
+        available: false,
+        rentedBy: creator
+    });
+    openmaps(address)
+}
+
 function openmaps(address) {
     let urlAddress = address.replace(/\s+/g, '+');
     let googleMapsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + urlAddress;
     window.open(googleMapsUrl, '_blank');
 }
 function alertForRent(data, currentUser) {
-    if (window.confirm("Du er i ferd med å leie dette verktøyet, hvis du er sikker på at du vil leie det og inngå en avtale med uteleier: velg Ok, hvis ikke avbryt.") == true) {
-        handleRentTool(data.id, data.address, currentUser.uid);
+    if (data.type === 'share') {
+        if (window.confirm("Du er i ferd med å leie dette verktøyet, hvis du er sikker på at du vil leie det og inngå en avtale med uteleier: velg Ok, hvis ikke avbryt.") == true) {
+            handleRentTool(data.id, data.address, currentUser.uid);
+        }
+    } else {
+        handleShareTool(data.id, data.creator, data.address);
     }
 }
 
@@ -312,6 +322,15 @@ const Home = () => {
                 </Box>
             </div >
         )
+    }
+
+    else {
+        return <Box position='relative' h='400px'>
+            <AbsoluteCenter p='4' color='white' axis='both'>
+                <Text>Velkommen til Skur! Logg inn for å begynne</Text>
+            </AbsoluteCenter>
+        </Box>
+
     }
 
 }
