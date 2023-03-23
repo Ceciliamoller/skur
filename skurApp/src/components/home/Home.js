@@ -41,11 +41,12 @@ async function handleRentTool(id, address, uid) {
     openmaps(address)
 }
 
-async function handleShareTool(id, creator, address) {
+async function handleShareTool(id, creator, address, uid) {
     const toolRef = doc(firestoreService, "tools", id);
     await updateDoc(toolRef, {
         available: false,
-        rentedBy: creator
+        rentedBy: creator,
+        sharedBy: uid
     });
     openmaps(address)
 }
@@ -57,11 +58,13 @@ function openmaps(address) {
 }
 function alertForRent(data, currentUser) {
     if (data.type === 'share') {
-        if (window.confirm("Du er i ferd med å leie dette verktøyet, hvis du er sikker på at du vil leie det og inngå en avtale med uteleier: velg Ok, hvis ikke avbryt.") == true) {
+        if (window.confirm("Du er i ferd med å leie dette verktøyet, hvis du er sikker på at du vil leie det og inngå en avtale med uteleier: velg Ok, hvis ikke avbryt.") === true) {
             handleRentTool(data.id, data.address, currentUser.uid);
         }
     } else {
-        handleShareTool(data.id, data.creator, data.address);
+        if (window.confirm("Du er i ferd med å leie ut dette verktøyet, hvis du er sikker på at du vil leie det ut og inngå en avtale med leietaker: velg Ok, hvis ikke avbryt.") === true) {
+            handleShareTool(data.id, data.creator, data.address, currentUser.uid);
+        }
     }
 }
 

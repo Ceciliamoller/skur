@@ -1,5 +1,5 @@
 import {
-    Avatar, Box, Button, CardBody, Stack, HStack, Image, CardFooter, Text, Link, Divider, Flex, Heading, Slider, WrapItem, Wrap, VStack, SliderTrack, Card,
+    Avatar, Box, Button, CardBody, Stack, HStack, Image, CardFooter, Text, Link, Divider, Flex, Heading, WrapItem, Wrap, VStack, SliderTrack, Card,
     Center,
 } from "@chakra-ui/react";
 import { React, useEffect, useState } from "react";
@@ -27,9 +27,9 @@ async function handleDeliverTool(id) {
     const toolRef = doc(firestoreService, "tools", id);
     await updateDoc(toolRef, {
         available: true,
-        rentedBy: null
+        rentedBy: null,
+        sharedBy: null
     });
-
 }
 
 function openmaps(address) {
@@ -158,7 +158,7 @@ function User() {
                         if (!myUser) {
                             setMyUser(true)
                         }
-                        let ref2 = query(collection(firestoreService, "tools"), where('creator', '==', uid), where('available', '==', false))
+                        let ref2 = query(collection(firestoreService, "tools"), where('sharedBy', '==', uid), where('available', '==', false))
                         ref = query(ref, where('rentedBy', '==', uid))
 
                         onSnapshot(ref2, (snapshot) => {
