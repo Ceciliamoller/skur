@@ -1,18 +1,20 @@
-
 /tools/{toolID} {
     toolName: string
     price: int
     description: string
     creator: string (uid)
-    cretaorEmail: string
     category: string
     type: string ("request" | "share")
     availible: bool
-    deal: [
-        approved: bool
+    rentedby: string
+    address: string
+
+    history: [
         tenant: string (uid)
-        dueDate: date
     ]
+
+    
+    ratings: list[(String, float)]
 }
 
 /users/{uid}/ {
@@ -28,12 +30,6 @@
             toolID: string (toolID)
         ]
     }
-    /history/{toolID} {
-        participants: [
-            owner: string (uid)
-            tenant: string (uid)
-        ]
-
-    }
+    
 
 }

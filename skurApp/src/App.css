@@ -12,8 +12,6 @@ nav {
   margin: 0;
   width: 100%;
   height: 60px;
-  background-color: #ffffff;
-
   color: rgb(72, 128, 199);
   text-decoration: none;
 }
@@ -44,5 +42,8 @@ a {
   float: right;
   justify-content: right;
   align-items: right;
+  margin: 10px;
 }
+
+
 
