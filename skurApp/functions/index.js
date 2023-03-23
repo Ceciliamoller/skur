@@ -71,15 +71,30 @@ exports.removeUser = functions.firestore
     });
 
 exports.addUserToDatabase = functions.auth.user().onCreate((user) => {
+    const photo = user.photoURL;
     const email = user.email;
     const displayName = user.displayName;
-    const photo = user.photoURL;
 
-    db.collection("users").doc(user.uid).set({
-        name: displayName,
-        email,
-        photo,
-        ratings: {},
-        userRating: 0
-    })
+    if (email === null && displayName !== null) {
+        db.collection("users").doc(user.uid).update({
+            name: displayName,
+            photo,
+            ratings: {},
+            userRating: 0
+        })
+    } else if (email !== null && displayName === null) {
+        db.collection("users").doc(user.uid).update({
+            email,
+            photo,
+            ratings: {},
+            userRating: 0
+        })
+    } else if (email !== null && displayName !== null) {
+
+        db.collection("users").doc(user.uid).update({
+            photo,
+            ratings: {},
+            userRating: 0
+        })
+    }
 });

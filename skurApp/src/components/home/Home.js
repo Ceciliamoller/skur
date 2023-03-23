@@ -2,11 +2,10 @@ import './Home.css';
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import ReactDOM from "react-dom";
-import { ThemeProvider, CSSReset, Icon, Input } from '@chakra-ui/react'
+import { CSSReset, Icon, Input } from '@chakra-ui/react'
 import Rating from "./Rating";
 import { AiOutlineStar } from 'react-icons/ai';
 import { AiOutlineHeart } from 'react-icons/ai';
-import { FiSave } from "react-icons/fi";
 
 import {
     Card,
@@ -17,16 +16,13 @@ import {
     Stack,
     Heading, Text, Divider, Button, Box, Select, VStack, Avatar,
     HStack,
-    VisuallyHidden,
-    IconButton,
-    useDisclosure,
     useToast,
     Menu,
     MenuButton,
     MenuList,
     MenuGroup,
     MenuItem,
-    color,
+    AbsoluteCenter
 
 } from '@chakra-ui/react'
 import { collection, onSnapshot, query, where, doc, updateDoc, increment, addDoc, arrayUnion } from "firebase/firestore";
@@ -37,9 +33,25 @@ import { CloseIcon } from '@chakra-ui/icons';
 
 async function handleRentTool(id, address, uid) {
     const toolRef = doc(firestoreService, "tools", id);
+    const userRef = doc(firestoreService, "users", uid);
     await updateDoc(toolRef, {
         available: false,
         rentedBy: uid
+    });
+    await updateDoc(userRef, {
+        history: arrayUnion(id)
+    }).then(() => {
+
+        openmaps(address)
+    })
+}
+
+async function handleShareTool(id, creator, address, uid) {
+    const toolRef = doc(firestoreService, "tools", id);
+    await updateDoc(toolRef, {
+        available: false,
+        rentedBy: creator,
+        sharedBy: uid
     });
     openmaps(address)
 }
@@ -50,8 +62,14 @@ function openmaps(address) {
     window.open(googleMapsUrl, '_blank');
 }
 function alertForRent(data, currentUser) {
-    if (window.confirm("Du er i ferd med å leie dette verktøyet, hvis du er sikker på at du vil leie det og inngå en avtale med uteleier: velg Ok, hvis ikke avbryt.") == true) {
-        handleRentTool(data.id, data.address, currentUser.uid);
+    if (data.type === 'share') {
+        if (window.confirm("Du er i ferd med å leie dette verktøyet, hvis du er sikker på at du vil leie det og inngå en avtale med uteleier: velg Ok, hvis ikke avbryt.") === true) {
+            handleRentTool(data.id, data.address, currentUser.uid);
+        }
+    } else {
+        if (window.confirm("Du er i ferd med å leie ut dette verktøyet, hvis du er sikker på at du vil leie det ut og inngå en avtale med leietaker: velg Ok, hvis ikke avbryt.") === true) {
+            handleShareTool(data.id, data.creator, data.address, currentUser.uid);
+        }
     }
 }
 
@@ -138,7 +156,7 @@ function buildCard(data, id, signedIn, currentUser, newListName, setNewListName,
                     <Menu>
                         <MenuButton as={Button} rightIcon={<AiOutlineHeart size="35px" />} colorScheme="white" color="blue.500" />
                         <MenuList>
-                            <MenuGroup title='Dine lister'>
+                            <MenuGroup title='Dine samlinger'>
                                 {
                                     allLists?.map((listData, id) => (
                                         <MenuItem key={id} onClick={(e) => uploadToList(currentUser.uid, e, data.id, listData, toast)}>
@@ -147,9 +165,9 @@ function buildCard(data, id, signedIn, currentUser, newListName, setNewListName,
                                     ))
                                 }
                             </MenuGroup>
-                            <MenuGroup title='Lag en ny liste' closeOnSelect="false">
+                            <MenuGroup title='Lag en ny samling' closeOnSelect="false">
                                 <MenuItem>
-                                    <Input placeholder='Ny liste' value={newListName} onClick={e => e.stopPropagation()} onChange={(e) => setNewListName(e.target.value)} />
+                                    <Input placeholder='Ny samling' value={newListName} onClick={e => e.stopPropagation()} onChange={(e) => setNewListName(e.target.value)} />
                                     <Button ml="4px" onClick={(e) => createNewList(newListName, currentUser.uid, e, setNewListName)}>Lag</Button>
                                 </MenuItem>
                             </MenuGroup>
@@ -312,6 +330,15 @@ const Home = () => {
                 </Box>      
             </div >
         )
+    }
+
+    else {
+        return <Box position='relative' h='400px'>
+            <AbsoluteCenter p='4' color='white' axis='both'>
+                <Text>Velkommen til Skur! Logg inn for å begynne</Text>
+            </AbsoluteCenter>
+        </Box>
+
     }
 
 }

@@ -1,5 +1,5 @@
 import {
-    Avatar, Box, Button, CardBody, Stack, HStack, Image, CardFooter, Text, Link, Divider, Flex, Heading, Slider, WrapItem, Wrap, VStack, SliderTrack, Card,
+    Avatar, Box, Button, CardBody, Stack, HStack, Image, CardFooter, Text, Link, Divider, Flex, Heading, WrapItem, Wrap, VStack, Card,
     Center,
 } from "@chakra-ui/react";
 import { React, useEffect, useState } from "react";
@@ -27,9 +27,9 @@ async function handleDeliverTool(id) {
     const toolRef = doc(firestoreService, "tools", id);
     await updateDoc(toolRef, {
         available: true,
-        rentedBy: null
+        rentedBy: null,
+        sharedBy: null
     });
-
 }
 
 function openmaps(address) {
@@ -44,8 +44,6 @@ function buildCard(data, id, currentUser, isMyUser, isRented, newRatingVisibilit
     var toolRating = 0;
     //const creatorData = await getCreatorData(data.creator)
 
-
-
     var imageLink = ("");
     if (data.category === "Hammer") {
         imageLink = 'http://clipart-library.com/image_gallery2/Tool-PNG-Picture.png?fbclid=IwAR1JRSmtP6hK-Xjvz7tI4-tZkGrj1BZOb9GvAEk4j4nNhmRejubO2EFCLr0'
@@ -56,9 +54,6 @@ function buildCard(data, id, currentUser, isMyUser, isRented, newRatingVisibilit
     else {
         imageLink = 'https://cdn-icons-png.flaticon.com/512/3417/3417080.png'
     }
-
-
-
 
     return (
         <Card key={id} maxW='xs' padding="5%">
@@ -138,7 +133,7 @@ function User() {
 
         const fetchUserData = async () => {
             try {
-                
+
                 console.log(uid)
                 await getDoc(doc(firestoreService, "users", uid)).then((snap) => {
 
@@ -151,13 +146,12 @@ function User() {
 
                     let ref = collection(firestoreService, "tools")
 
-                    console.log({ userData });
 
                     if (currentUser.uid === uid) {
                         if (!myUser) {
                             setMyUser(true)
                         }
-                        let ref2 = query(collection(firestoreService, "tools"), where('creator', '==', uid), where('available', '==', false))
+                        let ref2 = query(collection(firestoreService, "tools"), where('sharedBy', '==', uid), where('available', '==', false))
                         ref = query(ref, where('rentedBy', '==', uid))
 
                         onSnapshot(ref2, (snapshot) => {
@@ -190,12 +184,9 @@ function User() {
         }
 
         fetchUserData();
-        console.log('Hello ', userData);
 
 
-
-
-    }, [uid, currentUser])
+    }, [uid, currentUser, myUser])
 
 
 
@@ -206,96 +197,113 @@ function User() {
     }
 
     return (
-       
-            <Card maxW="full" mt={0} minH="100vh" centerContent overflow="hidden" h="100%">
-                <Flex h="100%">
 
-                    <div className="userPage"> 
-                
-                        <Wrap>
-                            <WrapItem>
-                                
-                                    <VStack mt="50%" ml="30%" spacing={6}>
-                                        <Avatar size='xl' bg="blue.200" src={userData.photo}></Avatar>
-                                        <Heading size="md" > {userData.name} </Heading>
-                                        <Link href={"mailto:" + userData.email} >
-                                            <Button
-                                                size="xl"
-                                                height="48px"
-                                                width="200px"
-                                                variant="ghost"
-                                                _hover={{ border: '2px solid #1C6FEB' }}
-                                                leftIcon={<MdEmail size="25px" />}
-                                            >
-                                                Email
-                                            </Button>
-                                        </Link>
-                                        {myUser ? <Box mt="-100%" mb="-100%" ></Box> : 
-                                            <Box ml="500px" display="true" id="ratingBox" >
-                                                <Text  mb="-15%" > Legg igjen vurdering:</Text>
-                                                <Rating
-                                                            
-                                                            icon="star"
-                                                            scale={5}
-                                                            fillColor="gold"
-                                                            strokeColor="grey"
-                                                            userData ={userData}
-                                                            currentUser ={currentUser}
-                                                            doc={doc}
-                                                        />
-                                            </Box>
-                                        }
-                                        {/* <Text mt={{ sm: 3, md: 3, lg: 5 }} color="white"></Text> */}
+        <div className="userPage">
 
-                                    </VStack>
-    
-                               
-                            </WrapItem>
-                        </Wrap>
+            <Wrap>
+                <WrapItem>
+
+                    <VStack mt="50%" ml="30%" spacing={6}>
+                        <Avatar size='xl' bg="blue.200" src={userData.photo}></Avatar>
+                        <Heading size="md" > {userData.name} </Heading>
+                        {!myUser ? <Link href={"mailto:" + userData.email} >
+                            <Button
+                                size="xl"
+                                height="48px"
+                                width="200px"
+                                variant="ghost"
+                                _hover={{ border: '2px solid #1C6FEB' }}
+                                leftIcon={<MdEmail size="25px" />}
+                            >
+                                Email
+                            </Button>
+                        </Link> : <div></div>}
+                        {myUser ? <Box mt="-100%" mb="-100%" ></Box> :
+                            <Box ml="500px" display="true" id="ratingBox" >
+                                <Text mb="-15%" > Legg igjen vurdering:</Text>
+                                <Rating
+
+                                    icon="star"
+                                    scale={5}
+                                    fillColor="gold"
+                                    strokeColor="grey"
+                                    userData={userData}
+                                    currentUser={currentUser}
+                                    doc={doc}
+                                />
+                            </Box>
+                        }
+                        {/* <Text mt={{ sm: 3, md: 3, lg: 5 }} color="white"></Text> */}
+
+                    </VStack>
 
 
-                        <Box> 
-                            <Heading ml="10%" mb={30} mt={70} size='lg'>{myUser ? "Historikk" :  "Annonser"}</Heading>
-                            {
-                                (Object.keys(tools).length !== 0 || (myUser && Object.keys(rentedTools).length !== 0)) ? <Box maxW="full" centerContent overflow="hidden">
-                                    {myUser ? <div id="MyTools">
-                                        <div>
-                                            <h1 className='title'>Leid</h1>
-                                            <div >
-                                                {
-                                                    tools?.map((data, id) => (
-                                                        buildCard(data, id, currentUser, myUser, true)
-                                                    ))
-                                                }
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <h1 className='title'>Utleid</h1>
-                                            <div >
-                                                {
-                                                    rentedTools?.map((data, id) => (
-                                                        buildCard(data, id, currentUser, myUser, false, "none")
-                                                    ))
-                                                }
-                                            </div>
-                                        </div>
-                                    </div> : <div className="toolGrid3">
-                                        {
-                                            tools?.map((data, id) => (
-                                                buildCard(data, id, currentUser, myUser, null, "none")
-                                            ))
-                                        }
-                                    </div>
+                </WrapItem>
+            </Wrap>
+
+
+        </WrapItem>
+                    </Wrap >
+
+
+        <Box>
+            <Heading ml="10%" mb={30} mt={70} size='lg'>{myUser ? "Historikk" : "Annonser"}</Heading>
+            {
+                (Object.keys(tools).length !== 0 || (myUser && Object.keys(rentedTools).length !== 0)) ? <Box maxW="full" centerContent overflow="hidden">
+                    {myUser ? <div id="MyTools">
+                        <div>
+                            <h1 className='title'>Leid</h1>
+                            <div >
+                                {
+                                    tools?.map((data, id) => (
+                                        buildCard(data, id, currentUser, myUser, true)
+                                    ))
+                                }
+                            </div>
+                            <div>
+                                <h1 className='title'>Utleid</h1>
+                                <div >
+                                    {
+                                        rentedTools?.map((data, id) => (
+                                            buildCard(data, id, currentUser, myUser, false, "none")
+                                        ))
                                     }
-
-                                </Box> : <Center><Heading size="md">Ingen verktøy å vise</Heading></Center>
+                                </div>
+                            </div>
+                        </div> : <div className="toolGrid3">
+                            {
+                                tools?.map((data, id) => (
+                                    buildCard(data, id, currentUser, myUser, null, "none")
+                                ))
                             }
-                        </Box>
                         </div>
+                        <div>
+                            <h1 className='title'>Utleid</h1>
+                            <div >
+                                {
+                                    rentedTools?.map((data, id) => (
+                                        buildCard(data, id, currentUser, myUser, false)
+                                    ))
+                                }
+                            </div>
+                        </div>
+                    </div> : <div className="toolGrid3">
+                        {
+                            tools?.map((data, id) => (
+                                buildCard(data, id, currentUser, myUser, null)
+                            ))
+                        }
+                    </div>
+                    }
 
-                </Flex>
-            </Card >
-        
+                </Box> : <Center><Heading size="md">Ingen verktøy å vise</Heading></Center>
+            }
+        </Box>
+                </div >
+
+            </Flex >
+        </Card >
+
 
 
     );
