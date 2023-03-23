@@ -39,10 +39,9 @@ function openmaps(address) {
 }
 
 
-function buildCard(data, id, currentUser, isMyUser, isRented) {
+function buildCard(data, id, currentUser, isMyUser, isRented, newRatingVisibility) {
 
     var toolRating = 0;
-
     //const creatorData = await getCreatorData(data.creator)
 
 
@@ -87,9 +86,8 @@ function buildCard(data, id, currentUser, isMyUser, isRented) {
                 </Flex>
             </Link>
             <Divider />
-            <Box display="none" id="ratingBox" >
-                <Text> Legg igjen rating:</Text>
-
+            <Box mt="5%" display={newRatingVisibility} id="ratingBox" >
+                <Text ml="5%" mb="-10%"> Legg igjen vurdering:</Text>
                 <Rating
                     size={48}
                     icon="star"
@@ -219,23 +217,7 @@ function User() {
                                 
                                     <VStack mt="50%" ml="30%" spacing={6}>
                                         <Avatar size='xl' bg="blue.200" src={userData.photo}></Avatar>
-                                        <Heading size="md" >  {userData.name} </Heading>
-                                        <Box pr={150}></Box>
-                                        <Box ml="500px" display="true" id="ratingBox" >
-                                            <Text  mb="-15%" > Legg igjen vurdering:</Text>
-                                            <Rating
-                                                        
-                                                        icon="star"
-                                                        scale={5}
-                                                        fillColor="gold"
-                                                        strokeColor="grey"
-                                                        userData ={userData}
-                                                        currentUser ={currentUser}
-                                                        doc={doc}
-                                                    />
-                                        </Box>
-
-                                        {/* <Text mt={{ sm: 3, md: 3, lg: 5 }} color="white"></Text> */}
+                                        <Heading size="md" > {userData.name} </Heading>
                                         <Link href={"mailto:" + userData.email} >
                                             <Button
                                                 size="xl"
@@ -247,8 +229,24 @@ function User() {
                                             >
                                                 Email
                                             </Button>
-
                                         </Link>
+                                        {myUser ? <Box mt="-100%" mb="-100%" ></Box> : 
+                                            <Box ml="500px" display="true" id="ratingBox" >
+                                                <Text  mb="-15%" > Legg igjen vurdering:</Text>
+                                                <Rating
+                                                            
+                                                            icon="star"
+                                                            scale={5}
+                                                            fillColor="gold"
+                                                            strokeColor="grey"
+                                                            userData ={userData}
+                                                            currentUser ={currentUser}
+                                                            doc={doc}
+                                                        />
+                                            </Box>
+                                        }
+                                        {/* <Text mt={{ sm: 3, md: 3, lg: 5 }} color="white"></Text> */}
+
                                     </VStack>
     
                                
@@ -276,7 +274,7 @@ function User() {
                                             <div >
                                                 {
                                                     rentedTools?.map((data, id) => (
-                                                        buildCard(data, id, currentUser, myUser, false)
+                                                        buildCard(data, id, currentUser, myUser, false, "none")
                                                     ))
                                                 }
                                             </div>
@@ -284,7 +282,7 @@ function User() {
                                     </div> : <div className="toolGrid3">
                                         {
                                             tools?.map((data, id) => (
-                                                buildCard(data, id, currentUser, myUser, null)
+                                                buildCard(data, id, currentUser, myUser, null, "none")
                                             ))
                                         }
                                     </div>

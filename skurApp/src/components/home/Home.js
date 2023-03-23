@@ -309,7 +309,7 @@ const Home = () => {
                             buildCard(data, id, isSignedIn, currentUser, newListName, setNewListName, allLists, toast)
                         ))
                     }
-                </Box>
+                </Box>      
             </div >
         )
     }
