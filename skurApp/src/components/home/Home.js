@@ -26,9 +26,8 @@ import {
 
 } from '@chakra-ui/react'
 import { collection, onSnapshot, query, where, doc, updateDoc, increment, addDoc, arrayUnion } from "firebase/firestore";
-import firebaseService, { firestoreService } from '../../services/firebaseConfig';
+import { firestoreService } from '../../services/firebaseConfig';
 import { useAuthValue } from '../../services/AuthService';
-import { CloseIcon } from '@chakra-ui/icons';
 
 
 async function handleRentTool(id, address, uid) {
@@ -327,7 +326,7 @@ const Home = () => {
                             buildCard(data, id, isSignedIn, currentUser, newListName, setNewListName, allLists, toast)
                         ))
                     }
-                </Box>      
+                </Box>
             </div >
         )
     }
