@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { Avatar, Box, Button, Flex, Heading, Stack } from "@chakra-ui/react";
 import { auth } from '../../services/firebaseConfig';
+import { doc, setDoc } from "firebase/firestore";
+import { firestoreService } from '../../services/firebaseConfig';
 
 
 function SignUp() {
@@ -19,15 +21,19 @@ function SignUp() {
         createUserWithEmailAndPassword(auth, email, password)
             .then(async (userCredential) => {
                 // Signed in
+                const user = userCredential.user;
                 try {
                     console.log('NAME: ', name);
+
+                    await setDoc(doc(firestoreService, "users", user.uid), {
+                        name,
+                        email,
+                    })
 
                     await updateProfile(auth.currentUser, {
                         displayName: name,
                         email
                     }).then(() => {
-                        console.log('Currentuser: ', auth.currentUser.displayName);
-
                         navigate("/")
                     })
                 } catch (e) {

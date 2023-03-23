@@ -153,7 +153,6 @@ function User() {
 
                     let ref = collection(firestoreService, "tools")
 
-                    console.log({ userData });
 
                     if (currentUser.uid === uid) {
                         if (!myUser) {
@@ -192,10 +191,6 @@ function User() {
         }
 
         fetchUserData();
-        console.log('Hello ', userData);
-
-
-        console.log({ myUser });
 
 
     }, [uid, currentUser, myUser])
