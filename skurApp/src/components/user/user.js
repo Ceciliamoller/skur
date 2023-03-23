@@ -63,6 +63,15 @@ function buildCard(data, id, currentUser, isMyUser, isRented, newRatingVisibilit
     return (
         <Card key={id} maxW='xs' padding="5%">
             <CardBody>
+                { data.rating ? 
+                    <HStack>
+                        <Icon
+                            as={AiOutlineStar}
+                            boxSize="25px"
+                        ></Icon>
+                        <Text> {data.rating} </Text>
+                    </HStack>
+                : <></>}
                 <Image
                     src={imageLink}
                 />
@@ -218,7 +227,7 @@ function User() {
                                     <VStack mt="50%" ml="30%" spacing={6}>
                                         <Avatar size='xl' bg="blue.200" src={userData.photo}></Avatar>
                                         <Heading size="md" > {userData.name} </Heading>
-    
+                                        {userData.userRating ? 
                                         <HStack>
                                             <Icon
                                                 as={AiOutlineStar}
@@ -226,6 +235,7 @@ function User() {
                                             ></Icon>
                                             <Text> {userData.userRating} </Text>
                                         </HStack>
+                                       : <></>}
                                         <Link href={"mailto:" + userData.email} >
                                             <Button
                                                 size="xl"
@@ -238,7 +248,7 @@ function User() {
                                                 Email
                                             </Button>
                                         </Link>
-                                        {myUser ? <Box mt="-100%" mb="-100%" ></Box> : 
+                                        {myUser ? <></> : 
                                             <Box ml="500px" display="true" id="ratingBox" >
                                                 <Text  mb="-15%" > Legg igjen vurdering:</Text>
                                                 <Rating
