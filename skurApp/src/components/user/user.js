@@ -155,9 +155,7 @@ function User() {
 
 
                     data.uid = snap.id
-                    if (userData !== data) {
-                        setUserData(data)
-                    }
+                    setUserData(data)
                 })
                 if (userData) {
 
