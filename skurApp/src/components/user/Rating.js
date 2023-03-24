@@ -14,7 +14,7 @@ function getRatingAvg(ratings){
     count++;
   }
   console.log(sum/count);
-  return sum / count;
+  return  Math.floor((sum / count)*10)/10;
 
 }
 
