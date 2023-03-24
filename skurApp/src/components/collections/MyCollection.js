@@ -50,7 +50,7 @@ function buildCard(data, id) {
         imageLink = 'https://cdn.pixabay.com/photo/2012/04/13/21/06/screwdriver-33634__480.png'
     }
     else {
-        imageLink = 'https://m.media-amazon.com/images/I/71ecpTA4rwL.jpg'
+        imageLink = 'https://cdn-icons-png.flaticon.com/512/3417/3417080.png'
     }
 
     return (
